@@ -1,0 +1,3 @@
+class PlannerItemModel {
+  // TODO: Implement
+}

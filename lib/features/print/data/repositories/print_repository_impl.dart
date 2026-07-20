@@ -1,0 +1,3 @@
+class PrintRepositoryImpl {
+  // TODO: Implement
+}
