@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failures.dart';
 import '../../domain/entities/calendar_event.dart';
 import '../../domain/repositories/calendar_repository.dart';
 import '../datasources/calendar_remote_datasource.dart';
@@ -15,7 +13,7 @@ class CalendarRepositoryImpl implements CalendarRepository {
   });
 
   @override
-  Future<Either<Failure, List<CalendarEvent>>> getEvents(DateTime month) async {
+  Future<List<CalendarEvent>> getEvents(DateTime month) async {
     throw UnimplementedError('Implement getEvents');
   }
 }

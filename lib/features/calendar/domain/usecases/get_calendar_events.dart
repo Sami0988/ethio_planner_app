@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failures.dart';
 import '../entities/calendar_event.dart';
 import '../repositories/calendar_repository.dart';
 
@@ -8,7 +6,7 @@ class GetCalendarEvents {
 
   GetCalendarEvents(this._repository);
 
-  Future<Either<Failure, List<CalendarEvent>>> call(DateTime month) async {
+  Future<List<CalendarEvent>> call(DateTime month) async {
     return _repository.getEvents(month);
   }
 }

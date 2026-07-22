@@ -1,28 +1,29 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/entities/calendar_event.dart';
 
-class CalendarEventModel extends CalendarEvent {
-  const CalendarEventModel({
-    required super.id,
-    required super.title,
-    required super.date,
-    super.description,
-  });
+part 'calendar_event_model.freezed.dart';
+part 'calendar_event_model.g.dart';
 
-  factory CalendarEventModel.fromJson(Map<String, dynamic> json) {
-    return CalendarEventModel(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      date: DateTime.parse(json['date'] as String),
-      description: json['description'] as String?,
+@freezed
+abstract class CalendarEventModel with _$CalendarEventModel {
+  const factory CalendarEventModel({
+    required String id,
+    required String title,
+    required DateTime date,
+    String? description,
+  }) = _CalendarEventModel;
+
+  factory CalendarEventModel.fromJson(Map<String, dynamic> json) =>
+      _$CalendarEventModelFromJson(json);
+}
+
+extension CalendarEventModelX on CalendarEventModel {
+  CalendarEvent toEntity() {
+    return CalendarEvent(
+      id: id,
+      title: title,
+      date: date,
+      description: description,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'date': date.toIso8601String(),
-      'description': description,
-    };
   }
 }

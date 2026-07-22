@@ -1,14 +1,15 @@
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-abstract class NetworkInfo {
-  Future<bool> get isConnected;
-}
+final connectivityProvider = StreamProvider<List<ConnectivityResult>>((ref) {
+  return Connectivity().onConnectivityChanged;
+});
 
-class NetworkInfoImpl implements NetworkInfo {
-  final InternetConnectionChecker _checker;
-
-  NetworkInfoImpl(this._checker);
-
-  @override
-  Future<bool> get isConnected => _checker.hasConnection;
-}
+final isOnlineProvider = Provider<bool>((ref) {
+  final connectivity = ref.watch(connectivityProvider);
+  return connectivity.when(
+    data: (results) => results.isNotEmpty && results.first != ConnectivityResult.none,
+    loading: () => true,
+    error: (_, _) => false,
+  );
+});

@@ -1,13 +1,13 @@
-class CalendarEvent {
-  final String id;
-  final String title;
-  final DateTime date;
-  final String? description;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const CalendarEvent({
-    required this.id,
-    required this.title,
-    required this.date,
-    this.description,
-  });
+part 'calendar_event.freezed.dart';
+
+@freezed
+abstract class CalendarEvent with _$CalendarEvent {
+  const factory CalendarEvent({
+    required String id,
+    required String title,
+    required DateTime date,
+    String? description,
+  }) = _CalendarEvent;
 }
