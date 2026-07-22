@@ -1,9 +1,12 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../features/more/presentation/pages/more_page.dart';
+import '../../features/today/presentation/pages/today_page.dart';
 import 'route_names.dart';
 import 'shell_page.dart';
-import '../../features/home/presentation/pages/today_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -12,50 +15,46 @@ final routerProvider = Provider<GoRouter>((ref) {
       ShellRoute(
         builder: (context, state, child) {
           final location = state.uri.toString();
-          int currentIndex = 0;
+          var currentIndex = 0;
           if (location.startsWith(RouteNames.calendar)) {
             currentIndex = 1;
-          } else if (location.startsWith(RouteNames.reminders)) {
-            currentIndex = 2;
           } else if (location.startsWith(RouteNames.planner)) {
+            currentIndex = 2;
+          } else if (location.startsWith(RouteNames.more)) {
             currentIndex = 3;
-          } else if (location.startsWith(RouteNames.print)) {
-            currentIndex = 4;
           }
           return ShellPage(currentIndex: currentIndex, child: child);
         },
         routes: [
           GoRoute(
             path: RouteNames.home,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: TodayPage(),
-            ),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: TodayPage()),
           ),
           GoRoute(
             path: RouteNames.calendar,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: CalendarTab(),
-            ),
-          ),
-          GoRoute(
-            path: RouteNames.reminders,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: RemindersTab(),
-            ),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: _CalendarPlaceholder()),
           ),
           GoRoute(
             path: RouteNames.planner,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: PlannerTab(),
-            ),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: _PlannerPlaceholder()),
           ),
           GoRoute(
-            path: RouteNames.print,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: PrintTab(),
-            ),
+            path: RouteNames.more,
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: MorePage()),
           ),
         ],
+      ),
+      GoRoute(
+        path: RouteNames.reminders,
+        builder: (context, state) => const _SimpleScaffold(titleKey: 'reminders'),
+      ),
+      GoRoute(
+        path: RouteNames.print,
+        builder: (context, state) => const _SimpleScaffold(titleKey: 'print'),
       ),
       GoRoute(
         path: RouteNames.error,
@@ -70,46 +69,36 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
 });
 
-class CalendarTab extends StatelessWidget {
-  const CalendarTab({super.key});
+class _CalendarPlaceholder extends StatelessWidget {
+  const _CalendarPlaceholder();
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Calendar')),
-    );
-  }
+  Widget build(BuildContext context) =>
+      Center(child: Text(AppLocalizations.of(context).calendarTab));
 }
 
-class RemindersTab extends StatelessWidget {
-  const RemindersTab({super.key});
+class _PlannerPlaceholder extends StatelessWidget {
+  const _PlannerPlaceholder();
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Reminders')),
-    );
-  }
+  Widget build(BuildContext context) =>
+      Center(child: Text(AppLocalizations.of(context).plannerTab));
 }
 
-class PlannerTab extends StatelessWidget {
-  const PlannerTab({super.key});
+/// Temporary full-screen placeholder for secondary destinations reached from
+/// More (Reminders, Print). Replaced by real screens in later phases.
+class _SimpleScaffold extends StatelessWidget {
+  const _SimpleScaffold({required this.titleKey});
+
+  final String titleKey;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Planner')),
-    );
-  }
-}
-
-class PrintTab extends StatelessWidget {
-  const PrintTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Print')),
+    final l10n = AppLocalizations.of(context);
+    final title = titleKey == 'print' ? l10n.morePrint : l10n.moreReminders;
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(child: Text(title)),
     );
   }
 }
@@ -120,9 +109,7 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('404 - Page not found'),
-      ),
+      body: Center(child: Text('404')),
     );
   }
 }

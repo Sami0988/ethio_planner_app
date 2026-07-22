@@ -1,5 +1,5 @@
 name: ethio_planner
-description: "A new Flutter project."
+description: "Walia Nexus Ethiopian-first calendar, reminder, planner, notes and custom-print app."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -66,12 +66,19 @@ dependencies:
   # Utilities
   uuid: ^4.6.0
   clock: ^1.1.2
+  intl: ^0.20.2
 
   # Background Sync
   workmanager: ^0.9.0+3
 
+  # Local domain packages (pure Dart, offline-first core)
+  ethiopian_calendar_core:
+    path: packages/ethiopian_calendar_core
+
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
 
   # Code Generation
@@ -89,6 +96,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+  # Generate localization classes from lib/l10n/*.arb (see l10n.yaml).
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

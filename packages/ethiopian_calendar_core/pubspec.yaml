@@ -1,0 +1,13 @@
+name: ethiopian_calendar_core
+description: >-
+  Pure-Dart Ethiopian and Gregorian calendar core: date value objects,
+  validation, lossless conversion and (planned) recurrence. No Flutter, Drift,
+  Dio, Firebase or platform dependencies.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.12.2
+
+dev_dependencies:
+  test: ^1.25.0
