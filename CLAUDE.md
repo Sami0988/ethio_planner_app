@@ -10,6 +10,7 @@ Custom Print SaaS Platform* (Walia Nexus). This file is the standing contract fo
 3. `docs/requirements/Claude_Code_Master_Prompt_Flutter_Planner_App.md` — the development contract / engineering constraints.
 
 `DEVELOPMENT_PLAN.md` (repo root) — full-platform context; the Flutter app is Workstream 6.
+`docs/CODING_STANDARDS.md` — **binding** engineering standard (architecture, Riverpod-only state, offline-first, errors, l10n, theming, testing). Follow it for every change.
 
 ## Scope
 
