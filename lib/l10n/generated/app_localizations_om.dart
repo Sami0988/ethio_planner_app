@@ -39,7 +39,7 @@ class AppLocalizationsOm extends AppLocalizations {
   String get sectionReminders => 'Yaadannoowwan';
 
   @override
-  String get sectionTodaySchedule => 'Today\'s Schedule';
+  String get sectionTodaySchedule => 'Gosa Har\'a';
 
   @override
   String get seeAll => 'Hunda Dubbisi';
@@ -85,10 +85,10 @@ class AppLocalizationsOm extends AppLocalizations {
   String get syncSavedLocally => 'Naannoo kana irratti ka\'e';
 
   @override
-  String get syncWaitingToSync => 'Waiting to sync';
+  String get syncWaitingToSync => 'Jalqaba ta\'uu qabu eegala jira';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'Jalqabaa jira…';
 
   @override
   String get syncingLabel => 'Jalqabaa jira…';
@@ -342,108 +342,153 @@ class AppLocalizationsOm extends AppLocalizations {
   String get calendarUpdate => 'Haaromsi';
 
   @override
-  String get calendarNoEventsForDay => 'No events for this day';
+  String get calendarNoEventsForDay => 'Guyyaa kanaaf sadetta hin jirtu';
 
   @override
-  String get actionEdit => 'Edit';
+  String get actionEdit => 'Fakki';
 
   @override
-  String get actionDelete => 'Delete';
+  String get actionDelete => 'Haqi';
 
   @override
-  String get actionCancel => 'Cancel';
+  String get actionCancel => 'Haqii';
 
   @override
-  String get deleteEventConfirmTitle => 'Delete Event';
+  String get deleteEventConfirmTitle => 'Sadetta Haqi';
 
   @override
   String deleteEventConfirmBody(Object title) {
-    return 'Are you sure you want to delete \"$title\"?';
+    return '\"$title\" haquu ni mirkannaatda?';
   }
 
   @override
-  String get eventSaveError => 'Failed to save event';
+  String get eventSaveError => 'Sadetta ka\'uu hin milkaa\'in';
 
   @override
-  String get editEventTitle => 'Edit Event';
+  String get editEventTitle => 'Sadetta Fakki';
 
   @override
-  String get newEventTitle => 'New Event';
+  String get newEventTitle => 'Sadetta Haaraa';
 
   @override
-  String get fieldTitle => 'Title';
+  String get fieldTitle => 'Mata duree';
 
   @override
-  String get fieldTitleRequired => 'Title is required';
+  String get fieldTitleRequired => 'Mata duree barbaachisa';
 
   @override
-  String get fieldLocationOptional => 'Location (optional)';
+  String get fieldLocationOptional => 'Naannoo (ni toluu)';
 
   @override
-  String get fieldCategoryOptional => 'Category (optional)';
+  String get fieldCategoryOptional => 'Gosa (ni toluu)';
 
   @override
-  String get fieldDescriptionOptional => 'Description (optional)';
+  String get fieldDescriptionOptional => 'Ibsa (ni toluu)';
 
   @override
-  String get categoryNone => 'None';
+  String get categoryNone => 'Mituu';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'Dalaga';
 
   @override
-  String get categoryPersonal => 'Personal';
+  String get categoryPersonal => 'Dhuunfa';
 
   @override
-  String get categoryHoliday => 'Holiday';
+  String get categoryHoliday => 'Ayyaana';
 
   @override
-  String get categoryOther => 'Other';
+  String get categoryOther => 'Biyyoo';
 
   @override
-  String get actionUpdate => 'Update';
+  String get actionUpdate => 'Haaromsi';
 
   @override
-  String get actionCreate => 'Create';
+  String get actionCreate => 'Uumi';
 
   @override
-  String get actionToday => 'Today';
+  String get actionToday => 'Har\'a';
 
   @override
-  String get today => 'Today';
+  String get today => 'Har\'a';
 
   @override
   String eventsCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count events',
-      one: '1 event',
+      other: '$count sadetta',
+      one: '1 sadetta',
     );
     return '$_temp0';
   }
 
   @override
-  String get jumpToDateTitle => 'Jump to Date';
+  String get jumpToDateTitle => 'Guyyaa keessatti boru';
 
   @override
-  String get jumpToDateHint => 'Select a date';
+  String get jumpToDateHint => 'Guyyaa filadhu';
 
   @override
-  String get actionGo => 'Go';
+  String get actionGo => 'Bori';
 
   @override
-  String get filterDay => 'Day';
+  String get filterDay => 'Guyyaa';
 
   @override
-  String get filterWeek => 'Week';
+  String get filterWeek => 'Torbe';
 
   @override
-  String get filterMonth => 'Month';
+  String get filterMonth => 'Jiicha';
 
   @override
-  String get filterAll => 'All';
+  String get filterAll => 'Hunda';
 
   @override
-  String get calendarAllEvents => 'All Events';
+  String get calendarAllEvents => 'Sadetta Hunda';
+
+  @override
+  String get settingsCalendar => 'Barruu';
+
+  @override
+  String get settingsPrimaryCalendar => 'Barruu Dursaa';
+
+  @override
+  String get settingsPrimaryCalendarEthiopian => 'Itoophiyaa';
+
+  @override
+  String get settingsPrimaryCalendarGregorian => 'Greegoriyaa';
+
+  @override
+  String get settingsPrimaryCalendarDual => 'Lama';
+
+  @override
+  String get settingsWeekStart => 'Bu\'uun Jarri';
+
+  @override
+  String get settingsWeekStartSaturday => 'Sanbata';
+
+  @override
+  String get settingsWeekStartSunday => 'Dilbata';
+
+  @override
+  String get settingsWeekStartMonday => 'Wixata';
+
+  @override
+  String get settingsNumeralStyle => 'Lakka\'oo';
+
+  @override
+  String get settingsNumeralGez => 'Ge\'ez';
+
+  @override
+  String get settingsNumeralLatin => 'Laatinii';
+
+  @override
+  String get settingsTimezone => 'Yeroo Naannoo';
+
+  @override
+  String get settingsTimezoneAddisAbaba => 'Addis Ababa';
+
+  @override
+  String get settingsTimezoneGMT => 'GMT';
 }

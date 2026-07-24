@@ -39,7 +39,7 @@ class AppLocalizationsTi extends AppLocalizations {
   String get sectionReminders => 'ኣዝናናር';
 
   @override
-  String get sectionTodaySchedule => 'Today\'s Schedule';
+  String get sectionTodaySchedule => 'ናይ ልማዓልቲ መርሆ';
 
   @override
   String get seeAll => 'ኩሉ ርኣይ';
@@ -85,10 +85,10 @@ class AppLocalizationsTi extends AppLocalizations {
   String get syncSavedLocally => 'ኣብ ቦታኡ ተቀሚጧል';
 
   @override
-  String get syncWaitingToSync => 'Waiting to sync';
+  String get syncWaitingToSync => 'ይሰዓብ ክብል ይጠብقب';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'ይሰዓብ ኣለው…';
 
   @override
   String get syncingLabel => 'ይሰዓብ ኣለው…';
@@ -340,108 +340,153 @@ class AppLocalizationsTi extends AppLocalizations {
   String get calendarUpdate => 'ኣስተካክል';
 
   @override
-  String get calendarNoEventsForDay => 'No events for this day';
+  String get calendarNoEventsForDay => 'ኣብ መዓልቲ ዝግባረት የለን';
 
   @override
-  String get actionEdit => 'Edit';
+  String get actionEdit => 'ኣስተካክል';
 
   @override
-  String get actionDelete => 'Delete';
+  String get actionDelete => 'ሸንጥል';
 
   @override
-  String get actionCancel => 'Cancel';
+  String get actionCancel => 'ሰርዝ';
 
   @override
-  String get deleteEventConfirmTitle => 'Delete Event';
+  String get deleteEventConfirmTitle => 'ዝግባረት ሸንጥል';
 
   @override
   String deleteEventConfirmBody(Object title) {
-    return 'Are you sure you want to delete \"$title\"?';
+    return '\"$title\" ከትስኪ ትሰር🇽 ኢዩ?';
   }
 
   @override
-  String get eventSaveError => 'Failed to save event';
+  String get eventSaveError => 'ዝግባረት ማስቀመጥ ኣይተ全力以';
 
   @override
-  String get editEventTitle => 'Edit Event';
+  String get editEventTitle => 'ዝግባረት ኣስተካክል';
 
   @override
-  String get newEventTitle => 'New Event';
+  String get newEventTitle => 'ዝግባረት ሓድሽ';
 
   @override
-  String get fieldTitle => 'Title';
+  String get fieldTitle => 'ርእስ';
 
   @override
-  String get fieldTitleRequired => 'Title is required';
+  String get fieldTitleRequired => 'ርእስ የድልዋል';
 
   @override
-  String get fieldLocationOptional => 'Location (optional)';
+  String get fieldLocationOptional => 'ቦታ (ኣማራጭ)';
 
   @override
-  String get fieldCategoryOptional => 'Category (optional)';
+  String get fieldCategoryOptional => 'ምድን (ኣማራጭ)';
 
   @override
-  String get fieldDescriptionOptional => 'Description (optional)';
+  String get fieldDescriptionOptional => 'ምብራህ (ኣማራጭ)';
 
   @override
-  String get categoryNone => 'None';
+  String get categoryNone => 'ኣይኰነን';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'ስራሕ';
 
   @override
-  String get categoryPersonal => 'Personal';
+  String get categoryPersonal => 'ግል';
 
   @override
-  String get categoryHoliday => 'Holiday';
+  String get categoryHoliday => 'በዓል';
 
   @override
-  String get categoryOther => 'Other';
+  String get categoryOther => 'ተወሳኝ';
 
   @override
-  String get actionUpdate => 'Update';
+  String get actionUpdate => 'ኣስተካክል';
 
   @override
-  String get actionCreate => 'Create';
+  String get actionCreate => 'ፍጠር';
 
   @override
-  String get actionToday => 'Today';
+  String get actionToday => 'ልማዓልቲ';
 
   @override
-  String get today => 'Today';
+  String get today => 'ልማዓልቲ';
 
   @override
   String eventsCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count events',
-      one: '1 event',
+      other: '$count ዝግባረት',
+      one: '1 ዝግባረት',
     );
     return '$_temp0';
   }
 
   @override
-  String get jumpToDateTitle => 'Jump to Date';
+  String get jumpToDateTitle => 'ቀጣ ናብ መዓልቲ';
 
   @override
-  String get jumpToDateHint => 'Select a date';
+  String get jumpToDateHint => 'መዓልቲ ምረጽ';
 
   @override
-  String get actionGo => 'Go';
+  String get actionGo => 'ቀጣ';
 
   @override
-  String get filterDay => 'Day';
+  String get filterDay => 'መዓልቲ';
 
   @override
-  String get filterWeek => 'Week';
+  String get filterWeek => 'ሳምንቲ';
 
   @override
-  String get filterMonth => 'Month';
+  String get filterMonth => 'ወርሒ';
 
   @override
-  String get filterAll => 'All';
+  String get filterAll => 'ኩሉ';
 
   @override
-  String get calendarAllEvents => 'All Events';
+  String get calendarAllEvents => 'ኩሉ ዝግባረት';
+
+  @override
+  String get settingsCalendar => 'መዓልቲ መቕጻሪ';
+
+  @override
+  String get settingsPrimaryCalendar => 'ቀዳማይ መዓልቲ መቕጻሪ';
+
+  @override
+  String get settingsPrimaryCalendarEthiopian => 'ኢትዮጵያዊ';
+
+  @override
+  String get settingsPrimaryCalendarGregorian => 'ግregorያዊ';
+
+  @override
+  String get settingsPrimaryCalendarDual => 'ክልተ';
+
+  @override
+  String get settingsWeekStart => 'ምብตาร ሳምንቲ';
+
+  @override
+  String get settingsWeekStartSaturday => 'ሰዓቡ';
+
+  @override
+  String get settingsWeekStartSunday => 'ሰዓት';
+
+  @override
+  String get settingsWeekStartMonday => 'ሰኞ';
+
+  @override
+  String get settingsNumeralStyle => 'ቁጽሊ ዘይቤ';
+
+  @override
+  String get settingsNumeralGez => 'ግዕዝ';
+
+  @override
+  String get settingsNumeralLatin => 'ላቲን';
+
+  @override
+  String get settingsTimezone => 'ናይ ግዜ ዞን';
+
+  @override
+  String get settingsTimezoneAddisAbaba => 'አዲስ አበባ';
+
+  @override
+  String get settingsTimezoneGMT => 'ጂ.ኤም.ቲ';
 }

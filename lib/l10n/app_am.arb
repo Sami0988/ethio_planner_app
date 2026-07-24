@@ -147,5 +147,20 @@
   "filterWeek": "ሳምንት",
   "filterMonth": "ወር",
   "filterAll": "ሁሉም",
-  "calendarAllEvents": "ሁሉም ዝግጅቶች"
+  "calendarAllEvents": "ሁሉም ዝግጅቶች",
+  "settingsCalendar": "ቀን መቁጠሪያ",
+  "settingsPrimaryCalendar": "ዋና ቀን መቁጠሪያ",
+  "settingsPrimaryCalendarEthiopian": "ኢትዮጵያዊ",
+  "settingsPrimaryCalendarGregorian": "껑ሮርያ",
+  "settingsPrimaryCalendarDual": "দ্বৈত",
+  "settingsWeekStart": "ሳምንት መጀመሪያ",
+  "settingsWeekStartSaturday": "ቅዳሜ",
+  "settingsWeekStartSunday": "እሑድ",
+  "settingsWeekStartMonday": "ሰኞ",
+  "settingsNumeralStyle": "የቁጥር ዘይቤ",
+  "settingsNumeralGez": "ግዕዝ",
+  "settingsNumeralLatin": "ላቲን",
+  "settingsTimezone": "የጊዜ ዞን",
+  "settingsTimezoneAddisAbaba": "አዲስ አበባ",
+  "settingsTimezoneGMT": "ጂ.ኤም.ቲ"
 }

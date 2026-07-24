@@ -929,6 +929,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All Events'**
   String get calendarAllEvents;
+
+  /// No description provided for @settingsCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get settingsCalendar;
+
+  /// No description provided for @settingsPrimaryCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Calendar'**
+  String get settingsPrimaryCalendar;
+
+  /// No description provided for @settingsPrimaryCalendarEthiopian.
+  ///
+  /// In en, this message translates to:
+  /// **'Ethiopian'**
+  String get settingsPrimaryCalendarEthiopian;
+
+  /// No description provided for @settingsPrimaryCalendarGregorian.
+  ///
+  /// In en, this message translates to:
+  /// **'Gregorian'**
+  String get settingsPrimaryCalendarGregorian;
+
+  /// No description provided for @settingsPrimaryCalendarDual.
+  ///
+  /// In en, this message translates to:
+  /// **'Dual'**
+  String get settingsPrimaryCalendarDual;
+
+  /// No description provided for @settingsWeekStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Week Start'**
+  String get settingsWeekStart;
+
+  /// No description provided for @settingsWeekStartSaturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get settingsWeekStartSaturday;
+
+  /// No description provided for @settingsWeekStartSunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get settingsWeekStartSunday;
+
+  /// No description provided for @settingsWeekStartMonday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get settingsWeekStartMonday;
+
+  /// No description provided for @settingsNumeralStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Numeral Style'**
+  String get settingsNumeralStyle;
+
+  /// No description provided for @settingsNumeralGez.
+  ///
+  /// In en, this message translates to:
+  /// **'Ge\'ez'**
+  String get settingsNumeralGez;
+
+  /// No description provided for @settingsNumeralLatin.
+  ///
+  /// In en, this message translates to:
+  /// **'Latin'**
+  String get settingsNumeralLatin;
+
+  /// No description provided for @settingsTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone'**
+  String get settingsTimezone;
+
+  /// No description provided for @settingsTimezoneAddisAbaba.
+  ///
+  /// In en, this message translates to:
+  /// **'Addis Ababa'**
+  String get settingsTimezoneAddisAbaba;
+
+  /// No description provided for @settingsTimezoneGMT.
+  ///
+  /// In en, this message translates to:
+  /// **'GMT'**
+  String get settingsTimezoneGMT;
 }
 
 class _AppLocalizationsDelegate
