@@ -1,4 +1,3 @@
-import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -86,10 +85,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ConflictCenterPage(),
       ),
       GoRoute(
-        path: RouteNames.print,
-        builder: (context, state) => const _SimpleScaffold(titleKey: 'print'),
-      ),
-      GoRoute(
         path: RouteNames.error,
         builder: (context, state) => const ErrorPage(),
       ),
@@ -101,24 +96,6 @@ final routerProvider = Provider<GoRouter>((ref) {
     errorBuilder: (context, state) => const ErrorPage(),
   );
 });
-
-/// Temporary full-screen placeholder for the Print destination (out of scope
-/// per Phase 1 spec — Print Studio is deferred).
-class _SimpleScaffold extends StatelessWidget {
-  const _SimpleScaffold({required this.titleKey});
-
-  final String titleKey;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final title = titleKey == 'print' ? l10n.morePrint : l10n.moreReminders;
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(child: Text(title)),
-    );
-  }
-}
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({super.key});

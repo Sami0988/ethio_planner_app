@@ -10,7 +10,6 @@ class RouteNames {
   // Secondary destinations reached from More, Quick Add, notifications, etc.
   // Reminders are intentionally NOT a bottom-navigation destination.
   static const String reminders = '/reminders';
-  static const String print = '/print';
   static const String settings = '/settings';
   static const String search = '/search';
   static const String notes = '/notes';

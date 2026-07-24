@@ -1,3 +1,0 @@
-class GetPrintJobs {
-  // TODO: Implement
-}

@@ -79,13 +79,3 @@ class RecentlyDeletedItems extends Table {
   @override
   Set<Column> get primaryKey => {id};
 }
-
-class PrintJobs extends Table {
-  TextColumn get id => text()();
-  TextColumn get title => text()();
-  DateTimeColumn get createdAt => dateTime()();
-  TextColumn get status => text().withDefault(const Constant('pending'))();
-
-  @override
-  Set<Column> get primaryKey => {id};
-}

@@ -19,7 +19,6 @@ part 'app_database.g.dart';
     Reminders,
     Notes,
     RecentlyDeletedItems,
-    PrintJobs,
   ],
   daos: [
     CalendarEventsDao,
@@ -33,7 +32,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration {
@@ -57,6 +56,10 @@ class AppDatabase extends _$AppDatabase {
           await m.addColumn(reminders, reminders.deletedAt);
           await m.addColumn(notes, notes.deletedAt);
           await m.createTable(recentlyDeletedItems);
+        }
+        if (from < 5) {
+          // Print Studio is deferred (Phase 1D); drop its out-of-scope table.
+          await m.deleteTable('print_jobs');
         }
       },
     );

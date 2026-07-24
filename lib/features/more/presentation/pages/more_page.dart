@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/route_names.dart';
 
-/// The "More" hub (APP-FR-001). Reminders, Notes, Print Studio, Settings,
-/// and Recently Deleted are reached from here rather than from the bottom
-/// navigation.
+/// The "More" hub (APP-FR-001). Reminders, Notes, Settings, and Recently
+/// Deleted are reached from here rather than from the bottom navigation.
 class MorePage extends StatelessWidget {
   const MorePage({super.key});
 
@@ -35,12 +34,6 @@ class MorePage extends StatelessWidget {
             title: Text(l10n.searchLabel),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => context.push(RouteNames.search),
-          ),
-          ListTile(
-            leading: const Icon(Icons.print_outlined),
-            title: Text(l10n.morePrint),
-            trailing: const Icon(Icons.chevron_right_rounded),
-            onTap: () => context.push(RouteNames.print),
           ),
           ListTile(
             leading: const Icon(Icons.settings_outlined),

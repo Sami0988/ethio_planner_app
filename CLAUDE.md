@@ -59,3 +59,26 @@ Acceptance criteria mapped to tests; generated code current; `dart format` clean
 zero warnings; unit/Drift/widget tests pass; required integration smoke tests pass; migrations tested;
 privacy/logging review passes; no critical/high defect open; Android build succeeds (iOS on macOS CI);
 ADRs/docs updated; next phase needs no hidden manual steps.
+
+## Claude Code tooling (`.claude/`)
+
+Project-scoped, committed configuration that operationalizes this contract:
+
+- **`settings.json`** — shared permission allowlist for read-only git and the safe Flutter/Dart
+  dev + verify commands (format, analyze, test, `build_runner`, `pub get`) so they run without
+  re-prompting; denies reading secrets (`*.env`, keystores, `google-services.json`,
+  `GoogleService-Info.plist`). Personal overrides live in the git-ignored `settings.local.json`.
+- **Slash commands** (`.claude/commands/`):
+  - `/verify` — run the Definition-of-Done suite and report **real** command output only.
+  - `/plan-phase <0|1A|1B|1C|1D|EXT>` — produce the required planning output for a phase, then
+    stop for approval (enforces "Plan before code").
+  - `/traceability` — map the current diff to requirement IDs; flag scope creep and hard-exclusion
+    violations.
+- **Review subagents** (`.claude/agents/`):
+  - `architecture-guard` — checks a change against `docs/CODING_STANDARDS.md` (Riverpod-only,
+    offline-first Drift SSOT, domain purity, typed failures, l10n, theming, banned packages).
+  - `requirements-traceability` — verifies changes map to requirement IDs and stay inside the
+    approved product scope and phase boundary.
+
+These support the contract; they do not replace it. When in doubt, the requirements docs and
+`docs/CODING_STANDARDS.md` win.

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git ls-files:*)",
+      "Bash(git stash list)",
+      "Bash(git blame:*)",
+
+      "Bash(flutter --version)",
+      "Bash(flutter doctor:*)",
+      "Bash(flutter pub get)",
+      "Bash(flutter pub deps:*)",
+      "Bash(flutter pub outdated:*)",
+      "Bash(flutter gen-l10n:*)",
+      "Bash(flutter analyze)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter test)",
+      "Bash(flutter test:*)",
+
+      "Bash(dart --version)",
+      "Bash(dart format .)",
+      "Bash(dart format:*)",
+      "Bash(dart analyze:*)",
+      "Bash(dart test:*)",
+      "Bash(dart pub get)",
+      "Bash(dart pub deps:*)",
+      "Bash(dart pub outdated:*)",
+      "Bash(dart fix --dry-run:*)",
+      "Bash(dart run build_runner build:*)",
+
+      "WebSearch",
+      "WebFetch(domain:pub.dev)",
+      "WebFetch(domain:api.flutter.dev)",
+      "WebFetch(domain:docs.flutter.dev)"
+    ],
+    "deny": [
+      "Read(./**/*.env)",
+      "Read(./**/*.keystore)",
+      "Read(./**/*.jks)",
+      "Read(./**/google-services.json)",
+      "Read(./**/GoogleService-Info.plist)"
+    ]
+  }
+}
