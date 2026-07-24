@@ -7,7 +7,12 @@ abstract class CalendarEvent with _$CalendarEvent {
   const factory CalendarEvent({
     required String id,
     required String title,
-    required DateTime date,
+    required DateTime ecDate,
+    required DateTime gcDate,
     String? description,
+    @Default(false) bool isAllDay,
+    String? category,
+    String? location,
+    String? recurrenceRule,
   }) = _CalendarEvent;
 }

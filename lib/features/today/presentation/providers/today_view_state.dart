@@ -18,12 +18,17 @@ abstract class TodayViewState with _$TodayViewState {
     UpNextPresentation? upNext,
     @Default(<EventPresentation>[]) List<EventPresentation> events,
     @Default(<ReminderPresentation>[]) List<ReminderPresentation> reminders,
+    @Default(<SchedulePresentation>[]) List<SchedulePresentation> schedule,
     @Default(SyncPresentation()) SyncPresentation sync,
   }) = _TodayViewState;
 
   const TodayViewState._();
 
-  bool get hasSchedule => upNext != null || events.isNotEmpty || reminders.isNotEmpty;
+  bool get hasSchedule =>
+      upNext != null ||
+      events.isNotEmpty ||
+      reminders.isNotEmpty ||
+      schedule.isNotEmpty;
 }
 
 @freezed
@@ -40,9 +45,11 @@ abstract class UpNextPresentation with _$UpNextPresentation {
   const factory UpNextPresentation({
     required String title,
     String? time,
+    String? timeEnd,
     String? subtitle,
     @Default(false) bool isAllDay,
     @Default(false) bool isPending,
+    @Default(SyncStatus.synced) SyncStatus syncStatus,
   }) = _UpNextPresentation;
 }
 
@@ -67,6 +74,16 @@ abstract class ReminderPresentation with _$ReminderPresentation {
     @Default(false) bool isOverdue,
     @Default(false) bool isCompleted,
   }) = _ReminderPresentation;
+}
+
+@freezed
+abstract class SchedulePresentation with _$SchedulePresentation {
+  const factory SchedulePresentation({
+    required String time,
+    required String title,
+    String? subtitle,
+    @Default(false) bool isCompleted,
+  }) = _SchedulePresentation;
 }
 
 @freezed

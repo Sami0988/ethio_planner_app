@@ -4,8 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/route_names.dart';
 
-/// The "More" hub (APP-FR-001). Reminders and Print Studio are reached from
-/// here rather than from the bottom navigation.
+/// The "More" hub (APP-FR-001). Reminders, Notes, Print Studio, Settings,
+/// and Recently Deleted are reached from here rather than from the bottom
+/// navigation.
 class MorePage extends StatelessWidget {
   const MorePage({super.key});
 
@@ -24,6 +25,18 @@ class MorePage extends StatelessWidget {
             onTap: () => context.push(RouteNames.reminders),
           ),
           ListTile(
+            leading: const Icon(Icons.note_alt_outlined),
+            title: const Text('Notes'),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => context.push(RouteNames.notes),
+          ),
+          ListTile(
+            leading: const Icon(Icons.search_outlined),
+            title: Text(l10n.searchLabel),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => context.push(RouteNames.search),
+          ),
+          ListTile(
             leading: const Icon(Icons.print_outlined),
             title: Text(l10n.morePrint),
             trailing: const Icon(Icons.chevron_right_rounded),
@@ -32,7 +45,23 @@ class MorePage extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.settings_outlined),
             title: Text(l10n.moreSettings),
-            enabled: false,
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => context.push(RouteNames.settings),
+          ),
+          const Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.delete_outline,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            title: Text(
+              'Recently Deleted',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => context.push(RouteNames.recentlyDeleted),
           ),
         ],
       ),

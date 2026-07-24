@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/theme/app_spacing.dart';
 
@@ -19,7 +20,12 @@ class SectionHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTextStyles.sectionLabel),
+          Text(
+            label,
+            style: AppTextStyles.sectionLabel.copyWith(
+              color: context.colorTextSecondary,
+            ),
+          ),
           if (trailing != null) trailing!,
         ],
       ),

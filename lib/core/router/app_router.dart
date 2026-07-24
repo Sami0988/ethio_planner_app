@@ -3,7 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/pages/auth_page.dart';
+import '../../features/calendar/presentation/pages/calendar_page.dart';
+import '../../features/conflict_center/presentation/pages/conflict_center_page.dart';
 import '../../features/more/presentation/pages/more_page.dart';
+import '../../features/notes/presentation/pages/notes_page.dart';
+import '../../features/planner/presentation/pages/planner_page.dart';
+import '../../features/recently_deleted/presentation/pages/recently_deleted_page.dart';
+import '../../features/reminders/presentation/pages/reminders_page.dart';
+import '../../features/search/presentation/pages/search_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/today/presentation/pages/today_page.dart';
 import 'route_names.dart';
 import 'shell_page.dart';
@@ -34,12 +43,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: RouteNames.calendar,
             pageBuilder: (context, state) =>
-                const NoTransitionPage(child: _CalendarPlaceholder()),
+                const NoTransitionPage(child: CalendarPage()),
           ),
           GoRoute(
             path: RouteNames.planner,
             pageBuilder: (context, state) =>
-                const NoTransitionPage(child: _PlannerPlaceholder()),
+                const NoTransitionPage(child: PlannerPage()),
           ),
           GoRoute(
             path: RouteNames.more,
@@ -50,7 +59,31 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: RouteNames.reminders,
-        builder: (context, state) => const _SimpleScaffold(titleKey: 'reminders'),
+        builder: (context, state) => const RemindersPage(),
+      ),
+      GoRoute(
+        path: RouteNames.settings,
+        builder: (context, state) => const SettingsPage(),
+      ),
+      GoRoute(
+        path: RouteNames.search,
+        builder: (context, state) => const SearchPage(),
+      ),
+      GoRoute(
+        path: RouteNames.notes,
+        builder: (context, state) => const NotesPage(),
+      ),
+      GoRoute(
+        path: RouteNames.auth,
+        builder: (context, state) => const AuthPage(),
+      ),
+      GoRoute(
+        path: RouteNames.recentlyDeleted,
+        builder: (context, state) => const RecentlyDeletedPage(),
+      ),
+      GoRoute(
+        path: RouteNames.conflictCenter,
+        builder: (context, state) => const ConflictCenterPage(),
       ),
       GoRoute(
         path: RouteNames.print,
@@ -69,24 +102,8 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
 });
 
-class _CalendarPlaceholder extends StatelessWidget {
-  const _CalendarPlaceholder();
-
-  @override
-  Widget build(BuildContext context) =>
-      Center(child: Text(AppLocalizations.of(context).calendarTab));
-}
-
-class _PlannerPlaceholder extends StatelessWidget {
-  const _PlannerPlaceholder();
-
-  @override
-  Widget build(BuildContext context) =>
-      Center(child: Text(AppLocalizations.of(context).plannerTab));
-}
-
-/// Temporary full-screen placeholder for secondary destinations reached from
-/// More (Reminders, Print). Replaced by real screens in later phases.
+/// Temporary full-screen placeholder for the Print destination (out of scope
+/// per Phase 1 spec — Print Studio is deferred).
 class _SimpleScaffold extends StatelessWidget {
   const _SimpleScaffold({required this.titleKey});
 

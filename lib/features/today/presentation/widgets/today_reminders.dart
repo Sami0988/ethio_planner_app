@@ -1,6 +1,7 @@
 import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/checkbox_tile.dart';
@@ -25,6 +26,8 @@ class TodayReminders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (items.isEmpty) return const SizedBox.shrink();
+
     final l10n = AppLocalizations.of(context);
 
     return Column(
@@ -46,16 +49,46 @@ class TodayReminders extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
             child: Column(
               children: [
-                for (final item in items)
-                  CheckboxTile(
-                    title: item.title,
-                    subtitle: item.subtitle,
-                    time: item.time,
-                    value: item.isCompleted,
-                    badgeStatus: item.isOverdue ? BadgeStatus.overdue : null,
-                    badgeLabel: item.isOverdue ? l10n.reminderOverdue : null,
-                    onChanged: (_) => onToggle?.call(item.id),
+                for (var i = 0; i < items.length; i++) ...[
+                  TweenAnimationBuilder<double>(
+                    key: ValueKey(items[i].id),
+                    tween: Tween(begin: 0, end: 1),
+                    duration: Duration(milliseconds: 200 + (i * 50)),
+                    curve: Curves.easeOut,
+                    builder: (context, value, child) => Opacity(
+                      opacity: value,
+                      child: child,
+                    ),
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 250),
+                      opacity: items[i].isCompleted ? 0.55 : 1,
+                      child: CheckboxTile(
+                        title: items[i].title,
+                        subtitle: items[i].subtitle,
+                        time: items[i].time,
+                        value: items[i].isCompleted,
+                        badgeStatus: items[i].isOverdue
+                            ? BadgeStatus.overdue
+                            : null,
+                        badgeLabel: items[i].isOverdue
+                            ? l10n.reminderOverdue
+                            : null,
+                        onChanged: (_) => onToggle?.call(items[i].id),
+                      ),
+                    ),
                   ),
+                  if (i != items.length - 1)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: context.colorDivider.withOpacity(0.5),
+                      ),
+                    ),
+                ],
               ],
             ),
           ),

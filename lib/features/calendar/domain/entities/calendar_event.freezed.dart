@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CalendarEvent {
 
- String get id; String get title; DateTime get date; String? get description;
+ String get id; String get title; DateTime get ecDate; DateTime get gcDate; String? get description; bool get isAllDay; String? get category; String? get location; String? get recurrenceRule;
 /// Create a copy of CalendarEvent
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CalendarEventCopyWith<CalendarEvent> get copyWith => _$CalendarEventCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CalendarEvent&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CalendarEvent&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.ecDate, ecDate) || other.ecDate == ecDate)&&(identical(other.gcDate, gcDate) || other.gcDate == gcDate)&&(identical(other.description, description) || other.description == description)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.category, category) || other.category == category)&&(identical(other.location, location) || other.location == location)&&(identical(other.recurrenceRule, recurrenceRule) || other.recurrenceRule == recurrenceRule));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,date,description);
+int get hashCode => Object.hash(runtimeType,id,title,ecDate,gcDate,description,isAllDay,category,location,recurrenceRule);
 
 @override
 String toString() {
-  return 'CalendarEvent(id: $id, title: $title, date: $date, description: $description)';
+  return 'CalendarEvent(id: $id, title: $title, ecDate: $ecDate, gcDate: $gcDate, description: $description, isAllDay: $isAllDay, category: $category, location: $location, recurrenceRule: $recurrenceRule)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CalendarEventCopyWith<$Res>  {
   factory $CalendarEventCopyWith(CalendarEvent value, $Res Function(CalendarEvent) _then) = _$CalendarEventCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, DateTime date, String? description
+ String id, String title, DateTime ecDate, DateTime gcDate, String? description, bool isAllDay, String? category, String? location, String? recurrenceRule
 });
 
 
@@ -62,12 +62,17 @@ class _$CalendarEventCopyWithImpl<$Res>
 
 /// Create a copy of CalendarEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? date = null,Object? description = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? ecDate = null,Object? gcDate = null,Object? description = freezed,Object? isAllDay = null,Object? category = freezed,Object? location = freezed,Object? recurrenceRule = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as String,ecDate: null == ecDate ? _self.ecDate : ecDate // ignore: cast_nullable_to_non_nullable
+as DateTime,gcDate: null == gcDate ? _self.gcDate : gcDate // ignore: cast_nullable_to_non_nullable
 as DateTime,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,isAllDay: null == isAllDay ? _self.isAllDay : isAllDay // ignore: cast_nullable_to_non_nullable
+as bool,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String?,recurrenceRule: freezed == recurrenceRule ? _self.recurrenceRule : recurrenceRule // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -153,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  DateTime date,  String? description)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  DateTime ecDate,  DateTime gcDate,  String? description,  bool isAllDay,  String? category,  String? location,  String? recurrenceRule)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CalendarEvent() when $default != null:
-return $default(_that.id,_that.title,_that.date,_that.description);case _:
+return $default(_that.id,_that.title,_that.ecDate,_that.gcDate,_that.description,_that.isAllDay,_that.category,_that.location,_that.recurrenceRule);case _:
   return orElse();
 
 }
@@ -174,10 +179,10 @@ return $default(_that.id,_that.title,_that.date,_that.description);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  DateTime date,  String? description)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  DateTime ecDate,  DateTime gcDate,  String? description,  bool isAllDay,  String? category,  String? location,  String? recurrenceRule)  $default,) {final _that = this;
 switch (_that) {
 case _CalendarEvent():
-return $default(_that.id,_that.title,_that.date,_that.description);case _:
+return $default(_that.id,_that.title,_that.ecDate,_that.gcDate,_that.description,_that.isAllDay,_that.category,_that.location,_that.recurrenceRule);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +199,10 @@ return $default(_that.id,_that.title,_that.date,_that.description);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  DateTime date,  String? description)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  DateTime ecDate,  DateTime gcDate,  String? description,  bool isAllDay,  String? category,  String? location,  String? recurrenceRule)?  $default,) {final _that = this;
 switch (_that) {
 case _CalendarEvent() when $default != null:
-return $default(_that.id,_that.title,_that.date,_that.description);case _:
+return $default(_that.id,_that.title,_that.ecDate,_that.gcDate,_that.description,_that.isAllDay,_that.category,_that.location,_that.recurrenceRule);case _:
   return null;
 
 }
@@ -209,13 +214,18 @@ return $default(_that.id,_that.title,_that.date,_that.description);case _:
 
 
 class _CalendarEvent implements CalendarEvent {
-  const _CalendarEvent({required this.id, required this.title, required this.date, this.description});
+  const _CalendarEvent({required this.id, required this.title, required this.ecDate, required this.gcDate, this.description, this.isAllDay = false, this.category, this.location, this.recurrenceRule});
   
 
 @override final  String id;
 @override final  String title;
-@override final  DateTime date;
+@override final  DateTime ecDate;
+@override final  DateTime gcDate;
 @override final  String? description;
+@override@JsonKey() final  bool isAllDay;
+@override final  String? category;
+@override final  String? location;
+@override final  String? recurrenceRule;
 
 /// Create a copy of CalendarEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +237,16 @@ _$CalendarEventCopyWith<_CalendarEvent> get copyWith => __$CalendarEventCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CalendarEvent&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CalendarEvent&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.ecDate, ecDate) || other.ecDate == ecDate)&&(identical(other.gcDate, gcDate) || other.gcDate == gcDate)&&(identical(other.description, description) || other.description == description)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.category, category) || other.category == category)&&(identical(other.location, location) || other.location == location)&&(identical(other.recurrenceRule, recurrenceRule) || other.recurrenceRule == recurrenceRule));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,date,description);
+int get hashCode => Object.hash(runtimeType,id,title,ecDate,gcDate,description,isAllDay,category,location,recurrenceRule);
 
 @override
 String toString() {
-  return 'CalendarEvent(id: $id, title: $title, date: $date, description: $description)';
+  return 'CalendarEvent(id: $id, title: $title, ecDate: $ecDate, gcDate: $gcDate, description: $description, isAllDay: $isAllDay, category: $category, location: $location, recurrenceRule: $recurrenceRule)';
 }
 
 
@@ -247,7 +257,7 @@ abstract mixin class _$CalendarEventCopyWith<$Res> implements $CalendarEventCopy
   factory _$CalendarEventCopyWith(_CalendarEvent value, $Res Function(_CalendarEvent) _then) = __$CalendarEventCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, DateTime date, String? description
+ String id, String title, DateTime ecDate, DateTime gcDate, String? description, bool isAllDay, String? category, String? location, String? recurrenceRule
 });
 
 
@@ -264,12 +274,17 @@ class __$CalendarEventCopyWithImpl<$Res>
 
 /// Create a copy of CalendarEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? date = null,Object? description = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? ecDate = null,Object? gcDate = null,Object? description = freezed,Object? isAllDay = null,Object? category = freezed,Object? location = freezed,Object? recurrenceRule = freezed,}) {
   return _then(_CalendarEvent(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as String,ecDate: null == ecDate ? _self.ecDate : ecDate // ignore: cast_nullable_to_non_nullable
+as DateTime,gcDate: null == gcDate ? _self.gcDate : gcDate // ignore: cast_nullable_to_non_nullable
 as DateTime,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,isAllDay: null == isAllDay ? _self.isAllDay : isAllDay // ignore: cast_nullable_to_non_nullable
+as bool,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String?,recurrenceRule: freezed == recurrenceRule ? _self.recurrenceRule : recurrenceRule // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

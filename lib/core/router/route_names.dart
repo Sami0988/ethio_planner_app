@@ -11,6 +11,12 @@ class RouteNames {
   // Reminders are intentionally NOT a bottom-navigation destination.
   static const String reminders = '/reminders';
   static const String print = '/print';
+  static const String settings = '/settings';
+  static const String search = '/search';
+  static const String notes = '/notes';
+  static const String auth = '/auth';
+  static const String recentlyDeleted = '/recently-deleted';
+  static const String conflictCenter = '/conflict-center';
 
   static const String error = '/error';
 }

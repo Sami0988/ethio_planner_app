@@ -41,17 +41,33 @@ class StatusBadge extends StatelessWidget {
     }
   }
 
+  String get _semanticLabel {
+    switch (status) {
+      case BadgeStatus.holiday:
+        return 'Holiday: $label';
+      case BadgeStatus.overdue:
+        return 'Overdue: $label';
+      case BadgeStatus.completed:
+        return 'Completed: $label';
+      case BadgeStatus.neutral:
+        return label;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: _backgroundColor,
-        borderRadius: AppRadii.badge,
-      ),
-      child: Text(
-        label,
-        style: AppTextStyles.badge.copyWith(color: _textColor),
+    return Semantics(
+      label: _semanticLabel,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: _backgroundColor,
+          borderRadius: AppRadii.badge,
+        ),
+        child: Text(
+          label,
+          style: AppTextStyles.badge.copyWith(color: _textColor),
+        ),
       ),
     );
   }

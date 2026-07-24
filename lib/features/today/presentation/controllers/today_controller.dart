@@ -33,15 +33,23 @@ final class TodayController extends Notifier<TodayViewState> {
     );
   }
 
+  Future<void> refresh() async {
+    final today = GregorianDate.fromDateTime(clock.now());
+    final ethiopian = CalendarConversion.gregorianToEthiopian(today);
+    state = _withSampleContent(ethiopian, today);
+  }
+
   TodayViewState _withSampleContent(EthiopianDate ec, GregorianDate gc) {
     return TodayViewState(
       ethiopianDate: ec,
       gregorianDate: gc,
-      holiday: const HolidayPresentation(name: 'Meskel', type: 'Public Holiday'),
+      holiday: null,
       upNext: const UpNextPresentation(
-        title: 'Team Planning Meeting',
-        time: '10:00 AM',
-        subtitle: 'Video Call',
+        title: 'Product Review Meeting',
+        time: '10:30 AM',
+        timeEnd: '11:30 AM',
+        subtitle: 'Discussing the new offline capabilities.',
+        syncStatus: SyncStatus.savedLocally,
       ),
       events: const [
         EventPresentation(
@@ -59,6 +67,20 @@ final class TodayController extends Notifier<TodayViewState> {
           subtitle: 'Scheduled for yesterday',
           isOverdue: true,
         ),
+      ],
+      schedule: const [
+        SchedulePresentation(
+          time: '08:00 AM',
+          title: 'Morning Reflection',
+          subtitle: 'Completed',
+          isCompleted: true,
+        ),
+        SchedulePresentation(
+          time: '10:30 AM',
+          title: 'Product Review Meeting',
+          subtitle: 'Video Call',
+        ),
+        SchedulePresentation(time: '01:00 PM', title: 'Lunch with Team'),
       ],
       sync: const SyncPresentation(),
     );

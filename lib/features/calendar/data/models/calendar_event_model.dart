@@ -9,8 +9,13 @@ abstract class CalendarEventModel with _$CalendarEventModel {
   const factory CalendarEventModel({
     required String id,
     required String title,
-    required DateTime date,
+    required DateTime ecDate,
+    required DateTime gcDate,
     String? description,
+    @Default(false) bool isAllDay,
+    String? category,
+    String? location,
+    String? recurrenceRule,
   }) = _CalendarEventModel;
 
   factory CalendarEventModel.fromJson(Map<String, dynamic> json) =>
@@ -22,8 +27,13 @@ extension CalendarEventModelX on CalendarEventModel {
     return CalendarEvent(
       id: id,
       title: title,
-      date: date,
+      ecDate: ecDate,
+      gcDate: gcDate,
       description: description,
+      isAllDay: isAllDay,
+      category: category,
+      location: location,
+      recurrenceRule: recurrenceRule,
     );
   }
 }
