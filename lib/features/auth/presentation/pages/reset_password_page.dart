@@ -54,8 +54,8 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
               Text(
                 isConfirmMode ? 'Enter Reset Code' : 'Reset Password',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.sm),
@@ -64,8 +64,8 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                     ? 'Enter the code sent to ${state.pendingEmail ?? ''}'
                     : 'Enter your email to receive a reset code',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.xxl),

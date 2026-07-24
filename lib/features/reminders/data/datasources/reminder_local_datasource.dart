@@ -54,15 +54,15 @@ class ReminderLocalDatasource {
   }
 
   Stream<List<ReminderModel>> watchAllReminders() {
-    return _database.remindersDao
-        .watchAllReminders()
-        .map((reminders) => reminders.map(_toModel).toList());
+    return _database.remindersDao.watchAllReminders().map(
+      (reminders) => reminders.map(_toModel).toList(),
+    );
   }
 
   Stream<List<ReminderModel>> watchUpcomingReminders() {
-    return _database.remindersDao
-        .watchUpcomingReminders()
-        .map((reminders) => reminders.map(_toModel).toList());
+    return _database.remindersDao.watchUpcomingReminders().map(
+      (reminders) => reminders.map(_toModel).toList(),
+    );
   }
 
   ReminderModel _toModel(Reminder reminder) {
@@ -89,6 +89,9 @@ class ReminderLocalDatasource {
       description: Value(reminder.description),
       isCompleted: Value(reminder.isCompleted),
       notificationId: Value(reminder.notificationId),
+      category: Value(reminder.category),
+      linkedEventId: Value(reminder.linkedEventId),
+      recurrenceRule: Value(reminder.recurrenceRule),
     );
   }
 }

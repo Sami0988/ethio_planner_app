@@ -3,18 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/entities/planner_item.dart';
 import '../../domain/usecases/get_planner_items.dart';
+import '../providers/planner_providers.dart';
 import '../providers/planner_view_state.dart';
 
 const _uuid = Uuid();
 
 class PlannerController extends Notifier<PlannerViewState> {
-  late final GetPlannerItemsByDate _getItemsByDate;
-  late final GetPlannerItemsByDateRange _getItemsByDateRange;
-  late final CreatePlannerItem _createItem;
-  late final UpdatePlannerItem _updateItem;
-  late final DeletePlannerItem _deleteItem;
-  late final ReorderPlannerItems _reorderItems;
-
   @override
   PlannerViewState build() {
     final now = clock.now();
@@ -23,21 +17,11 @@ class PlannerController extends Notifier<PlannerViewState> {
     );
   }
 
-  void setDependencies({
-    required GetPlannerItemsByDate getItemsByDate,
-    required GetPlannerItemsByDateRange getItemsByDateRange,
-    required CreatePlannerItem createItem,
-    required UpdatePlannerItem updateItem,
-    required DeletePlannerItem deleteItem,
-    required ReorderPlannerItems reorderItems,
-  }) {
-    _getItemsByDate = getItemsByDate;
-    _getItemsByDateRange = getItemsByDateRange;
-    _createItem = createItem;
-    _updateItem = updateItem;
-    _deleteItem = deleteItem;
-    _reorderItems = reorderItems;
-  }
+  GetPlannerItemsByDate get _getItemsByDate =>
+      ref.read(getPlannerItemsByDateProvider);
+  CreatePlannerItem get _createItem => ref.read(createPlannerItemProvider);
+  UpdatePlannerItem get _updateItem => ref.read(updatePlannerItemProvider);
+  DeletePlannerItem get _deleteItem => ref.read(deletePlannerItemProvider);
 
   Future<void> loadItems() async {
     state = state.copyWith(isLoading: true, error: null);
@@ -107,9 +91,7 @@ class PlannerController extends Notifier<PlannerViewState> {
   }
 
   List<PlannerItem> getItemsForSection(PlannerSection section) {
-    return state.items
-        .where((i) => i.section == section)
-        .toList()
+    return state.items.where((i) => i.section == section).toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
   }
 }

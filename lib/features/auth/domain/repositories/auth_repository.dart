@@ -23,15 +23,9 @@ abstract class AuthRepository {
     String? displayName,
   });
 
-  Future<AuthResult> verifyEmail({
-    required String email,
-    required String code,
-  });
+  Future<AuthResult> verifyEmail({required String email, required String code});
 
-  Future<AuthResult> signIn({
-    required String email,
-    required String password,
-  });
+  Future<AuthResult> signIn({required String email, required String password});
 
   Future<AuthResult> resetPassword({required String email});
 

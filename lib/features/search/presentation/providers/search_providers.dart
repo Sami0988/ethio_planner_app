@@ -9,6 +9,4 @@ final searchRepositoryProvider = Provider<SearchRepositoryImpl>(
 );
 
 final searchControllerProvider =
-    NotifierProvider<SearchController, SearchViewState>(
-  SearchController.new,
-);
+    NotifierProvider<SearchController, SearchViewState>(SearchController.new);

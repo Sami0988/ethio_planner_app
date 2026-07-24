@@ -6,9 +6,7 @@ import '../models/planner_item_model.dart';
 class PlannerRepositoryImpl implements PlannerRepository {
   final PlannerLocalDatasource localDatasource;
 
-  PlannerRepositoryImpl({
-    required this.localDatasource,
-  });
+  PlannerRepositoryImpl({required this.localDatasource});
 
   @override
   Future<List<PlannerItem>> getItemsByDate(DateTime date) async {
@@ -18,7 +16,9 @@ class PlannerRepositoryImpl implements PlannerRepository {
 
   @override
   Future<List<PlannerItem>> getItemsByDateRange(
-      DateTime start, DateTime end) async {
+    DateTime start,
+    DateTime end,
+  ) async {
     final models = await localDatasource.getItemsByDateRange(start, end);
     return models.map((m) => m.toEntity()).toList();
   }
@@ -84,7 +84,9 @@ class PlannerRepositoryImpl implements PlannerRepository {
 
   @override
   Stream<List<PlannerItem>> watchItemsByDateRange(
-      DateTime start, DateTime end) {
+    DateTime start,
+    DateTime end,
+  ) {
     return localDatasource
         .watchItemsByDateRange(start, end)
         .map((models) => models.map((m) => m.toEntity()).toList());

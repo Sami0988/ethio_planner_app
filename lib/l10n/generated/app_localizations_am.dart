@@ -132,9 +132,6 @@ class AppLocalizationsAm extends AppLocalizations {
   String get moreNotes => 'ማስታወሻዎች';
 
   @override
-  String get morePrint => 'ማተሚያ ስቱዲዮ';
-
-  @override
   String get moreSettings => 'ቅንብሮች';
 
   @override
@@ -431,6 +428,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get actionGo => 'ሂድ';
 
   @override
+  String get actionSave => 'አስቀምጥ';
+
+  @override
   String get filterDay => 'ቀን';
 
   @override
@@ -489,4 +489,130 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get settingsTimezoneGMT => 'ጂ.ኤም.ቲ';
+
+  @override
+  String get onboardingIntroBody =>
+      'የኢትዮጵያ እና የግregororian የቀን ሰዓት ያለው፣ የአገልግሎት ማስታወቂያ እና ማስታወሻ ያለው የግል ፕላነር። ዳታዎ በመሣሪያዎ ላይ ይቀጥላል።';
+
+  @override
+  String get onboardingGetStarted => 'ເລີ່ມເລີ່ມ';
+
+  @override
+  String get onboardingAccountTitle => 'መቀጠል';
+
+  @override
+  String get onboardingAccountBody =>
+      'ለመረጥ ዳታዎን ለመቀጠል አካውንት ይፍጠሩ፣ ወይም እንደ እንግዳ ይቀጥሉ።';
+
+  @override
+  String get onboardingContinueGuest => 'እንደ እንግዳ ቀጥል';
+
+  @override
+  String get onboardingCreateAccount => 'አካውንት ፍጠር';
+
+  @override
+  String get onboardingSignIn => 'አካውንት አለዎት? ይግቡ';
+
+  @override
+  String get onboardingGuestTitle => 'ዳታዎ እዚህ ይቀጥላል';
+
+  @override
+  String get onboardingGuestBody =>
+      'የእንግዳ ዳታ በዚህ መሣሪያ ላይ ብቻ ይቀጥላል። አይቀ┢ጥም እና መተግበሪያውን ባይገልግሉ ሊያጡ ይችላል። በኋላ አካውንት በፍጠር ዳታዎን ማስተካከል ይችላሉ።';
+
+  @override
+  String get onboardingGotIt => 'ተረድቷል';
+
+  @override
+  String get recurrenceTitle => 'የተደጋጋሚ ዘይቤ';
+
+  @override
+  String get recurrenceFrequency => 'ድግስ';
+
+  @override
+  String get recurrenceFreqDaily => 'በየቀኑ';
+
+  @override
+  String get recurrenceFreqWeekly => 'በየሳምንቱ';
+
+  @override
+  String get recurrenceFreqMonthly => 'በየወሩ';
+
+  @override
+  String get recurrenceFreqYearly => 'በየዓመቱ';
+
+  @override
+  String get recurrenceInterval => 'በየጊዜው ደግግም';
+
+  @override
+  String get recurrenceDay => 'ቀን';
+
+  @override
+  String get recurrenceDays => 'ቀናት';
+
+  @override
+  String get recurrenceWeek => 'ሳምንት';
+
+  @override
+  String get recurrenceWeeks => 'ሳምናት';
+
+  @override
+  String get recurrenceMonth => 'ወር';
+
+  @override
+  String get recurrenceMonths => 'ወራት';
+
+  @override
+  String get recurrenceYear => 'ዓመት';
+
+  @override
+  String get recurrenceYears => 'ዓመታት';
+
+  @override
+  String get recurrenceCalendarBasis => 'የቀን ሰዓት መሠረት';
+
+  @override
+  String get calendarBasisEthiopian => 'ኢትዮጵያ';
+
+  @override
+  String get calendarBasisGregorian => 'ግрегorian';
+
+  @override
+  String get recurrenceEnd => 'ያልቃል';
+
+  @override
+  String get recurrenceEndNever => 'ဘယ ሳይቀር';
+
+  @override
+  String get recurrenceEndAfter => 'ከዚያ በኋላ';
+
+  @override
+  String get recurrenceOccurrences => 'ግጭቶች';
+
+  @override
+  String get recurrenceEndOnDate => 'በቀን ላይ';
+
+  @override
+  String get recurrencePreview => 'ቅድመ ዕይታ';
+
+  @override
+  String get recurrenceNone => 'አይደግግም';
+
+  @override
+  String get recurrenceClear => 'ተደጋጋሚ ያንሱ';
+
+  @override
+  String get settingsContentPacks => 'የይዘት መጠቅሎች';
+
+  @override
+  String get settingsEthiopianHolidays => 'የኢትዮጵያ በዓላት';
+
+  @override
+  String get settingsEthiopianObservances => 'የኢትዮጵያ አመልካሮች';
+
+  @override
+  String get settingsEnabled => 'ነቅሷል';
+
+  @override
+  String get settingsDisabled => 'አልነቅሷል';
 }

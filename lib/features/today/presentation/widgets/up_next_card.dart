@@ -36,20 +36,19 @@ class UpNextCard extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: [
                   context.colorPrimaryLight,
-                  context.colorPrimaryLight.withOpacity(0.6),
+                  context.colorPrimaryLight.withValues(alpha: 0.6),
                 ],
               ),
               borderRadius: AppRadii.card,
               boxShadow: [
                 BoxShadow(
-                  color: context.colorPrimary.withOpacity(0.15),
+                  color: context.colorPrimary.withValues(alpha: 0.15),
                   blurRadius: 16,
                   offset: const Offset(0, 6),
                 ),
               ],
               border: Border.all(
-                color: context.colorPrimary.withOpacity(0.12),
-                width: 1,
+                color: context.colorPrimary.withValues(alpha: 0.12),
               ),
             ),
             child: Padding(
@@ -63,7 +62,7 @@ class UpNextCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: context.colorPrimary.withOpacity(0.15),
+                          color: context.colorPrimary.withValues(alpha: 0.15),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -115,7 +114,7 @@ class UpNextCard extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: context.colorSurface.withOpacity(0.6),
+                        color: context.colorSurface.withValues(alpha: 0.6),
                         borderRadius: AppRadii.badge,
                       ),
                       child: Row(
@@ -167,8 +166,8 @@ class _SyncBadge extends StatelessWidget {
     final label = _label(l10n);
     if (label == null) return const SizedBox.shrink();
 
-    final isActive = status == SyncStatus.syncing ||
-        status == SyncStatus.waitingToSync;
+    final isActive =
+        status == SyncStatus.syncing || status == SyncStatus.waitingToSync;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

@@ -32,6 +32,9 @@ class SyncConflictItem {
 
 abstract class ConflictRepository {
   Future<List<SyncConflictItem>> getConflicts();
-  Future<void> resolveConflict(String conflictId, ConflictResolution resolution);
+  Future<void> resolveConflict(
+    String conflictId,
+    ConflictResolution resolution,
+  );
   Future<void> resolveAllConflicts(ConflictResolution resolution);
 }

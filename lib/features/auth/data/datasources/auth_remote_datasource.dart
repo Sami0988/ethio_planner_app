@@ -10,11 +10,12 @@ class AuthRemoteDatasource {
     required String password,
     String? displayName,
   }) async {
-    final response = await _dio.post(
+    final response = await _dio.post<Response<dynamic>>(
       '/auth/register',
       data: {
         'email': email,
         'password': password,
+        // ignore: use_null_aware_elements
         if (displayName != null) 'display_name': displayName,
       },
     );
@@ -25,12 +26,9 @@ class AuthRemoteDatasource {
     required String email,
     required String code,
   }) async {
-    final response = await _dio.post(
+    final response = await _dio.post<Response<dynamic>>(
       '/auth/verify-email',
-      data: {
-        'email': email,
-        'code': code,
-      },
+      data: {'email': email, 'code': code},
     );
     return response.data as Map<String, dynamic>;
   }
@@ -39,18 +37,15 @@ class AuthRemoteDatasource {
     required String email,
     required String password,
   }) async {
-    final response = await _dio.post(
+    final response = await _dio.post<Response<dynamic>>(
       '/auth/sign-in',
-      data: {
-        'email': email,
-        'password': password,
-      },
+      data: {'email': email, 'password': password},
     );
     return response.data as Map<String, dynamic>;
   }
 
   Future<Map<String, dynamic>> resetPassword({required String email}) async {
-    final response = await _dio.post(
+    final response = await _dio.post<Response<dynamic>>(
       '/auth/reset-password',
       data: {'email': email},
     );
@@ -62,23 +57,19 @@ class AuthRemoteDatasource {
     required String code,
     required String newPassword,
   }) async {
-    final response = await _dio.post(
+    final response = await _dio.post<Response<dynamic>>(
       '/auth/confirm-reset-password',
-      data: {
-        'email': email,
-        'code': code,
-        'new_password': newPassword,
-      },
+      data: {'email': email, 'code': code, 'new_password': newPassword},
     );
     return response.data as Map<String, dynamic>;
   }
 
   Future<void> signOut() async {
-    await _dio.post('/auth/sign-out');
+    await _dio.post<Response<dynamic>>('/auth/sign-out');
   }
 
   Future<Map<String, dynamic>> getCurrentUser() async {
-    final response = await _dio.get('/auth/me');
+    final response = await _dio.get<Response<dynamic>>('/auth/me');
     return response.data as Map<String, dynamic>;
   }
 }

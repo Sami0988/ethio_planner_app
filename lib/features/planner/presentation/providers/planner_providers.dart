@@ -42,5 +42,5 @@ final reorderPlannerItemsProvider = Provider<ReorderPlannerItems>(
 
 final plannerControllerProvider =
     NotifierProvider<PlannerController, PlannerViewState>(
-  PlannerController.new,
-);
+      PlannerController.new,
+    );

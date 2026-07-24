@@ -32,14 +32,13 @@ final resetPasswordUseCaseProvider = Provider<ResetPasswordUseCase>(
 
 final confirmPasswordResetUseCaseProvider =
     Provider<ConfirmPasswordResetUseCase>(
-  (ref) => ConfirmPasswordResetUseCase(ref.watch(authRepositoryProvider)),
-);
+      (ref) => ConfirmPasswordResetUseCase(ref.watch(authRepositoryProvider)),
+    );
 
 final signOutUseCaseProvider = Provider<SignOutUseCase>(
   (ref) => SignOutUseCase(ref.watch(authRepositoryProvider)),
 );
 
-final authControllerProvider =
-    NotifierProvider<AuthController, AuthViewState>(
+final authControllerProvider = NotifierProvider<AuthController, AuthViewState>(
   AuthController.new,
 );

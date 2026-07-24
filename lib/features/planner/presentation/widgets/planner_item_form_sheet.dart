@@ -1,3 +1,4 @@
+import 'package:ethiopian_calendar_core/ethiopian_calendar_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -42,8 +43,9 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
     super.initState();
     final item = widget.item;
     _titleController = TextEditingController(text: item?.title ?? '');
-    _descriptionController =
-        TextEditingController(text: item?.description ?? '');
+    _descriptionController = TextEditingController(
+      text: item?.description ?? '',
+    );
     _selectedDate = item?.gcDate ?? widget.initialDate ?? DateTime.now();
     _selectedSection = item?.section ?? PlannerSection.focus;
   }
@@ -72,6 +74,10 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
 
     final controller = ref.read(plannerControllerProvider.notifier);
 
+    final gcGregorian = GregorianDate.fromDateTime(_selectedDate);
+    final ec = CalendarConversion.gregorianToEthiopian(gcGregorian);
+    final ecDate = DateTime(ec.year, ec.month, ec.day);
+
     if (_isEditing) {
       final updated = widget.item!.copyWith(
         title: _titleController.text.trim(),
@@ -79,7 +85,7 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
             ? null
             : _descriptionController.text.trim(),
         gcDate: _selectedDate,
-        ecDate: _selectedDate, // TODO: Proper EC conversion
+        ecDate: ecDate,
         section: _selectedSection,
       );
       await controller.updateItem(updated);
@@ -87,7 +93,7 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
       await controller.createItem(
         title: _titleController.text.trim(),
         gcDate: _selectedDate,
-        ecDate: _selectedDate, // TODO: Proper EC conversion
+        ecDate: ecDate,
         description: _descriptionController.text.trim().isEmpty
             ? null
             : _descriptionController.text.trim(),
@@ -136,22 +142,32 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
           ),
           const SizedBox(height: AppSpacing.md),
           DropdownButtonFormField<PlannerSection>(
-            value: _selectedSection,
+            initialValue: _selectedSection,
             decoration: const InputDecoration(
               labelText: 'Section',
               border: OutlineInputBorder(),
             ),
             items: const [
               DropdownMenuItem(
-                  value: PlannerSection.focus, child: Text('Focus')),
+                value: PlannerSection.focus,
+                child: Text('Focus'),
+              ),
               DropdownMenuItem(
-                  value: PlannerSection.priorities, child: Text('Priorities')),
+                value: PlannerSection.priorities,
+                child: Text('Priorities'),
+              ),
               DropdownMenuItem(
-                  value: PlannerSection.checklist, child: Text('Checklist')),
+                value: PlannerSection.checklist,
+                child: Text('Checklist'),
+              ),
               DropdownMenuItem(
-                  value: PlannerSection.notes, child: Text('Notes')),
+                value: PlannerSection.notes,
+                child: Text('Notes'),
+              ),
               DropdownMenuItem(
-                  value: PlannerSection.reflection, child: Text('Reflection')),
+                value: PlannerSection.reflection,
+                child: Text('Reflection'),
+              ),
             ],
             onChanged: (value) {
               if (value != null) setState(() => _selectedSection = value);

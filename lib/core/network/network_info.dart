@@ -8,7 +8,8 @@ final connectivityProvider = StreamProvider<List<ConnectivityResult>>((ref) {
 final isOnlineProvider = Provider<bool>((ref) {
   final connectivity = ref.watch(connectivityProvider);
   return connectivity.when(
-    data: (results) => results.isNotEmpty && results.first != ConnectivityResult.none,
+    data: (results) =>
+        results.isNotEmpty && results.first != ConnectivityResult.none,
     loading: () => true,
     error: (_, _) => false,
   );

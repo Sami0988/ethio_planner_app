@@ -44,13 +44,19 @@ class AccessibilityHelper {
         minWidth: minimumSize,
         minHeight: minimumSize,
       ),
-      child: onTap != null ? GestureDetector(onTap: onTap, child: child) : child,
+      child: onTap != null
+          ? GestureDetector(onTap: onTap, child: child)
+          : child,
     );
   }
 
   /// Announces a message to screen readers.
   static void announce(BuildContext context, String message) {
-    SemanticsService.announce(message, TextDirection.ltr);
+    SemanticsService.sendAnnouncement(
+      View.of(context),
+      message,
+      TextDirection.ltr,
+    );
   }
 
   /// Announces a tooltip-style message to screen readers.
@@ -67,11 +73,6 @@ extension AccessibilityExtension on Widget {
     String? hint,
     bool isButton = false,
   }) {
-    return Semantics(
-      label: label,
-      hint: hint,
-      button: isButton,
-      child: this,
-    );
+    return Semantics(label: label, hint: hint, button: isButton, child: this);
   }
 }

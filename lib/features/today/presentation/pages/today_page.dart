@@ -53,14 +53,13 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     final state = ref.watch(todayControllerProvider);
 
     return Scaffold(
-      extendBodyBehindAppBar: false,
       appBar: AppBar(
         titleSpacing: AppSpacing.screenHorizontalPadding,
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         surfaceTintColor: Colors.transparent,
-        shadowColor: Colors.black.withOpacity(0.08),
+        shadowColor: Colors.black.withValues(alpha: 0.08),
         title: AnimatedDefaultTextStyle(
           duration: const Duration(milliseconds: 200),
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -90,9 +89,9 @@ class _TodayPageState extends ConsumerState<TodayPage> {
             child: IconButton(
               tooltip: l10n.accountLabel,
               onPressed: () {},
-              icon: Hero(
+              icon: const Hero(
                 tag: 'account-avatar',
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 16,
                   child: Icon(Icons.person_rounded, size: 18),
                 ),

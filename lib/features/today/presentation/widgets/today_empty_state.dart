@@ -60,7 +60,7 @@ class _TodayEmptyStateState extends State<TodayEmptyState>
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: context.colorHoliday.withOpacity(0.12),
+                  color: context.colorHoliday.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(

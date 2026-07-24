@@ -104,6 +104,52 @@ class $CalendarEventsTable extends CalendarEvents
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta(
+    'accountId',
+  );
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverVersionMeta = const VerificationMeta(
+    'serverVersion',
+  );
+  @override
+  late final GeneratedColumn<int> serverVersion = GeneratedColumn<int>(
+    'server_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('local'),
+  );
+  static const VerificationMeta _lastOperationIdMeta = const VerificationMeta(
+    'lastOperationId',
+  );
+  @override
+  late final GeneratedColumn<String> lastOperationId = GeneratedColumn<String>(
+    'last_operation_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _deletedAtMeta = const VerificationMeta(
     'deletedAt',
   );
@@ -126,6 +172,10 @@ class $CalendarEventsTable extends CalendarEvents
     category,
     location,
     recurrenceRule,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
     deletedAt,
   ];
   @override
@@ -205,6 +255,36 @@ class $CalendarEventsTable extends CalendarEvents
         ),
       );
     }
+    if (data.containsKey('account_id')) {
+      context.handle(
+        _accountIdMeta,
+        accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta),
+      );
+    }
+    if (data.containsKey('server_version')) {
+      context.handle(
+        _serverVersionMeta,
+        serverVersion.isAcceptableOrUnknown(
+          data['server_version']!,
+          _serverVersionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    if (data.containsKey('last_operation_id')) {
+      context.handle(
+        _lastOperationIdMeta,
+        lastOperationId.isAcceptableOrUnknown(
+          data['last_operation_id']!,
+          _lastOperationIdMeta,
+        ),
+      );
+    }
     if (data.containsKey('deleted_at')) {
       context.handle(
         _deletedAtMeta,
@@ -256,6 +336,22 @@ class $CalendarEventsTable extends CalendarEvents
         DriftSqlType.string,
         data['${effectivePrefix}recurrence_rule'],
       ),
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      ),
+      serverVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_version'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      lastOperationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_operation_id'],
+      ),
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
@@ -279,6 +375,10 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
   final String? category;
   final String? location;
   final String? recurrenceRule;
+  final String? accountId;
+  final int serverVersion;
+  final String syncStatus;
+  final String? lastOperationId;
   final DateTime? deletedAt;
   const CalendarEvent({
     required this.id,
@@ -290,6 +390,10 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
     this.category,
     this.location,
     this.recurrenceRule,
+    this.accountId,
+    required this.serverVersion,
+    required this.syncStatus,
+    this.lastOperationId,
     this.deletedAt,
   });
   @override
@@ -311,6 +415,14 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
     }
     if (!nullToAbsent || recurrenceRule != null) {
       map['recurrence_rule'] = Variable<String>(recurrenceRule);
+    }
+    if (!nullToAbsent || accountId != null) {
+      map['account_id'] = Variable<String>(accountId);
+    }
+    map['server_version'] = Variable<int>(serverVersion);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || lastOperationId != null) {
+      map['last_operation_id'] = Variable<String>(lastOperationId);
     }
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
@@ -337,6 +449,14 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
       recurrenceRule: recurrenceRule == null && nullToAbsent
           ? const Value.absent()
           : Value(recurrenceRule),
+      accountId: accountId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountId),
+      serverVersion: Value(serverVersion),
+      syncStatus: Value(syncStatus),
+      lastOperationId: lastOperationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastOperationId),
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
@@ -358,6 +478,10 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
       category: serializer.fromJson<String?>(json['category']),
       location: serializer.fromJson<String?>(json['location']),
       recurrenceRule: serializer.fromJson<String?>(json['recurrenceRule']),
+      accountId: serializer.fromJson<String?>(json['accountId']),
+      serverVersion: serializer.fromJson<int>(json['serverVersion']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      lastOperationId: serializer.fromJson<String?>(json['lastOperationId']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
     );
   }
@@ -374,6 +498,10 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
       'category': serializer.toJson<String?>(category),
       'location': serializer.toJson<String?>(location),
       'recurrenceRule': serializer.toJson<String?>(recurrenceRule),
+      'accountId': serializer.toJson<String?>(accountId),
+      'serverVersion': serializer.toJson<int>(serverVersion),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'lastOperationId': serializer.toJson<String?>(lastOperationId),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
     };
   }
@@ -388,6 +516,10 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
     Value<String?> category = const Value.absent(),
     Value<String?> location = const Value.absent(),
     Value<String?> recurrenceRule = const Value.absent(),
+    Value<String?> accountId = const Value.absent(),
+    int? serverVersion,
+    String? syncStatus,
+    Value<String?> lastOperationId = const Value.absent(),
     Value<DateTime?> deletedAt = const Value.absent(),
   }) => CalendarEvent(
     id: id ?? this.id,
@@ -401,6 +533,12 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
     recurrenceRule: recurrenceRule.present
         ? recurrenceRule.value
         : this.recurrenceRule,
+    accountId: accountId.present ? accountId.value : this.accountId,
+    serverVersion: serverVersion ?? this.serverVersion,
+    syncStatus: syncStatus ?? this.syncStatus,
+    lastOperationId: lastOperationId.present
+        ? lastOperationId.value
+        : this.lastOperationId,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
   );
   CalendarEvent copyWithCompanion(CalendarEventsCompanion data) {
@@ -418,6 +556,16 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
       recurrenceRule: data.recurrenceRule.present
           ? data.recurrenceRule.value
           : this.recurrenceRule,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      serverVersion: data.serverVersion.present
+          ? data.serverVersion.value
+          : this.serverVersion,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      lastOperationId: data.lastOperationId.present
+          ? data.lastOperationId.value
+          : this.lastOperationId,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
     );
   }
@@ -434,6 +582,10 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
           ..write('category: $category, ')
           ..write('location: $location, ')
           ..write('recurrenceRule: $recurrenceRule, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
           ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
@@ -450,6 +602,10 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
     category,
     location,
     recurrenceRule,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
     deletedAt,
   );
   @override
@@ -465,6 +621,10 @@ class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {
           other.category == this.category &&
           other.location == this.location &&
           other.recurrenceRule == this.recurrenceRule &&
+          other.accountId == this.accountId &&
+          other.serverVersion == this.serverVersion &&
+          other.syncStatus == this.syncStatus &&
+          other.lastOperationId == this.lastOperationId &&
           other.deletedAt == this.deletedAt);
 }
 
@@ -478,6 +638,10 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
   final Value<String?> category;
   final Value<String?> location;
   final Value<String?> recurrenceRule;
+  final Value<String?> accountId;
+  final Value<int> serverVersion;
+  final Value<String> syncStatus;
+  final Value<String?> lastOperationId;
   final Value<DateTime?> deletedAt;
   final Value<int> rowid;
   const CalendarEventsCompanion({
@@ -490,6 +654,10 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
     this.category = const Value.absent(),
     this.location = const Value.absent(),
     this.recurrenceRule = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -503,6 +671,10 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
     this.category = const Value.absent(),
     this.location = const Value.absent(),
     this.recurrenceRule = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -519,6 +691,10 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
     Expression<String>? category,
     Expression<String>? location,
     Expression<String>? recurrenceRule,
+    Expression<String>? accountId,
+    Expression<int>? serverVersion,
+    Expression<String>? syncStatus,
+    Expression<String>? lastOperationId,
     Expression<DateTime>? deletedAt,
     Expression<int>? rowid,
   }) {
@@ -532,6 +708,10 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
       if (category != null) 'category': category,
       if (location != null) 'location': location,
       if (recurrenceRule != null) 'recurrence_rule': recurrenceRule,
+      if (accountId != null) 'account_id': accountId,
+      if (serverVersion != null) 'server_version': serverVersion,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (lastOperationId != null) 'last_operation_id': lastOperationId,
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -547,6 +727,10 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
     Value<String?>? category,
     Value<String?>? location,
     Value<String?>? recurrenceRule,
+    Value<String?>? accountId,
+    Value<int>? serverVersion,
+    Value<String>? syncStatus,
+    Value<String?>? lastOperationId,
     Value<DateTime?>? deletedAt,
     Value<int>? rowid,
   }) {
@@ -560,6 +744,10 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
       category: category ?? this.category,
       location: location ?? this.location,
       recurrenceRule: recurrenceRule ?? this.recurrenceRule,
+      accountId: accountId ?? this.accountId,
+      serverVersion: serverVersion ?? this.serverVersion,
+      syncStatus: syncStatus ?? this.syncStatus,
+      lastOperationId: lastOperationId ?? this.lastOperationId,
       deletedAt: deletedAt ?? this.deletedAt,
       rowid: rowid ?? this.rowid,
     );
@@ -595,6 +783,18 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
     if (recurrenceRule.present) {
       map['recurrence_rule'] = Variable<String>(recurrenceRule.value);
     }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (serverVersion.present) {
+      map['server_version'] = Variable<int>(serverVersion.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (lastOperationId.present) {
+      map['last_operation_id'] = Variable<String>(lastOperationId.value);
+    }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
@@ -616,6 +816,10 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEvent> {
           ..write('category: $category, ')
           ..write('location: $location, ')
           ..write('recurrenceRule: $recurrenceRule, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
           ..write('deletedAt: $deletedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -737,6 +941,52 @@ class $PlannerItemsTable extends PlannerItems
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta(
+    'accountId',
+  );
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverVersionMeta = const VerificationMeta(
+    'serverVersion',
+  );
+  @override
+  late final GeneratedColumn<int> serverVersion = GeneratedColumn<int>(
+    'server_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('local'),
+  );
+  static const VerificationMeta _lastOperationIdMeta = const VerificationMeta(
+    'lastOperationId',
+  );
+  @override
+  late final GeneratedColumn<String> lastOperationId = GeneratedColumn<String>(
+    'last_operation_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _deletedAtMeta = const VerificationMeta(
     'deletedAt',
   );
@@ -760,6 +1010,10 @@ class $PlannerItemsTable extends PlannerItems
     sortOrder,
     linkedEventId,
     linkedReminderId,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
     deletedAt,
   ];
   @override
@@ -851,6 +1105,36 @@ class $PlannerItemsTable extends PlannerItems
         ),
       );
     }
+    if (data.containsKey('account_id')) {
+      context.handle(
+        _accountIdMeta,
+        accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta),
+      );
+    }
+    if (data.containsKey('server_version')) {
+      context.handle(
+        _serverVersionMeta,
+        serverVersion.isAcceptableOrUnknown(
+          data['server_version']!,
+          _serverVersionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    if (data.containsKey('last_operation_id')) {
+      context.handle(
+        _lastOperationIdMeta,
+        lastOperationId.isAcceptableOrUnknown(
+          data['last_operation_id']!,
+          _lastOperationIdMeta,
+        ),
+      );
+    }
     if (data.containsKey('deleted_at')) {
       context.handle(
         _deletedAtMeta,
@@ -906,6 +1190,22 @@ class $PlannerItemsTable extends PlannerItems
         DriftSqlType.string,
         data['${effectivePrefix}linked_reminder_id'],
       ),
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      ),
+      serverVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_version'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      lastOperationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_operation_id'],
+      ),
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
@@ -930,6 +1230,10 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
   final int sortOrder;
   final String? linkedEventId;
   final String? linkedReminderId;
+  final String? accountId;
+  final int serverVersion;
+  final String syncStatus;
+  final String? lastOperationId;
   final DateTime? deletedAt;
   const PlannerItem({
     required this.id,
@@ -942,6 +1246,10 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
     required this.sortOrder,
     this.linkedEventId,
     this.linkedReminderId,
+    this.accountId,
+    required this.serverVersion,
+    required this.syncStatus,
+    this.lastOperationId,
     this.deletedAt,
   });
   @override
@@ -962,6 +1270,14 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
     }
     if (!nullToAbsent || linkedReminderId != null) {
       map['linked_reminder_id'] = Variable<String>(linkedReminderId);
+    }
+    if (!nullToAbsent || accountId != null) {
+      map['account_id'] = Variable<String>(accountId);
+    }
+    map['server_version'] = Variable<int>(serverVersion);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || lastOperationId != null) {
+      map['last_operation_id'] = Variable<String>(lastOperationId);
     }
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
@@ -987,6 +1303,14 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
       linkedReminderId: linkedReminderId == null && nullToAbsent
           ? const Value.absent()
           : Value(linkedReminderId),
+      accountId: accountId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountId),
+      serverVersion: Value(serverVersion),
+      syncStatus: Value(syncStatus),
+      lastOperationId: lastOperationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastOperationId),
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
@@ -1009,6 +1333,10 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
       linkedEventId: serializer.fromJson<String?>(json['linkedEventId']),
       linkedReminderId: serializer.fromJson<String?>(json['linkedReminderId']),
+      accountId: serializer.fromJson<String?>(json['accountId']),
+      serverVersion: serializer.fromJson<int>(json['serverVersion']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      lastOperationId: serializer.fromJson<String?>(json['lastOperationId']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
     );
   }
@@ -1026,6 +1354,10 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
       'sortOrder': serializer.toJson<int>(sortOrder),
       'linkedEventId': serializer.toJson<String?>(linkedEventId),
       'linkedReminderId': serializer.toJson<String?>(linkedReminderId),
+      'accountId': serializer.toJson<String?>(accountId),
+      'serverVersion': serializer.toJson<int>(serverVersion),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'lastOperationId': serializer.toJson<String?>(lastOperationId),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
     };
   }
@@ -1041,6 +1373,10 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
     int? sortOrder,
     Value<String?> linkedEventId = const Value.absent(),
     Value<String?> linkedReminderId = const Value.absent(),
+    Value<String?> accountId = const Value.absent(),
+    int? serverVersion,
+    String? syncStatus,
+    Value<String?> lastOperationId = const Value.absent(),
     Value<DateTime?> deletedAt = const Value.absent(),
   }) => PlannerItem(
     id: id ?? this.id,
@@ -1057,6 +1393,12 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
     linkedReminderId: linkedReminderId.present
         ? linkedReminderId.value
         : this.linkedReminderId,
+    accountId: accountId.present ? accountId.value : this.accountId,
+    serverVersion: serverVersion ?? this.serverVersion,
+    syncStatus: syncStatus ?? this.syncStatus,
+    lastOperationId: lastOperationId.present
+        ? lastOperationId.value
+        : this.lastOperationId,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
   );
   PlannerItem copyWithCompanion(PlannerItemsCompanion data) {
@@ -1079,6 +1421,16 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
       linkedReminderId: data.linkedReminderId.present
           ? data.linkedReminderId.value
           : this.linkedReminderId,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      serverVersion: data.serverVersion.present
+          ? data.serverVersion.value
+          : this.serverVersion,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      lastOperationId: data.lastOperationId.present
+          ? data.lastOperationId.value
+          : this.lastOperationId,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
     );
   }
@@ -1096,6 +1448,10 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
           ..write('sortOrder: $sortOrder, ')
           ..write('linkedEventId: $linkedEventId, ')
           ..write('linkedReminderId: $linkedReminderId, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
           ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
@@ -1113,6 +1469,10 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
     sortOrder,
     linkedEventId,
     linkedReminderId,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
     deletedAt,
   );
   @override
@@ -1129,6 +1489,10 @@ class PlannerItem extends DataClass implements Insertable<PlannerItem> {
           other.sortOrder == this.sortOrder &&
           other.linkedEventId == this.linkedEventId &&
           other.linkedReminderId == this.linkedReminderId &&
+          other.accountId == this.accountId &&
+          other.serverVersion == this.serverVersion &&
+          other.syncStatus == this.syncStatus &&
+          other.lastOperationId == this.lastOperationId &&
           other.deletedAt == this.deletedAt);
 }
 
@@ -1143,6 +1507,10 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
   final Value<int> sortOrder;
   final Value<String?> linkedEventId;
   final Value<String?> linkedReminderId;
+  final Value<String?> accountId;
+  final Value<int> serverVersion;
+  final Value<String> syncStatus;
+  final Value<String?> lastOperationId;
   final Value<DateTime?> deletedAt;
   final Value<int> rowid;
   const PlannerItemsCompanion({
@@ -1156,6 +1524,10 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
     this.sortOrder = const Value.absent(),
     this.linkedEventId = const Value.absent(),
     this.linkedReminderId = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1170,6 +1542,10 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
     this.sortOrder = const Value.absent(),
     this.linkedEventId = const Value.absent(),
     this.linkedReminderId = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -1187,6 +1563,10 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
     Expression<int>? sortOrder,
     Expression<String>? linkedEventId,
     Expression<String>? linkedReminderId,
+    Expression<String>? accountId,
+    Expression<int>? serverVersion,
+    Expression<String>? syncStatus,
+    Expression<String>? lastOperationId,
     Expression<DateTime>? deletedAt,
     Expression<int>? rowid,
   }) {
@@ -1201,6 +1581,10 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
       if (sortOrder != null) 'sort_order': sortOrder,
       if (linkedEventId != null) 'linked_event_id': linkedEventId,
       if (linkedReminderId != null) 'linked_reminder_id': linkedReminderId,
+      if (accountId != null) 'account_id': accountId,
+      if (serverVersion != null) 'server_version': serverVersion,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (lastOperationId != null) 'last_operation_id': lastOperationId,
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1217,6 +1601,10 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
     Value<int>? sortOrder,
     Value<String?>? linkedEventId,
     Value<String?>? linkedReminderId,
+    Value<String?>? accountId,
+    Value<int>? serverVersion,
+    Value<String>? syncStatus,
+    Value<String?>? lastOperationId,
     Value<DateTime?>? deletedAt,
     Value<int>? rowid,
   }) {
@@ -1231,6 +1619,10 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
       sortOrder: sortOrder ?? this.sortOrder,
       linkedEventId: linkedEventId ?? this.linkedEventId,
       linkedReminderId: linkedReminderId ?? this.linkedReminderId,
+      accountId: accountId ?? this.accountId,
+      serverVersion: serverVersion ?? this.serverVersion,
+      syncStatus: syncStatus ?? this.syncStatus,
+      lastOperationId: lastOperationId ?? this.lastOperationId,
       deletedAt: deletedAt ?? this.deletedAt,
       rowid: rowid ?? this.rowid,
     );
@@ -1269,6 +1661,18 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
     if (linkedReminderId.present) {
       map['linked_reminder_id'] = Variable<String>(linkedReminderId.value);
     }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (serverVersion.present) {
+      map['server_version'] = Variable<int>(serverVersion.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (lastOperationId.present) {
+      map['last_operation_id'] = Variable<String>(lastOperationId.value);
+    }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
@@ -1291,6 +1695,10 @@ class PlannerItemsCompanion extends UpdateCompanion<PlannerItem> {
           ..write('sortOrder: $sortOrder, ')
           ..write('linkedEventId: $linkedEventId, ')
           ..write('linkedReminderId: $linkedReminderId, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
           ..write('deletedAt: $deletedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -1410,6 +1818,52 @@ class $RemindersTable extends Reminders
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta(
+    'accountId',
+  );
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverVersionMeta = const VerificationMeta(
+    'serverVersion',
+  );
+  @override
+  late final GeneratedColumn<int> serverVersion = GeneratedColumn<int>(
+    'server_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('local'),
+  );
+  static const VerificationMeta _lastOperationIdMeta = const VerificationMeta(
+    'lastOperationId',
+  );
+  @override
+  late final GeneratedColumn<String> lastOperationId = GeneratedColumn<String>(
+    'last_operation_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _deletedAtMeta = const VerificationMeta(
     'deletedAt',
   );
@@ -1433,6 +1887,10 @@ class $RemindersTable extends Reminders
     category,
     linkedEventId,
     recurrenceRule,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
     deletedAt,
   ];
   @override
@@ -1527,6 +1985,36 @@ class $RemindersTable extends Reminders
         ),
       );
     }
+    if (data.containsKey('account_id')) {
+      context.handle(
+        _accountIdMeta,
+        accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta),
+      );
+    }
+    if (data.containsKey('server_version')) {
+      context.handle(
+        _serverVersionMeta,
+        serverVersion.isAcceptableOrUnknown(
+          data['server_version']!,
+          _serverVersionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    if (data.containsKey('last_operation_id')) {
+      context.handle(
+        _lastOperationIdMeta,
+        lastOperationId.isAcceptableOrUnknown(
+          data['last_operation_id']!,
+          _lastOperationIdMeta,
+        ),
+      );
+    }
     if (data.containsKey('deleted_at')) {
       context.handle(
         _deletedAtMeta,
@@ -1582,6 +2070,22 @@ class $RemindersTable extends Reminders
         DriftSqlType.string,
         data['${effectivePrefix}recurrence_rule'],
       ),
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      ),
+      serverVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_version'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      lastOperationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_operation_id'],
+      ),
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
@@ -1606,6 +2110,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
   final String? category;
   final String? linkedEventId;
   final String? recurrenceRule;
+  final String? accountId;
+  final int serverVersion;
+  final String syncStatus;
+  final String? lastOperationId;
   final DateTime? deletedAt;
   const Reminder({
     required this.id,
@@ -1618,6 +2126,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     this.category,
     this.linkedEventId,
     this.recurrenceRule,
+    this.accountId,
+    required this.serverVersion,
+    required this.syncStatus,
+    this.lastOperationId,
     this.deletedAt,
   });
   @override
@@ -1642,6 +2154,14 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     }
     if (!nullToAbsent || recurrenceRule != null) {
       map['recurrence_rule'] = Variable<String>(recurrenceRule);
+    }
+    if (!nullToAbsent || accountId != null) {
+      map['account_id'] = Variable<String>(accountId);
+    }
+    map['server_version'] = Variable<int>(serverVersion);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || lastOperationId != null) {
+      map['last_operation_id'] = Variable<String>(lastOperationId);
     }
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
@@ -1671,6 +2191,14 @@ class Reminder extends DataClass implements Insertable<Reminder> {
       recurrenceRule: recurrenceRule == null && nullToAbsent
           ? const Value.absent()
           : Value(recurrenceRule),
+      accountId: accountId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountId),
+      serverVersion: Value(serverVersion),
+      syncStatus: Value(syncStatus),
+      lastOperationId: lastOperationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastOperationId),
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
@@ -1693,6 +2221,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
       category: serializer.fromJson<String?>(json['category']),
       linkedEventId: serializer.fromJson<String?>(json['linkedEventId']),
       recurrenceRule: serializer.fromJson<String?>(json['recurrenceRule']),
+      accountId: serializer.fromJson<String?>(json['accountId']),
+      serverVersion: serializer.fromJson<int>(json['serverVersion']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      lastOperationId: serializer.fromJson<String?>(json['lastOperationId']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
     );
   }
@@ -1710,6 +2242,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
       'category': serializer.toJson<String?>(category),
       'linkedEventId': serializer.toJson<String?>(linkedEventId),
       'recurrenceRule': serializer.toJson<String?>(recurrenceRule),
+      'accountId': serializer.toJson<String?>(accountId),
+      'serverVersion': serializer.toJson<int>(serverVersion),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'lastOperationId': serializer.toJson<String?>(lastOperationId),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
     };
   }
@@ -1725,6 +2261,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     Value<String?> category = const Value.absent(),
     Value<String?> linkedEventId = const Value.absent(),
     Value<String?> recurrenceRule = const Value.absent(),
+    Value<String?> accountId = const Value.absent(),
+    int? serverVersion,
+    String? syncStatus,
+    Value<String?> lastOperationId = const Value.absent(),
     Value<DateTime?> deletedAt = const Value.absent(),
   }) => Reminder(
     id: id ?? this.id,
@@ -1743,6 +2283,12 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     recurrenceRule: recurrenceRule.present
         ? recurrenceRule.value
         : this.recurrenceRule,
+    accountId: accountId.present ? accountId.value : this.accountId,
+    serverVersion: serverVersion ?? this.serverVersion,
+    syncStatus: syncStatus ?? this.syncStatus,
+    lastOperationId: lastOperationId.present
+        ? lastOperationId.value
+        : this.lastOperationId,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
   );
   Reminder copyWithCompanion(RemindersCompanion data) {
@@ -1767,6 +2313,16 @@ class Reminder extends DataClass implements Insertable<Reminder> {
       recurrenceRule: data.recurrenceRule.present
           ? data.recurrenceRule.value
           : this.recurrenceRule,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      serverVersion: data.serverVersion.present
+          ? data.serverVersion.value
+          : this.serverVersion,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      lastOperationId: data.lastOperationId.present
+          ? data.lastOperationId.value
+          : this.lastOperationId,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
     );
   }
@@ -1784,6 +2340,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
           ..write('category: $category, ')
           ..write('linkedEventId: $linkedEventId, ')
           ..write('recurrenceRule: $recurrenceRule, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
           ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
@@ -1801,6 +2361,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     category,
     linkedEventId,
     recurrenceRule,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
     deletedAt,
   );
   @override
@@ -1817,6 +2381,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
           other.category == this.category &&
           other.linkedEventId == this.linkedEventId &&
           other.recurrenceRule == this.recurrenceRule &&
+          other.accountId == this.accountId &&
+          other.serverVersion == this.serverVersion &&
+          other.syncStatus == this.syncStatus &&
+          other.lastOperationId == this.lastOperationId &&
           other.deletedAt == this.deletedAt);
 }
 
@@ -1831,6 +2399,10 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
   final Value<String?> category;
   final Value<String?> linkedEventId;
   final Value<String?> recurrenceRule;
+  final Value<String?> accountId;
+  final Value<int> serverVersion;
+  final Value<String> syncStatus;
+  final Value<String?> lastOperationId;
   final Value<DateTime?> deletedAt;
   final Value<int> rowid;
   const RemindersCompanion({
@@ -1844,6 +2416,10 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     this.category = const Value.absent(),
     this.linkedEventId = const Value.absent(),
     this.recurrenceRule = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1858,6 +2434,10 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     this.category = const Value.absent(),
     this.linkedEventId = const Value.absent(),
     this.recurrenceRule = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -1875,6 +2455,10 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     Expression<String>? category,
     Expression<String>? linkedEventId,
     Expression<String>? recurrenceRule,
+    Expression<String>? accountId,
+    Expression<int>? serverVersion,
+    Expression<String>? syncStatus,
+    Expression<String>? lastOperationId,
     Expression<DateTime>? deletedAt,
     Expression<int>? rowid,
   }) {
@@ -1889,6 +2473,10 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
       if (category != null) 'category': category,
       if (linkedEventId != null) 'linked_event_id': linkedEventId,
       if (recurrenceRule != null) 'recurrence_rule': recurrenceRule,
+      if (accountId != null) 'account_id': accountId,
+      if (serverVersion != null) 'server_version': serverVersion,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (lastOperationId != null) 'last_operation_id': lastOperationId,
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1905,6 +2493,10 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     Value<String?>? category,
     Value<String?>? linkedEventId,
     Value<String?>? recurrenceRule,
+    Value<String?>? accountId,
+    Value<int>? serverVersion,
+    Value<String>? syncStatus,
+    Value<String?>? lastOperationId,
     Value<DateTime?>? deletedAt,
     Value<int>? rowid,
   }) {
@@ -1919,6 +2511,10 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
       category: category ?? this.category,
       linkedEventId: linkedEventId ?? this.linkedEventId,
       recurrenceRule: recurrenceRule ?? this.recurrenceRule,
+      accountId: accountId ?? this.accountId,
+      serverVersion: serverVersion ?? this.serverVersion,
+      syncStatus: syncStatus ?? this.syncStatus,
+      lastOperationId: lastOperationId ?? this.lastOperationId,
       deletedAt: deletedAt ?? this.deletedAt,
       rowid: rowid ?? this.rowid,
     );
@@ -1957,6 +2553,18 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     if (recurrenceRule.present) {
       map['recurrence_rule'] = Variable<String>(recurrenceRule.value);
     }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (serverVersion.present) {
+      map['server_version'] = Variable<int>(serverVersion.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (lastOperationId.present) {
+      map['last_operation_id'] = Variable<String>(lastOperationId.value);
+    }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
@@ -1979,6 +2587,10 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
           ..write('category: $category, ')
           ..write('linkedEventId: $linkedEventId, ')
           ..write('recurrenceRule: $recurrenceRule, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
           ..write('deletedAt: $deletedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -2116,6 +2728,52 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
         type: DriftSqlType.string,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta(
+    'accountId',
+  );
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverVersionMeta = const VerificationMeta(
+    'serverVersion',
+  );
+  @override
+  late final GeneratedColumn<int> serverVersion = GeneratedColumn<int>(
+    'server_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('local'),
+  );
+  static const VerificationMeta _lastOperationIdMeta = const VerificationMeta(
+    'lastOperationId',
+  );
+  @override
+  late final GeneratedColumn<String> lastOperationId = GeneratedColumn<String>(
+    'last_operation_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _deletedAtMeta = const VerificationMeta(
     'deletedAt',
   );
@@ -2140,6 +2798,10 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
     linkedEventId,
     linkedReminderId,
     linkedPlannerItemId,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
     deletedAt,
   ];
   @override
@@ -2234,6 +2896,36 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
         ),
       );
     }
+    if (data.containsKey('account_id')) {
+      context.handle(
+        _accountIdMeta,
+        accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta),
+      );
+    }
+    if (data.containsKey('server_version')) {
+      context.handle(
+        _serverVersionMeta,
+        serverVersion.isAcceptableOrUnknown(
+          data['server_version']!,
+          _serverVersionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    if (data.containsKey('last_operation_id')) {
+      context.handle(
+        _lastOperationIdMeta,
+        lastOperationId.isAcceptableOrUnknown(
+          data['last_operation_id']!,
+          _lastOperationIdMeta,
+        ),
+      );
+    }
     if (data.containsKey('deleted_at')) {
       context.handle(
         _deletedAtMeta,
@@ -2293,6 +2985,22 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
         DriftSqlType.string,
         data['${effectivePrefix}linked_planner_item_id'],
       ),
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      ),
+      serverVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_version'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      lastOperationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_operation_id'],
+      ),
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
@@ -2318,6 +3026,10 @@ class Note extends DataClass implements Insertable<Note> {
   final String? linkedEventId;
   final String? linkedReminderId;
   final String? linkedPlannerItemId;
+  final String? accountId;
+  final int serverVersion;
+  final String syncStatus;
+  final String? lastOperationId;
   final DateTime? deletedAt;
   const Note({
     required this.id,
@@ -2331,6 +3043,10 @@ class Note extends DataClass implements Insertable<Note> {
     this.linkedEventId,
     this.linkedReminderId,
     this.linkedPlannerItemId,
+    this.accountId,
+    required this.serverVersion,
+    required this.syncStatus,
+    this.lastOperationId,
     this.deletedAt,
   });
   @override
@@ -2356,6 +3072,14 @@ class Note extends DataClass implements Insertable<Note> {
     }
     if (!nullToAbsent || linkedPlannerItemId != null) {
       map['linked_planner_item_id'] = Variable<String>(linkedPlannerItemId);
+    }
+    if (!nullToAbsent || accountId != null) {
+      map['account_id'] = Variable<String>(accountId);
+    }
+    map['server_version'] = Variable<int>(serverVersion);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || lastOperationId != null) {
+      map['last_operation_id'] = Variable<String>(lastOperationId);
     }
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
@@ -2386,6 +3110,14 @@ class Note extends DataClass implements Insertable<Note> {
       linkedPlannerItemId: linkedPlannerItemId == null && nullToAbsent
           ? const Value.absent()
           : Value(linkedPlannerItemId),
+      accountId: accountId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountId),
+      serverVersion: Value(serverVersion),
+      syncStatus: Value(syncStatus),
+      lastOperationId: lastOperationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastOperationId),
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
@@ -2411,6 +3143,10 @@ class Note extends DataClass implements Insertable<Note> {
       linkedPlannerItemId: serializer.fromJson<String?>(
         json['linkedPlannerItemId'],
       ),
+      accountId: serializer.fromJson<String?>(json['accountId']),
+      serverVersion: serializer.fromJson<int>(json['serverVersion']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      lastOperationId: serializer.fromJson<String?>(json['lastOperationId']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
     );
   }
@@ -2429,6 +3165,10 @@ class Note extends DataClass implements Insertable<Note> {
       'linkedEventId': serializer.toJson<String?>(linkedEventId),
       'linkedReminderId': serializer.toJson<String?>(linkedReminderId),
       'linkedPlannerItemId': serializer.toJson<String?>(linkedPlannerItemId),
+      'accountId': serializer.toJson<String?>(accountId),
+      'serverVersion': serializer.toJson<int>(serverVersion),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'lastOperationId': serializer.toJson<String?>(lastOperationId),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
     };
   }
@@ -2445,6 +3185,10 @@ class Note extends DataClass implements Insertable<Note> {
     Value<String?> linkedEventId = const Value.absent(),
     Value<String?> linkedReminderId = const Value.absent(),
     Value<String?> linkedPlannerItemId = const Value.absent(),
+    Value<String?> accountId = const Value.absent(),
+    int? serverVersion,
+    String? syncStatus,
+    Value<String?> lastOperationId = const Value.absent(),
     Value<DateTime?> deletedAt = const Value.absent(),
   }) => Note(
     id: id ?? this.id,
@@ -2464,6 +3208,12 @@ class Note extends DataClass implements Insertable<Note> {
     linkedPlannerItemId: linkedPlannerItemId.present
         ? linkedPlannerItemId.value
         : this.linkedPlannerItemId,
+    accountId: accountId.present ? accountId.value : this.accountId,
+    serverVersion: serverVersion ?? this.serverVersion,
+    syncStatus: syncStatus ?? this.syncStatus,
+    lastOperationId: lastOperationId.present
+        ? lastOperationId.value
+        : this.lastOperationId,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
   );
   Note copyWithCompanion(NotesCompanion data) {
@@ -2487,6 +3237,16 @@ class Note extends DataClass implements Insertable<Note> {
       linkedPlannerItemId: data.linkedPlannerItemId.present
           ? data.linkedPlannerItemId.value
           : this.linkedPlannerItemId,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      serverVersion: data.serverVersion.present
+          ? data.serverVersion.value
+          : this.serverVersion,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      lastOperationId: data.lastOperationId.present
+          ? data.lastOperationId.value
+          : this.lastOperationId,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
     );
   }
@@ -2505,6 +3265,10 @@ class Note extends DataClass implements Insertable<Note> {
           ..write('linkedEventId: $linkedEventId, ')
           ..write('linkedReminderId: $linkedReminderId, ')
           ..write('linkedPlannerItemId: $linkedPlannerItemId, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
           ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
@@ -2523,6 +3287,10 @@ class Note extends DataClass implements Insertable<Note> {
     linkedEventId,
     linkedReminderId,
     linkedPlannerItemId,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
     deletedAt,
   );
   @override
@@ -2540,6 +3308,10 @@ class Note extends DataClass implements Insertable<Note> {
           other.linkedEventId == this.linkedEventId &&
           other.linkedReminderId == this.linkedReminderId &&
           other.linkedPlannerItemId == this.linkedPlannerItemId &&
+          other.accountId == this.accountId &&
+          other.serverVersion == this.serverVersion &&
+          other.syncStatus == this.syncStatus &&
+          other.lastOperationId == this.lastOperationId &&
           other.deletedAt == this.deletedAt);
 }
 
@@ -2555,6 +3327,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
   final Value<String?> linkedEventId;
   final Value<String?> linkedReminderId;
   final Value<String?> linkedPlannerItemId;
+  final Value<String?> accountId;
+  final Value<int> serverVersion;
+  final Value<String> syncStatus;
+  final Value<String?> lastOperationId;
   final Value<DateTime?> deletedAt;
   final Value<int> rowid;
   const NotesCompanion({
@@ -2569,6 +3345,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
     this.linkedEventId = const Value.absent(),
     this.linkedReminderId = const Value.absent(),
     this.linkedPlannerItemId = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -2584,6 +3364,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
     this.linkedEventId = const Value.absent(),
     this.linkedReminderId = const Value.absent(),
     this.linkedPlannerItemId = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -2602,6 +3386,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
     Expression<String>? linkedEventId,
     Expression<String>? linkedReminderId,
     Expression<String>? linkedPlannerItemId,
+    Expression<String>? accountId,
+    Expression<int>? serverVersion,
+    Expression<String>? syncStatus,
+    Expression<String>? lastOperationId,
     Expression<DateTime>? deletedAt,
     Expression<int>? rowid,
   }) {
@@ -2618,6 +3406,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
       if (linkedReminderId != null) 'linked_reminder_id': linkedReminderId,
       if (linkedPlannerItemId != null)
         'linked_planner_item_id': linkedPlannerItemId,
+      if (accountId != null) 'account_id': accountId,
+      if (serverVersion != null) 'server_version': serverVersion,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (lastOperationId != null) 'last_operation_id': lastOperationId,
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -2635,6 +3427,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
     Value<String?>? linkedEventId,
     Value<String?>? linkedReminderId,
     Value<String?>? linkedPlannerItemId,
+    Value<String?>? accountId,
+    Value<int>? serverVersion,
+    Value<String>? syncStatus,
+    Value<String?>? lastOperationId,
     Value<DateTime?>? deletedAt,
     Value<int>? rowid,
   }) {
@@ -2650,6 +3446,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
       linkedEventId: linkedEventId ?? this.linkedEventId,
       linkedReminderId: linkedReminderId ?? this.linkedReminderId,
       linkedPlannerItemId: linkedPlannerItemId ?? this.linkedPlannerItemId,
+      accountId: accountId ?? this.accountId,
+      serverVersion: serverVersion ?? this.serverVersion,
+      syncStatus: syncStatus ?? this.syncStatus,
+      lastOperationId: lastOperationId ?? this.lastOperationId,
       deletedAt: deletedAt ?? this.deletedAt,
       rowid: rowid ?? this.rowid,
     );
@@ -2693,6 +3493,18 @@ class NotesCompanion extends UpdateCompanion<Note> {
         linkedPlannerItemId.value,
       );
     }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (serverVersion.present) {
+      map['server_version'] = Variable<int>(serverVersion.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (lastOperationId.present) {
+      map['last_operation_id'] = Variable<String>(lastOperationId.value);
+    }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
@@ -2716,6 +3528,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
           ..write('linkedEventId: $linkedEventId, ')
           ..write('linkedReminderId: $linkedReminderId, ')
           ..write('linkedPlannerItemId: $linkedPlannerItemId, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
           ..write('deletedAt: $deletedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -3144,12 +3960,12 @@ class RecentlyDeletedItemsCompanion
   }
 }
 
-class $PrintJobsTable extends PrintJobs
-    with TableInfo<$PrintJobsTable, PrintJob> {
+class $OutboxOperationsTable extends OutboxOperations
+    with TableInfo<$OutboxOperationsTable, OutboxOperation> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $PrintJobsTable(this.attachedDatabase, [this._alias]);
+  $OutboxOperationsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -3159,14 +3975,49 @@ class $PrintJobsTable extends PrintJobs
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  static const VerificationMeta _entityTypeMeta = const VerificationMeta(
+    'entityType',
+  );
   @override
-  late final GeneratedColumn<String> title = GeneratedColumn<String>(
-    'title',
+  late final GeneratedColumn<String> entityType = GeneratedColumn<String>(
+    'entity_type',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+  );
+  static const VerificationMeta _entityIdMeta = const VerificationMeta(
+    'entityId',
+  );
+  @override
+  late final GeneratedColumn<String> entityId = GeneratedColumn<String>(
+    'entity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _operationTypeMeta = const VerificationMeta(
+    'operationType',
+  );
+  @override
+  late final GeneratedColumn<String> operationType = GeneratedColumn<String>(
+    'operation_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _payloadMeta = const VerificationMeta(
+    'payload',
+  );
+  @override
+  late final GeneratedColumn<String> payload = GeneratedColumn<String>(
+    'payload',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -3179,26 +4030,73 @@ class $PrintJobsTable extends PrintJobs
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _statusMeta = const VerificationMeta('status');
-  @override
-  late final GeneratedColumn<String> status = GeneratedColumn<String>(
-    'status',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    defaultValue: const Constant('pending'),
+  static const VerificationMeta _retryCountMeta = const VerificationMeta(
+    'retryCount',
   );
   @override
-  List<GeneratedColumn> get $columns => [id, title, createdAt, status];
+  late final GeneratedColumn<int> retryCount = GeneratedColumn<int>(
+    'retry_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
+  @override
+  late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
+    'last_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lastAttemptAtMeta = const VerificationMeta(
+    'lastAttemptAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastAttemptAt =
+      GeneratedColumn<DateTime>(
+        'last_attempt_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta(
+    'accountId',
+  );
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    entityType,
+    entityId,
+    operationType,
+    payload,
+    createdAt,
+    retryCount,
+    lastError,
+    lastAttemptAt,
+    accountId,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'print_jobs';
+  static const String $name = 'outbox_operations';
   @override
   VerificationContext validateIntegrity(
-    Insertable<PrintJob> instance, {
+    Insertable<OutboxOperation> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -3208,13 +4106,38 @@ class $PrintJobsTable extends PrintJobs
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('title')) {
+    if (data.containsKey('entity_type')) {
       context.handle(
-        _titleMeta,
-        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+        _entityTypeMeta,
+        entityType.isAcceptableOrUnknown(data['entity_type']!, _entityTypeMeta),
       );
     } else if (isInserting) {
-      context.missing(_titleMeta);
+      context.missing(_entityTypeMeta);
+    }
+    if (data.containsKey('entity_id')) {
+      context.handle(
+        _entityIdMeta,
+        entityId.isAcceptableOrUnknown(data['entity_id']!, _entityIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entityIdMeta);
+    }
+    if (data.containsKey('operation_type')) {
+      context.handle(
+        _operationTypeMeta,
+        operationType.isAcceptableOrUnknown(
+          data['operation_type']!,
+          _operationTypeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_operationTypeMeta);
+    }
+    if (data.containsKey('payload')) {
+      context.handle(
+        _payloadMeta,
+        payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -3224,10 +4147,31 @@ class $PrintJobsTable extends PrintJobs
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
-    if (data.containsKey('status')) {
+    if (data.containsKey('retry_count')) {
       context.handle(
-        _statusMeta,
-        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+        _retryCountMeta,
+        retryCount.isAcceptableOrUnknown(data['retry_count']!, _retryCountMeta),
+      );
+    }
+    if (data.containsKey('last_error')) {
+      context.handle(
+        _lastErrorMeta,
+        lastError.isAcceptableOrUnknown(data['last_error']!, _lastErrorMeta),
+      );
+    }
+    if (data.containsKey('last_attempt_at')) {
+      context.handle(
+        _lastAttemptAtMeta,
+        lastAttemptAt.isAcceptableOrUnknown(
+          data['last_attempt_at']!,
+          _lastAttemptAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('account_id')) {
+      context.handle(
+        _accountIdMeta,
+        accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta),
       );
     }
     return context;
@@ -3236,74 +4180,163 @@ class $PrintJobsTable extends PrintJobs
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  PrintJob map(Map<String, dynamic> data, {String? tablePrefix}) {
+  OutboxOperation map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PrintJob(
+    return OutboxOperation(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      title: attachedDatabase.typeMapping.read(
+      entityType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}title'],
+        data['${effectivePrefix}entity_type'],
       )!,
+      entityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entity_id'],
+      )!,
+      operationType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}operation_type'],
+      )!,
+      payload: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payload'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
       )!,
-      status: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}status'],
+      retryCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}retry_count'],
       )!,
+      lastError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_error'],
+      ),
+      lastAttemptAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_attempt_at'],
+      ),
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      ),
     );
   }
 
   @override
-  $PrintJobsTable createAlias(String alias) {
-    return $PrintJobsTable(attachedDatabase, alias);
+  $OutboxOperationsTable createAlias(String alias) {
+    return $OutboxOperationsTable(attachedDatabase, alias);
   }
 }
 
-class PrintJob extends DataClass implements Insertable<PrintJob> {
+class OutboxOperation extends DataClass implements Insertable<OutboxOperation> {
+  /// Unique operation ID — the idempotency key (UUID).
   final String id;
-  final String title;
+
+  /// The entity type this operation targets (e.g. 'event', 'reminder').
+  final String entityType;
+
+  /// The entity ID affected by this operation.
+  final String entityId;
+
+  /// The operation type: 'create', 'update', 'delete'.
+  final String operationType;
+
+  /// JSON-serialized payload for create/update operations.
+  final String? payload;
+
+  /// When this operation was created locally.
   final DateTime createdAt;
-  final String status;
-  const PrintJob({
+
+  /// Number of times this operation has been retried.
+  final int retryCount;
+
+  /// Last error message if the operation failed.
+  final String? lastError;
+
+  /// When the last attempt was made.
+  final DateTime? lastAttemptAt;
+
+  /// The owning account ID.
+  final String? accountId;
+  const OutboxOperation({
     required this.id,
-    required this.title,
+    required this.entityType,
+    required this.entityId,
+    required this.operationType,
+    this.payload,
     required this.createdAt,
-    required this.status,
+    required this.retryCount,
+    this.lastError,
+    this.lastAttemptAt,
+    this.accountId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['title'] = Variable<String>(title);
+    map['entity_type'] = Variable<String>(entityType);
+    map['entity_id'] = Variable<String>(entityId);
+    map['operation_type'] = Variable<String>(operationType);
+    if (!nullToAbsent || payload != null) {
+      map['payload'] = Variable<String>(payload);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
-    map['status'] = Variable<String>(status);
+    map['retry_count'] = Variable<int>(retryCount);
+    if (!nullToAbsent || lastError != null) {
+      map['last_error'] = Variable<String>(lastError);
+    }
+    if (!nullToAbsent || lastAttemptAt != null) {
+      map['last_attempt_at'] = Variable<DateTime>(lastAttemptAt);
+    }
+    if (!nullToAbsent || accountId != null) {
+      map['account_id'] = Variable<String>(accountId);
+    }
     return map;
   }
 
-  PrintJobsCompanion toCompanion(bool nullToAbsent) {
-    return PrintJobsCompanion(
+  OutboxOperationsCompanion toCompanion(bool nullToAbsent) {
+    return OutboxOperationsCompanion(
       id: Value(id),
-      title: Value(title),
+      entityType: Value(entityType),
+      entityId: Value(entityId),
+      operationType: Value(operationType),
+      payload: payload == null && nullToAbsent
+          ? const Value.absent()
+          : Value(payload),
       createdAt: Value(createdAt),
-      status: Value(status),
+      retryCount: Value(retryCount),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
+      lastAttemptAt: lastAttemptAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastAttemptAt),
+      accountId: accountId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountId),
     );
   }
 
-  factory PrintJob.fromJson(
+  factory OutboxOperation.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PrintJob(
+    return OutboxOperation(
       id: serializer.fromJson<String>(json['id']),
-      title: serializer.fromJson<String>(json['title']),
+      entityType: serializer.fromJson<String>(json['entityType']),
+      entityId: serializer.fromJson<String>(json['entityId']),
+      operationType: serializer.fromJson<String>(json['operationType']),
+      payload: serializer.fromJson<String?>(json['payload']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      status: serializer.fromJson<String>(json['status']),
+      retryCount: serializer.fromJson<int>(json['retryCount']),
+      lastError: serializer.fromJson<String?>(json['lastError']),
+      lastAttemptAt: serializer.fromJson<DateTime?>(json['lastAttemptAt']),
+      accountId: serializer.fromJson<String?>(json['accountId']),
     );
   }
   @override
@@ -3311,105 +4344,206 @@ class PrintJob extends DataClass implements Insertable<PrintJob> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'title': serializer.toJson<String>(title),
+      'entityType': serializer.toJson<String>(entityType),
+      'entityId': serializer.toJson<String>(entityId),
+      'operationType': serializer.toJson<String>(operationType),
+      'payload': serializer.toJson<String?>(payload),
       'createdAt': serializer.toJson<DateTime>(createdAt),
-      'status': serializer.toJson<String>(status),
+      'retryCount': serializer.toJson<int>(retryCount),
+      'lastError': serializer.toJson<String?>(lastError),
+      'lastAttemptAt': serializer.toJson<DateTime?>(lastAttemptAt),
+      'accountId': serializer.toJson<String?>(accountId),
     };
   }
 
-  PrintJob copyWith({
+  OutboxOperation copyWith({
     String? id,
-    String? title,
+    String? entityType,
+    String? entityId,
+    String? operationType,
+    Value<String?> payload = const Value.absent(),
     DateTime? createdAt,
-    String? status,
-  }) => PrintJob(
+    int? retryCount,
+    Value<String?> lastError = const Value.absent(),
+    Value<DateTime?> lastAttemptAt = const Value.absent(),
+    Value<String?> accountId = const Value.absent(),
+  }) => OutboxOperation(
     id: id ?? this.id,
-    title: title ?? this.title,
+    entityType: entityType ?? this.entityType,
+    entityId: entityId ?? this.entityId,
+    operationType: operationType ?? this.operationType,
+    payload: payload.present ? payload.value : this.payload,
     createdAt: createdAt ?? this.createdAt,
-    status: status ?? this.status,
+    retryCount: retryCount ?? this.retryCount,
+    lastError: lastError.present ? lastError.value : this.lastError,
+    lastAttemptAt: lastAttemptAt.present
+        ? lastAttemptAt.value
+        : this.lastAttemptAt,
+    accountId: accountId.present ? accountId.value : this.accountId,
   );
-  PrintJob copyWithCompanion(PrintJobsCompanion data) {
-    return PrintJob(
+  OutboxOperation copyWithCompanion(OutboxOperationsCompanion data) {
+    return OutboxOperation(
       id: data.id.present ? data.id.value : this.id,
-      title: data.title.present ? data.title.value : this.title,
+      entityType: data.entityType.present
+          ? data.entityType.value
+          : this.entityType,
+      entityId: data.entityId.present ? data.entityId.value : this.entityId,
+      operationType: data.operationType.present
+          ? data.operationType.value
+          : this.operationType,
+      payload: data.payload.present ? data.payload.value : this.payload,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      status: data.status.present ? data.status.value : this.status,
+      retryCount: data.retryCount.present
+          ? data.retryCount.value
+          : this.retryCount,
+      lastError: data.lastError.present ? data.lastError.value : this.lastError,
+      lastAttemptAt: data.lastAttemptAt.present
+          ? data.lastAttemptAt.value
+          : this.lastAttemptAt,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('PrintJob(')
+    return (StringBuffer('OutboxOperation(')
           ..write('id: $id, ')
-          ..write('title: $title, ')
+          ..write('entityType: $entityType, ')
+          ..write('entityId: $entityId, ')
+          ..write('operationType: $operationType, ')
+          ..write('payload: $payload, ')
           ..write('createdAt: $createdAt, ')
-          ..write('status: $status')
+          ..write('retryCount: $retryCount, ')
+          ..write('lastError: $lastError, ')
+          ..write('lastAttemptAt: $lastAttemptAt, ')
+          ..write('accountId: $accountId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, createdAt, status);
+  int get hashCode => Object.hash(
+    id,
+    entityType,
+    entityId,
+    operationType,
+    payload,
+    createdAt,
+    retryCount,
+    lastError,
+    lastAttemptAt,
+    accountId,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is PrintJob &&
+      (other is OutboxOperation &&
           other.id == this.id &&
-          other.title == this.title &&
+          other.entityType == this.entityType &&
+          other.entityId == this.entityId &&
+          other.operationType == this.operationType &&
+          other.payload == this.payload &&
           other.createdAt == this.createdAt &&
-          other.status == this.status);
+          other.retryCount == this.retryCount &&
+          other.lastError == this.lastError &&
+          other.lastAttemptAt == this.lastAttemptAt &&
+          other.accountId == this.accountId);
 }
 
-class PrintJobsCompanion extends UpdateCompanion<PrintJob> {
+class OutboxOperationsCompanion extends UpdateCompanion<OutboxOperation> {
   final Value<String> id;
-  final Value<String> title;
+  final Value<String> entityType;
+  final Value<String> entityId;
+  final Value<String> operationType;
+  final Value<String?> payload;
   final Value<DateTime> createdAt;
-  final Value<String> status;
+  final Value<int> retryCount;
+  final Value<String?> lastError;
+  final Value<DateTime?> lastAttemptAt;
+  final Value<String?> accountId;
   final Value<int> rowid;
-  const PrintJobsCompanion({
+  const OutboxOperationsCompanion({
     this.id = const Value.absent(),
-    this.title = const Value.absent(),
+    this.entityType = const Value.absent(),
+    this.entityId = const Value.absent(),
+    this.operationType = const Value.absent(),
+    this.payload = const Value.absent(),
     this.createdAt = const Value.absent(),
-    this.status = const Value.absent(),
+    this.retryCount = const Value.absent(),
+    this.lastError = const Value.absent(),
+    this.lastAttemptAt = const Value.absent(),
+    this.accountId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  PrintJobsCompanion.insert({
+  OutboxOperationsCompanion.insert({
     required String id,
-    required String title,
+    required String entityType,
+    required String entityId,
+    required String operationType,
+    this.payload = const Value.absent(),
     required DateTime createdAt,
-    this.status = const Value.absent(),
+    this.retryCount = const Value.absent(),
+    this.lastError = const Value.absent(),
+    this.lastAttemptAt = const Value.absent(),
+    this.accountId = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       title = Value(title),
+       entityType = Value(entityType),
+       entityId = Value(entityId),
+       operationType = Value(operationType),
        createdAt = Value(createdAt);
-  static Insertable<PrintJob> custom({
+  static Insertable<OutboxOperation> custom({
     Expression<String>? id,
-    Expression<String>? title,
+    Expression<String>? entityType,
+    Expression<String>? entityId,
+    Expression<String>? operationType,
+    Expression<String>? payload,
     Expression<DateTime>? createdAt,
-    Expression<String>? status,
+    Expression<int>? retryCount,
+    Expression<String>? lastError,
+    Expression<DateTime>? lastAttemptAt,
+    Expression<String>? accountId,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (title != null) 'title': title,
+      if (entityType != null) 'entity_type': entityType,
+      if (entityId != null) 'entity_id': entityId,
+      if (operationType != null) 'operation_type': operationType,
+      if (payload != null) 'payload': payload,
       if (createdAt != null) 'created_at': createdAt,
-      if (status != null) 'status': status,
+      if (retryCount != null) 'retry_count': retryCount,
+      if (lastError != null) 'last_error': lastError,
+      if (lastAttemptAt != null) 'last_attempt_at': lastAttemptAt,
+      if (accountId != null) 'account_id': accountId,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
-  PrintJobsCompanion copyWith({
+  OutboxOperationsCompanion copyWith({
     Value<String>? id,
-    Value<String>? title,
+    Value<String>? entityType,
+    Value<String>? entityId,
+    Value<String>? operationType,
+    Value<String?>? payload,
     Value<DateTime>? createdAt,
-    Value<String>? status,
+    Value<int>? retryCount,
+    Value<String?>? lastError,
+    Value<DateTime?>? lastAttemptAt,
+    Value<String?>? accountId,
     Value<int>? rowid,
   }) {
-    return PrintJobsCompanion(
+    return OutboxOperationsCompanion(
       id: id ?? this.id,
-      title: title ?? this.title,
+      entityType: entityType ?? this.entityType,
+      entityId: entityId ?? this.entityId,
+      operationType: operationType ?? this.operationType,
+      payload: payload ?? this.payload,
       createdAt: createdAt ?? this.createdAt,
-      status: status ?? this.status,
+      retryCount: retryCount ?? this.retryCount,
+      lastError: lastError ?? this.lastError,
+      lastAttemptAt: lastAttemptAt ?? this.lastAttemptAt,
+      accountId: accountId ?? this.accountId,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3420,14 +4554,32 @@ class PrintJobsCompanion extends UpdateCompanion<PrintJob> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (title.present) {
-      map['title'] = Variable<String>(title.value);
+    if (entityType.present) {
+      map['entity_type'] = Variable<String>(entityType.value);
+    }
+    if (entityId.present) {
+      map['entity_id'] = Variable<String>(entityId.value);
+    }
+    if (operationType.present) {
+      map['operation_type'] = Variable<String>(operationType.value);
+    }
+    if (payload.present) {
+      map['payload'] = Variable<String>(payload.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
-    if (status.present) {
-      map['status'] = Variable<String>(status.value);
+    if (retryCount.present) {
+      map['retry_count'] = Variable<int>(retryCount.value);
+    }
+    if (lastError.present) {
+      map['last_error'] = Variable<String>(lastError.value);
+    }
+    if (lastAttemptAt.present) {
+      map['last_attempt_at'] = Variable<DateTime>(lastAttemptAt.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -3437,11 +4589,17 @@ class PrintJobsCompanion extends UpdateCompanion<PrintJob> {
 
   @override
   String toString() {
-    return (StringBuffer('PrintJobsCompanion(')
+    return (StringBuffer('OutboxOperationsCompanion(')
           ..write('id: $id, ')
-          ..write('title: $title, ')
+          ..write('entityType: $entityType, ')
+          ..write('entityId: $entityId, ')
+          ..write('operationType: $operationType, ')
+          ..write('payload: $payload, ')
           ..write('createdAt: $createdAt, ')
-          ..write('status: $status, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('lastError: $lastError, ')
+          ..write('lastAttemptAt: $lastAttemptAt, ')
+          ..write('accountId: $accountId, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3457,7 +4615,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $NotesTable notes = $NotesTable(this);
   late final $RecentlyDeletedItemsTable recentlyDeletedItems =
       $RecentlyDeletedItemsTable(this);
-  late final $PrintJobsTable printJobs = $PrintJobsTable(this);
+  late final $OutboxOperationsTable outboxOperations = $OutboxOperationsTable(
+    this,
+  );
   late final CalendarEventsDao calendarEventsDao = CalendarEventsDao(
     this as AppDatabase,
   );
@@ -3469,6 +4629,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final RecentlyDeletedDao recentlyDeletedDao = RecentlyDeletedDao(
     this as AppDatabase,
   );
+  late final OutboxDao outboxDao = OutboxDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3479,7 +4640,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     reminders,
     notes,
     recentlyDeletedItems,
-    printJobs,
+    outboxOperations,
   ];
 }
 
@@ -3494,6 +4655,10 @@ typedef $$CalendarEventsTableCreateCompanionBuilder =
       Value<String?> category,
       Value<String?> location,
       Value<String?> recurrenceRule,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
       Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
@@ -3508,6 +4673,10 @@ typedef $$CalendarEventsTableUpdateCompanionBuilder =
       Value<String?> category,
       Value<String?> location,
       Value<String?> recurrenceRule,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
       Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
@@ -3563,6 +4732,26 @@ class $$CalendarEventsTableFilterComposer
 
   ColumnFilters<String> get recurrenceRule => $composableBuilder(
     column: $table.recurrenceRule,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3626,6 +4815,26 @@ class $$CalendarEventsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
     column: $table.deletedAt,
     builder: (column) => ColumnOrderings(column),
@@ -3669,6 +4878,24 @@ class $$CalendarEventsTableAnnotationComposer
 
   GeneratedColumn<String> get recurrenceRule => $composableBuilder(
     column: $table.recurrenceRule,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get accountId =>
+      $composableBuilder(column: $table.accountId, builder: (column) => column);
+
+  GeneratedColumn<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
     builder: (column) => column,
   );
 
@@ -3718,6 +4945,10 @@ class $$CalendarEventsTableTableManager
                 Value<String?> category = const Value.absent(),
                 Value<String?> location = const Value.absent(),
                 Value<String?> recurrenceRule = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CalendarEventsCompanion(
@@ -3730,6 +4961,10 @@ class $$CalendarEventsTableTableManager
                 category: category,
                 location: location,
                 recurrenceRule: recurrenceRule,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
                 deletedAt: deletedAt,
                 rowid: rowid,
               ),
@@ -3744,6 +4979,10 @@ class $$CalendarEventsTableTableManager
                 Value<String?> category = const Value.absent(),
                 Value<String?> location = const Value.absent(),
                 Value<String?> recurrenceRule = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CalendarEventsCompanion.insert(
@@ -3756,6 +4995,10 @@ class $$CalendarEventsTableTableManager
                 category: category,
                 location: location,
                 recurrenceRule: recurrenceRule,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
                 deletedAt: deletedAt,
                 rowid: rowid,
               ),
@@ -3796,6 +5039,10 @@ typedef $$PlannerItemsTableCreateCompanionBuilder =
       Value<int> sortOrder,
       Value<String?> linkedEventId,
       Value<String?> linkedReminderId,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
       Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
@@ -3811,6 +5058,10 @@ typedef $$PlannerItemsTableUpdateCompanionBuilder =
       Value<int> sortOrder,
       Value<String?> linkedEventId,
       Value<String?> linkedReminderId,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
       Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
@@ -3871,6 +5122,26 @@ class $$PlannerItemsTableFilterComposer
 
   ColumnFilters<String> get linkedReminderId => $composableBuilder(
     column: $table.linkedReminderId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3939,6 +5210,26 @@ class $$PlannerItemsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
     column: $table.deletedAt,
     builder: (column) => ColumnOrderings(column),
@@ -3992,6 +5283,24 @@ class $$PlannerItemsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get accountId =>
+      $composableBuilder(column: $table.accountId, builder: (column) => column);
+
+  GeneratedColumn<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 }
@@ -4037,6 +5346,10 @@ class $$PlannerItemsTableTableManager
                 Value<int> sortOrder = const Value.absent(),
                 Value<String?> linkedEventId = const Value.absent(),
                 Value<String?> linkedReminderId = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => PlannerItemsCompanion(
@@ -4050,6 +5363,10 @@ class $$PlannerItemsTableTableManager
                 sortOrder: sortOrder,
                 linkedEventId: linkedEventId,
                 linkedReminderId: linkedReminderId,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
                 deletedAt: deletedAt,
                 rowid: rowid,
               ),
@@ -4065,6 +5382,10 @@ class $$PlannerItemsTableTableManager
                 Value<int> sortOrder = const Value.absent(),
                 Value<String?> linkedEventId = const Value.absent(),
                 Value<String?> linkedReminderId = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => PlannerItemsCompanion.insert(
@@ -4078,6 +5399,10 @@ class $$PlannerItemsTableTableManager
                 sortOrder: sortOrder,
                 linkedEventId: linkedEventId,
                 linkedReminderId: linkedReminderId,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
                 deletedAt: deletedAt,
                 rowid: rowid,
               ),
@@ -4118,6 +5443,10 @@ typedef $$RemindersTableCreateCompanionBuilder =
       Value<String?> category,
       Value<String?> linkedEventId,
       Value<String?> recurrenceRule,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
       Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
@@ -4133,6 +5462,10 @@ typedef $$RemindersTableUpdateCompanionBuilder =
       Value<String?> category,
       Value<String?> linkedEventId,
       Value<String?> recurrenceRule,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
       Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
@@ -4193,6 +5526,26 @@ class $$RemindersTableFilterComposer
 
   ColumnFilters<String> get recurrenceRule => $composableBuilder(
     column: $table.recurrenceRule,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4261,6 +5614,26 @@ class $$RemindersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
     column: $table.deletedAt,
     builder: (column) => ColumnOrderings(column),
@@ -4316,6 +5689,24 @@ class $$RemindersTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get accountId =>
+      $composableBuilder(column: $table.accountId, builder: (column) => column);
+
+  GeneratedColumn<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 }
@@ -4358,6 +5749,10 @@ class $$RemindersTableTableManager
                 Value<String?> category = const Value.absent(),
                 Value<String?> linkedEventId = const Value.absent(),
                 Value<String?> recurrenceRule = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RemindersCompanion(
@@ -4371,6 +5766,10 @@ class $$RemindersTableTableManager
                 category: category,
                 linkedEventId: linkedEventId,
                 recurrenceRule: recurrenceRule,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
                 deletedAt: deletedAt,
                 rowid: rowid,
               ),
@@ -4386,6 +5785,10 @@ class $$RemindersTableTableManager
                 Value<String?> category = const Value.absent(),
                 Value<String?> linkedEventId = const Value.absent(),
                 Value<String?> recurrenceRule = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RemindersCompanion.insert(
@@ -4399,6 +5802,10 @@ class $$RemindersTableTableManager
                 category: category,
                 linkedEventId: linkedEventId,
                 recurrenceRule: recurrenceRule,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
                 deletedAt: deletedAt,
                 rowid: rowid,
               ),
@@ -4437,6 +5844,10 @@ typedef $$NotesTableCreateCompanionBuilder =
       Value<String?> linkedEventId,
       Value<String?> linkedReminderId,
       Value<String?> linkedPlannerItemId,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
       Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
@@ -4453,6 +5864,10 @@ typedef $$NotesTableUpdateCompanionBuilder =
       Value<String?> linkedEventId,
       Value<String?> linkedReminderId,
       Value<String?> linkedPlannerItemId,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
       Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
@@ -4517,6 +5932,26 @@ class $$NotesTableFilterComposer extends Composer<_$AppDatabase, $NotesTable> {
 
   ColumnFilters<String> get linkedPlannerItemId => $composableBuilder(
     column: $table.linkedPlannerItemId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4590,6 +6025,26 @@ class $$NotesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
     column: $table.deletedAt,
     builder: (column) => ColumnOrderings(column),
@@ -4646,6 +6101,24 @@ class $$NotesTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get accountId =>
+      $composableBuilder(column: $table.accountId, builder: (column) => column);
+
+  GeneratedColumn<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 }
@@ -4689,6 +6162,10 @@ class $$NotesTableTableManager
                 Value<String?> linkedEventId = const Value.absent(),
                 Value<String?> linkedReminderId = const Value.absent(),
                 Value<String?> linkedPlannerItemId = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NotesCompanion(
@@ -4703,6 +6180,10 @@ class $$NotesTableTableManager
                 linkedEventId: linkedEventId,
                 linkedReminderId: linkedReminderId,
                 linkedPlannerItemId: linkedPlannerItemId,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
                 deletedAt: deletedAt,
                 rowid: rowid,
               ),
@@ -4719,6 +6200,10 @@ class $$NotesTableTableManager
                 Value<String?> linkedEventId = const Value.absent(),
                 Value<String?> linkedReminderId = const Value.absent(),
                 Value<String?> linkedPlannerItemId = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NotesCompanion.insert(
@@ -4733,6 +6218,10 @@ class $$NotesTableTableManager
                 linkedEventId: linkedEventId,
                 linkedReminderId: linkedReminderId,
                 linkedPlannerItemId: linkedPlannerItemId,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
                 deletedAt: deletedAt,
                 rowid: rowid,
               ),
@@ -4999,26 +6488,38 @@ typedef $$RecentlyDeletedItemsTableProcessedTableManager =
       RecentlyDeletedItem,
       PrefetchHooks Function()
     >;
-typedef $$PrintJobsTableCreateCompanionBuilder =
-    PrintJobsCompanion Function({
+typedef $$OutboxOperationsTableCreateCompanionBuilder =
+    OutboxOperationsCompanion Function({
       required String id,
-      required String title,
+      required String entityType,
+      required String entityId,
+      required String operationType,
+      Value<String?> payload,
       required DateTime createdAt,
-      Value<String> status,
+      Value<int> retryCount,
+      Value<String?> lastError,
+      Value<DateTime?> lastAttemptAt,
+      Value<String?> accountId,
       Value<int> rowid,
     });
-typedef $$PrintJobsTableUpdateCompanionBuilder =
-    PrintJobsCompanion Function({
+typedef $$OutboxOperationsTableUpdateCompanionBuilder =
+    OutboxOperationsCompanion Function({
       Value<String> id,
-      Value<String> title,
+      Value<String> entityType,
+      Value<String> entityId,
+      Value<String> operationType,
+      Value<String?> payload,
       Value<DateTime> createdAt,
-      Value<String> status,
+      Value<int> retryCount,
+      Value<String?> lastError,
+      Value<DateTime?> lastAttemptAt,
+      Value<String?> accountId,
       Value<int> rowid,
     });
 
-class $$PrintJobsTableFilterComposer
-    extends Composer<_$AppDatabase, $PrintJobsTable> {
-  $$PrintJobsTableFilterComposer({
+class $$OutboxOperationsTableFilterComposer
+    extends Composer<_$AppDatabase, $OutboxOperationsTable> {
+  $$OutboxOperationsTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -5030,8 +6531,23 @@ class $$PrintJobsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get title => $composableBuilder(
-    column: $table.title,
+  ColumnFilters<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get entityId => $composableBuilder(
+    column: $table.entityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get operationType => $composableBuilder(
+    column: $table.operationType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get payload => $composableBuilder(
+    column: $table.payload,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5040,15 +6556,30 @@ class $$PrintJobsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get status => $composableBuilder(
-    column: $table.status,
+  ColumnFilters<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get accountId => $composableBuilder(
+    column: $table.accountId,
     builder: (column) => ColumnFilters(column),
   );
 }
 
-class $$PrintJobsTableOrderingComposer
-    extends Composer<_$AppDatabase, $PrintJobsTable> {
-  $$PrintJobsTableOrderingComposer({
+class $$OutboxOperationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $OutboxOperationsTable> {
+  $$OutboxOperationsTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -5060,8 +6591,23 @@ class $$PrintJobsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get title => $composableBuilder(
-    column: $table.title,
+  ColumnOrderings<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get entityId => $composableBuilder(
+    column: $table.entityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get operationType => $composableBuilder(
+    column: $table.operationType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get payload => $composableBuilder(
+    column: $table.payload,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5070,15 +6616,30 @@ class $$PrintJobsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get status => $composableBuilder(
-    column: $table.status,
+  ColumnOrderings<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get accountId => $composableBuilder(
+    column: $table.accountId,
     builder: (column) => ColumnOrderings(column),
   );
 }
 
-class $$PrintJobsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $PrintJobsTable> {
-  $$PrintJobsTableAnnotationComposer({
+class $$OutboxOperationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $OutboxOperationsTable> {
+  $$OutboxOperationsTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -5088,68 +6649,127 @@ class $$PrintJobsTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => column);
+  GeneratedColumn<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get entityId =>
+      $composableBuilder(column: $table.entityId, builder: (column) => column);
+
+  GeneratedColumn<String> get operationType => $composableBuilder(
+    column: $table.operationType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get payload =>
+      $composableBuilder(column: $table.payload, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<String> get status =>
-      $composableBuilder(column: $table.status, builder: (column) => column);
+  GeneratedColumn<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastError =>
+      $composableBuilder(column: $table.lastError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastAttemptAt => $composableBuilder(
+    column: $table.lastAttemptAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get accountId =>
+      $composableBuilder(column: $table.accountId, builder: (column) => column);
 }
 
-class $$PrintJobsTableTableManager
+class $$OutboxOperationsTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $PrintJobsTable,
-          PrintJob,
-          $$PrintJobsTableFilterComposer,
-          $$PrintJobsTableOrderingComposer,
-          $$PrintJobsTableAnnotationComposer,
-          $$PrintJobsTableCreateCompanionBuilder,
-          $$PrintJobsTableUpdateCompanionBuilder,
-          (PrintJob, BaseReferences<_$AppDatabase, $PrintJobsTable, PrintJob>),
-          PrintJob,
+          $OutboxOperationsTable,
+          OutboxOperation,
+          $$OutboxOperationsTableFilterComposer,
+          $$OutboxOperationsTableOrderingComposer,
+          $$OutboxOperationsTableAnnotationComposer,
+          $$OutboxOperationsTableCreateCompanionBuilder,
+          $$OutboxOperationsTableUpdateCompanionBuilder,
+          (
+            OutboxOperation,
+            BaseReferences<
+              _$AppDatabase,
+              $OutboxOperationsTable,
+              OutboxOperation
+            >,
+          ),
+          OutboxOperation,
           PrefetchHooks Function()
         > {
-  $$PrintJobsTableTableManager(_$AppDatabase db, $PrintJobsTable table)
-    : super(
+  $$OutboxOperationsTableTableManager(
+    _$AppDatabase db,
+    $OutboxOperationsTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$PrintJobsTableFilterComposer($db: db, $table: table),
+              $$OutboxOperationsTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$PrintJobsTableOrderingComposer($db: db, $table: table),
+              $$OutboxOperationsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$PrintJobsTableAnnotationComposer($db: db, $table: table),
+              $$OutboxOperationsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<String> title = const Value.absent(),
+                Value<String> entityType = const Value.absent(),
+                Value<String> entityId = const Value.absent(),
+                Value<String> operationType = const Value.absent(),
+                Value<String?> payload = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
-                Value<String> status = const Value.absent(),
+                Value<int> retryCount = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                Value<DateTime?> lastAttemptAt = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => PrintJobsCompanion(
+              }) => OutboxOperationsCompanion(
                 id: id,
-                title: title,
+                entityType: entityType,
+                entityId: entityId,
+                operationType: operationType,
+                payload: payload,
                 createdAt: createdAt,
-                status: status,
+                retryCount: retryCount,
+                lastError: lastError,
+                lastAttemptAt: lastAttemptAt,
+                accountId: accountId,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String id,
-                required String title,
+                required String entityType,
+                required String entityId,
+                required String operationType,
+                Value<String?> payload = const Value.absent(),
                 required DateTime createdAt,
-                Value<String> status = const Value.absent(),
+                Value<int> retryCount = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                Value<DateTime?> lastAttemptAt = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => PrintJobsCompanion.insert(
+              }) => OutboxOperationsCompanion.insert(
                 id: id,
-                title: title,
+                entityType: entityType,
+                entityId: entityId,
+                operationType: operationType,
+                payload: payload,
                 createdAt: createdAt,
-                status: status,
+                retryCount: retryCount,
+                lastError: lastError,
+                lastAttemptAt: lastAttemptAt,
+                accountId: accountId,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -5160,18 +6780,21 @@ class $$PrintJobsTableTableManager
       );
 }
 
-typedef $$PrintJobsTableProcessedTableManager =
+typedef $$OutboxOperationsTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $PrintJobsTable,
-      PrintJob,
-      $$PrintJobsTableFilterComposer,
-      $$PrintJobsTableOrderingComposer,
-      $$PrintJobsTableAnnotationComposer,
-      $$PrintJobsTableCreateCompanionBuilder,
-      $$PrintJobsTableUpdateCompanionBuilder,
-      (PrintJob, BaseReferences<_$AppDatabase, $PrintJobsTable, PrintJob>),
-      PrintJob,
+      $OutboxOperationsTable,
+      OutboxOperation,
+      $$OutboxOperationsTableFilterComposer,
+      $$OutboxOperationsTableOrderingComposer,
+      $$OutboxOperationsTableAnnotationComposer,
+      $$OutboxOperationsTableCreateCompanionBuilder,
+      $$OutboxOperationsTableUpdateCompanionBuilder,
+      (
+        OutboxOperation,
+        BaseReferences<_$AppDatabase, $OutboxOperationsTable, OutboxOperation>,
+      ),
+      OutboxOperation,
       PrefetchHooks Function()
     >;
 
@@ -5188,6 +6811,6 @@ class $AppDatabaseManager {
       $$NotesTableTableManager(_db, _db.notes);
   $$RecentlyDeletedItemsTableTableManager get recentlyDeletedItems =>
       $$RecentlyDeletedItemsTableTableManager(_db, _db.recentlyDeletedItems);
-  $$PrintJobsTableTableManager get printJobs =>
-      $$PrintJobsTableTableManager(_db, _db.printJobs);
+  $$OutboxOperationsTableTableManager get outboxOperations =>
+      $$OutboxOperationsTableTableManager(_db, _db.outboxOperations);
 }

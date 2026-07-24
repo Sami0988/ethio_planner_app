@@ -111,9 +111,7 @@ class _AuthFormState extends State<AuthForm> {
               padding: const EdgeInsets.only(top: AppSpacing.md),
               child: Text(
                 widget.error!,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.error,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
                 textAlign: TextAlign.center,
               ),
             ),

@@ -13,17 +13,9 @@ class SearchResultTile extends StatelessWidget {
 
     return ListTile(
       leading: _TypeIcon(type: result.type),
-      title: Text(
-        result.title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
+      title: Text(result.title, maxLines: 1, overflow: TextOverflow.ellipsis),
       subtitle: result.subtitle != null
-          ? Text(
-              result.subtitle!,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
+          ? Text(result.subtitle!, maxLines: 1, overflow: TextOverflow.ellipsis)
           : null,
       trailing: result.date != null
           ? Text(

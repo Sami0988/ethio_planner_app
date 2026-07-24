@@ -1,8 +1,7 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
-import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/shared_widgets.dart';
@@ -85,7 +84,8 @@ class _DayEventsListState extends ConsumerState<DayEventsList> {
     final events = _filteredEvents(state.events, selectedDate);
 
     final today = DateTime.now();
-    final isToday = selectedDate != null &&
+    final isToday =
+        selectedDate != null &&
         selectedDate.year == today.year &&
         selectedDate.month == today.month &&
         selectedDate.day == today.day;
@@ -100,7 +100,7 @@ class _DayEventsListState extends ConsumerState<DayEventsList> {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             scrollDirection: Axis.horizontal,
             itemCount: EventFilter.values.length,
-            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
             itemBuilder: (context, index) {
               final f = EventFilter.values[index];
               final isSelected = f == _filter;
@@ -144,7 +144,6 @@ class _DayEventsListState extends ConsumerState<DayEventsList> {
             AppSpacing.sm,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Column(
@@ -207,10 +206,8 @@ class _DayEventsListState extends ConsumerState<DayEventsList> {
                     color: theme.colorScheme.primary,
                   ),
                   tooltip: l10n.quickAddEvent,
-                  onPressed: () => EventFormSheet.show(
-                    context,
-                    initialDate: selectedDate,
-                  ),
+                  onPressed: () =>
+                      EventFormSheet.show(context, initialDate: selectedDate),
                 ),
               ),
             ],
@@ -264,8 +261,7 @@ class _DayEventsListState extends ConsumerState<DayEventsList> {
                 AppSpacing.lg,
               ),
               itemCount: events.length,
-              separatorBuilder: (_, __) =>
-                  const SizedBox(height: AppSpacing.sm),
+              separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
               itemBuilder: (context, index) {
                 final event = events[index];
                 return TweenAnimationBuilder<double>(
@@ -416,8 +412,7 @@ class _EventTile extends ConsumerWidget {
               ),
             ],
             onSelected: (value) async {
-              final controller =
-                  ref.read(calendarControllerProvider.notifier);
+              final controller = ref.read(calendarControllerProvider.notifier);
               if (value == 'edit') {
                 if (context.mounted) {
                   await EventFormSheet.show(context, event: event);
@@ -430,13 +425,11 @@ class _EventTile extends ConsumerWidget {
                     content: Text(l10n.deleteEventConfirmBody(event.title)),
                     actions: [
                       TextButton(
-                        onPressed: () =>
-                            Navigator.of(dialogContext).pop(false),
+                        onPressed: () => Navigator.of(dialogContext).pop(false),
                         child: Text(l10n.actionCancel),
                       ),
                       TextButton(
-                        onPressed: () =>
-                            Navigator.of(dialogContext).pop(true),
+                        onPressed: () => Navigator.of(dialogContext).pop(true),
                         style: TextButton.styleFrom(
                           foregroundColor: theme.colorScheme.error,
                         ),

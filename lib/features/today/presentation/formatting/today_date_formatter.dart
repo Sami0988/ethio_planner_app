@@ -14,26 +14,70 @@ final class TodayDateFormatter {
   bool get _isAmharic => localeCode.startsWith('am');
 
   static const _ecMonthsEn = <String>[
-    'Meskerem', 'Tikimt', 'Hidar', 'Tahsas', 'Tir', 'Yekatit', 'Megabit',
-    'Miazia', 'Ginbot', 'Sene', 'Hamle', 'Nehase', 'Pagume',
+    'Meskerem',
+    'Tikimt',
+    'Hidar',
+    'Tahsas',
+    'Tir',
+    'Yekatit',
+    'Megabit',
+    'Miazia',
+    'Ginbot',
+    'Sene',
+    'Hamle',
+    'Nehase',
+    'Pagume',
   ];
 
   static const _ecMonthsAm = <String>[
-    'መስከረም', 'ጥቅምት', 'ኅዳር', 'ታኅሣሥ', 'ጥር', 'የካቲት', 'መጋቢት',
-    'ሚያዝያ', 'ግንቦት', 'ሰኔ', 'ሐምሌ', 'ነሐሴ', 'ጳጉሜ',
+    'መስከረም',
+    'ጥቅምት',
+    'ኅዳር',
+    'ታኅሣሥ',
+    'ጥር',
+    'የካቲት',
+    'መጋቢት',
+    'ሚያዝያ',
+    'ግንቦት',
+    'ሰኔ',
+    'ሐምሌ',
+    'ነሐሴ',
+    'ጳጉሜ',
   ];
 
   static const _weekdaysEn = <String>[
-    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
   ];
 
   static const _weekdaysAm = <String>[
-    'ሰኞ', 'ማክሰኞ', 'ረቡዕ', 'ሐሙስ', 'ዓርብ', 'ቅዳሜ', 'እሁድ',
+    'ሰኞ',
+    'ማክሰኞ',
+    'ረቡዕ',
+    'ሐሙስ',
+    'ዓርብ',
+    'ቅዳሜ',
+    'እሁድ',
   ];
 
   static const _gcMonthsEn = <String>[
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
 
   /// e.g. "Meskerem 12, 2017" / "መስከረም 12፣ 2017".

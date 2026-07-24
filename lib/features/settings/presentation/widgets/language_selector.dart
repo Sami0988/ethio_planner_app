@@ -8,7 +8,7 @@ class LanguageSelector extends ConsumerWidget {
   const LanguageSelector({super.key});
 
   static void show(BuildContext context) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (_) => const LanguageSelector(),
     );
@@ -38,15 +38,21 @@ class LanguageSelector extends ConsumerWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
-          ...languages.map(
-            (lang) => RadioListTile<Locale?>(
-              title: Text(lang.$2),
-              value: lang.$1,
-              groupValue: currentLocale,
-              onChanged: (locale) {
-                ref.read(localeProvider.notifier).setLocale(locale);
-                Navigator.of(context).pop();
-              },
+          RadioGroup<Locale?>(
+            groupValue: currentLocale,
+            onChanged: (locale) {
+              ref.read(localeProvider.notifier).setLocale(locale);
+              Navigator.of(context).pop();
+            },
+            child: Column(
+              children: [
+                ...languages.map(
+                  (lang) => RadioListTile<Locale?>(
+                    title: Text(lang.$2),
+                    value: lang.$1,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 16),

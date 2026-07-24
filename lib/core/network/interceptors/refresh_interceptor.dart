@@ -20,25 +20,29 @@ class RefreshInterceptor extends Interceptor {
           return;
         }
 
-        final response = await _dio.post(
+        final response = await _dio.post<Response<dynamic>>(
           '/auth/refresh',
           data: {'refresh_token': refreshToken},
         );
 
         if (response.statusCode == 200) {
-          final data = response.data;
-          await _storage.write(
-            key: 'access_token',
-            value: data['access_token'] as String,
-          );
-          await _storage.write(
-            key: 'refresh_token',
-            value: data['refresh_token'] as String,
-          );
+          final data = response.data as Map<String, dynamic>?;
+          if (data != null) {
+            await _storage.write(
+              key: 'access_token',
+              value: data['access_token'] as String,
+            );
+            await _storage.write(
+              key: 'refresh_token',
+              value: data['refresh_token'] as String,
+            );
 
-          err.requestOptions.headers['Authorization'] =
-              'Bearer ${data['access_token']}';
-          final retryResponse = await _dio.fetch(err.requestOptions);
+            err.requestOptions.headers['Authorization'] =
+                'Bearer ${data['access_token']}';
+          }
+          final retryResponse = await _dio.fetch<Response<dynamic>>(
+            err.requestOptions,
+          );
           handler.resolve(retryResponse);
         } else {
           await _clearTokens();

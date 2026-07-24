@@ -1,12 +1,15 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
+import 'package:ethiopian_calendar_core/ethiopian_calendar_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import 'package:ethio_planner/l10n/generated/app_localizations.dart';
-
+import '../../../../core/recurrence/recurrence_engine.dart';
+import '../../../../core/recurrence/recurrence_rule.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/calendar_event.dart';
 import '../providers/calendar_providers.dart';
+import 'recurrence_pattern_sheet.dart';
 
 class EventFormSheet extends ConsumerStatefulWidget {
   const EventFormSheet({super.key, this.event, this.initialDate});
@@ -43,6 +46,7 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
   late TimeOfDay _selectedTime;
   late bool _isAllDay;
   String? _selectedCategory;
+  RecurrenceRule? _recurrenceRule;
   bool _isSaving = false;
 
   bool get _isEditing => widget.event != null;
@@ -60,6 +64,9 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
     _selectedTime = TimeOfDay.fromDateTime(event?.gcDate ?? DateTime.now());
     _isAllDay = event?.isAllDay ?? false;
     _selectedCategory = event?.category;
+    if (event?.recurrenceRule != null) {
+      _recurrenceRule = RecurrenceRule.fromJson(event!.recurrenceRule!);
+    }
   }
 
   @override
@@ -103,8 +110,10 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
       _isAllDay ? 0 : _selectedTime.minute,
     );
 
-    // TODO: replace with your real GC->EC adapter call.
-    final ecDate = gcDate;
+    final gcGregorian = GregorianDate.fromDateTime(gcDate);
+    final ec = CalendarConversion.gregorianToEthiopian(gcGregorian);
+    // Store EC date as DateTime with EC year/month/day.
+    final ecDate = DateTime(ec.year, ec.month, ec.day);
 
     final controller = ref.read(calendarControllerProvider.notifier);
 
@@ -122,6 +131,7 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
           location: _locationController.text.trim().isEmpty
               ? null
               : _locationController.text.trim(),
+          recurrenceRule: _recurrenceRule?.toJson(),
         );
         await controller.updateEvent(updated);
       } else {
@@ -137,6 +147,7 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
           location: _locationController.text.trim().isEmpty
               ? null
               : _locationController.text.trim(),
+          recurrenceRule: _recurrenceRule?.toJson(),
         );
       }
       if (mounted) Navigator.of(context).pop();
@@ -341,14 +352,24 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
                         .withValues(alpha: 0.3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
-                      side: BorderSide.none,
                     ),
                   );
                 }).toList(),
               ),
               const SizedBox(height: AppSpacing.md),
+              // Recurrence picker
+              _RecurrenceChip(
+                rule: _recurrenceRule,
+                onTap: () async {
+                  final rule = await RecurrencePatternSheet.show(
+                    context,
+                    rule: _recurrenceRule,
+                  );
+                  setState(() => _recurrenceRule = rule);
+                },
+              ),
+              const SizedBox(height: AppSpacing.md),
               TextFormField(
-                controller: _descriptionController,
                 decoration: _fieldDecoration(
                   context,
                   label: l10n.fieldDescriptionOptional,
@@ -404,6 +425,52 @@ class _PickerChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    return Material(
+      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: 14,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 18, color: theme.colorScheme.primary),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  label,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RecurrenceChip extends StatelessWidget {
+  const _RecurrenceChip({required this.rule, required this.onTap});
+
+  final RecurrenceRule? rule;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
+    final label = rule != null
+        ? RecurrenceEngine.describe(rule!)
+        : l10n.recurrenceNone;
+    final icon = rule != null ? Icons.repeat_rounded : Icons.repeat_one_rounded;
+
     return Material(
       color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
       borderRadius: BorderRadius.circular(14),

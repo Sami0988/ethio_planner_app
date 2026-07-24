@@ -8,9 +8,13 @@ class CalendarLocalDatasource {
   CalendarLocalDatasource(this._database);
 
   Future<List<CalendarEventModel>> getEventsByDateRange(
-      DateTime start, DateTime end) async {
-    final events = await _database.calendarEventsDao
-        .getEventsByDateRange(start, end);
+    DateTime start,
+    DateTime end,
+  ) async {
+    final events = await _database.calendarEventsDao.getEventsByDateRange(
+      start,
+      end,
+    );
     return events.map(_toModel).toList();
   }
 
@@ -25,13 +29,11 @@ class CalendarLocalDatasource {
   }
 
   Future<void> insertEvent(CalendarEventModel event) async {
-    await _database.calendarEventsDao
-        .insertEvent(_toCompanion(event));
+    await _database.calendarEventsDao.insertEvent(_toCompanion(event));
   }
 
   Future<void> updateEvent(CalendarEventModel event) async {
-    await _database.calendarEventsDao
-        .updateEvent(_toCompanion(event));
+    await _database.calendarEventsDao.updateEvent(_toCompanion(event));
   }
 
   Future<void> deleteEvent(String id) async {
@@ -39,7 +41,9 @@ class CalendarLocalDatasource {
   }
 
   Stream<List<CalendarEventModel>> watchEventsByDateRange(
-      DateTime start, DateTime end) {
+    DateTime start,
+    DateTime end,
+  ) {
     return _database.calendarEventsDao
         .watchEventsByDateRange(start, end)
         .map((events) => events.map(_toModel).toList());

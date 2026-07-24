@@ -7,8 +7,7 @@ extension ResponsiveContext on BuildContext {
   double get screenHeight => MediaQuery.sizeOf(this).height;
   EdgeInsets get viewPadding => MediaQuery.viewPaddingOf(this);
 
-  ScreenTier get screenTier =>
-      ResponsiveLayout.getTier(screenWidth);
+  ScreenTier get screenTier => ResponsiveLayout.getTier(screenWidth);
 
   bool get isCompact => screenWidth < AppBreakpoints.compact;
   bool get isMedium =>

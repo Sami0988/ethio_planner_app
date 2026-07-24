@@ -38,8 +38,9 @@ void main() {
     expect(find.text('REMINDERS'), findsOneWidget);
   });
 
-  testWidgets('shows a labelled overdue reminder (not colour only)',
-      (tester) async {
+  testWidgets('shows a labelled overdue reminder (not colour only)', (
+    tester,
+  ) async {
     await _pumpToday(tester);
     expect(find.text('Overdue'), findsOneWidget);
   });

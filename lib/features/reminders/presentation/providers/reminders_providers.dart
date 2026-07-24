@@ -50,5 +50,5 @@ final toggleReminderCompletedProvider = Provider<ToggleReminderCompleted>(
 
 final remindersControllerProvider =
     NotifierProvider<RemindersController, RemindersViewState>(
-  RemindersController.new,
-);
+      RemindersController.new,
+    );

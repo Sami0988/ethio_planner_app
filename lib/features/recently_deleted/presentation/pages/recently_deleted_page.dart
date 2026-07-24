@@ -9,9 +9,9 @@ class RecentlyDeletedPage extends ConsumerStatefulWidget {
   const RecentlyDeletedPage({super.key});
 
   static Future<void> show(BuildContext context) {
-    return Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const RecentlyDeletedPage()),
-    );
+    return Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const RecentlyDeletedPage()));
   }
 
   @override
@@ -33,37 +33,35 @@ class _RecentlyDeletedPageState extends ConsumerState<RecentlyDeletedPage> {
     final state = ref.watch(recentlyDeletedControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recently Deleted'),
-      ),
+      appBar: AppBar(title: const Text('Recently Deleted')),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.items.isEmpty
-              ? _EmptyState()
-              : ListView.separated(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  itemCount: state.items.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 8),
-                  itemBuilder: (context, index) {
-                    final item = state.items[index];
-                    return _DeletedItemCard(
-                      item: item,
-                      onRestore: () {
-                        ref
-                            .read(recentlyDeletedControllerProvider.notifier)
-                            .restoreItem(item);
-                      },
-                      onPermanentDelete: () {
-                        _confirmPermanentDelete(context, item);
-                      },
-                    );
+          ? _EmptyState()
+          : ListView.separated(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              itemCount: state.items.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 8),
+              itemBuilder: (context, index) {
+                final item = state.items[index];
+                return _DeletedItemCard(
+                  item: item,
+                  onRestore: () {
+                    ref
+                        .read(recentlyDeletedControllerProvider.notifier)
+                        .restoreItem(item);
                   },
-                ),
+                  onPermanentDelete: () {
+                    _confirmPermanentDelete(context, item);
+                  },
+                );
+              },
+            ),
     );
   }
 
   void _confirmPermanentDelete(BuildContext context, DeletedItem item) {
-    showDialog(
+    showDialog<bool?>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Permanently delete?'),
@@ -106,15 +104,15 @@ class _EmptyState extends StatelessWidget {
           Text(
             'No recently deleted items',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             'Deleted items will appear here for 30 days',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -192,9 +190,7 @@ class _DeletedItemCard extends StatelessWidget {
                       onPressed: onPermanentDelete,
                       child: Text(
                         'Delete',
-                        style: TextStyle(
-                          color: theme.colorScheme.error,
-                        ),
+                        style: TextStyle(color: theme.colorScheme.error),
                       ),
                     ),
                   ],

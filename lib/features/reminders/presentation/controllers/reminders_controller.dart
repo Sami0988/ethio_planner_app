@@ -57,14 +57,13 @@ class RemindersController extends Notifier<RemindersViewState> {
 
   void _applyFilter() {
     final now = clock.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final tomorrow = today.add(const Duration(days: 1));
 
     List<Reminder> filtered;
     switch (state.filter) {
       case ReminderFilter.all:
         filtered = state.allReminders;
       case ReminderFilter.today:
+        final today = DateTime(now.year, now.month, now.day);
         filtered = state.allReminders.where((r) {
           return r.gcDate.year == today.year &&
               r.gcDate.month == today.month &&
@@ -125,5 +124,27 @@ class RemindersController extends Notifier<RemindersViewState> {
     final reminder = state.allReminders.firstWhere((r) => r.id == id);
     await _toggleCompleted(id, !reminder.isCompleted);
     await loadReminders();
+  }
+
+  Future<void> loadOverdueReminders() async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final overdue = await _getOverdueReminders();
+      state = state.copyWith(allReminders: overdue, isLoading: false);
+      _applyFilter();
+    } catch (e) {
+      state = state.copyWith(error: e.toString(), isLoading: false);
+    }
+  }
+
+  Future<void> loadUpcomingReminders() async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final upcoming = await _getUpcomingReminders();
+      state = state.copyWith(allReminders: upcoming, isLoading: false);
+      _applyFilter();
+    } catch (e) {
+      state = state.copyWith(error: e.toString(), isLoading: false);
+    }
   }
 }

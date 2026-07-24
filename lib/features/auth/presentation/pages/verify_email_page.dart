@@ -40,16 +40,16 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
               Text(
                 'Verify Email',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Enter the code sent to ${state.pendingEmail ?? ''}',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.xxl),
@@ -89,7 +89,9 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
                 onPressed: state.isLoading
                     ? null
                     : () {
-                        ref.read(authControllerProvider.notifier).verifyEmail(
+                        ref
+                            .read(authControllerProvider.notifier)
+                            .verifyEmail(
                               email: state.pendingEmail ?? '',
                               code: _codeController.text.trim(),
                             );

@@ -23,10 +23,7 @@ class SearchController extends Notifier<SearchViewState> {
     }
 
     if (_repository == null) {
-      state = state.copyWith(
-        error: 'Search not initialized',
-        isLoading: false,
-      );
+      state = state.copyWith(error: 'Search not initialized', isLoading: false);
       return;
     }
 

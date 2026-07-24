@@ -10,11 +10,7 @@ class AuthController extends Notifier<AuthViewState> {
   }
 
   void setView(AuthView view) {
-    state = state.copyWith(
-      view: view,
-      error: null,
-      successMessage: null,
-    );
+    state = state.copyWith(view: view, error: null, successMessage: null);
   }
 
   Future<void> register({
@@ -23,7 +19,7 @@ class AuthController extends Notifier<AuthViewState> {
     String? displayName,
   }) async {
     state = state.copyWith(isLoading: true, error: null);
-    
+
     final useCase = ref.read(registerUseCaseProvider);
     final result = await useCase(
       email: email,
@@ -33,14 +29,13 @@ class AuthController extends Notifier<AuthViewState> {
 
     if (result.success) {
       if (result.accessToken != null && result.refreshToken != null) {
-        await ref.read(authSessionProvider.notifier).login(
+        await ref
+            .read(authSessionProvider.notifier)
+            .login(
               accessToken: result.accessToken!,
               refreshToken: result.refreshToken!,
             );
-        state = state.copyWith(
-          isLoading: false,
-          user: result.user,
-        );
+        state = state.copyWith(isLoading: false, user: result.user);
       } else {
         state = state.copyWith(
           isLoading: false,
@@ -50,10 +45,7 @@ class AuthController extends Notifier<AuthViewState> {
         );
       }
     } else {
-      state = state.copyWith(
-        isLoading: false,
-        error: result.error,
-      );
+      state = state.copyWith(isLoading: false, error: result.error);
     }
   }
 
@@ -62,20 +54,19 @@ class AuthController extends Notifier<AuthViewState> {
     required String code,
   }) async {
     state = state.copyWith(isLoading: true, error: null);
-    
+
     final useCase = ref.read(verifyEmailUseCaseProvider);
     final result = await useCase(email: email, code: code);
 
     if (result.success) {
       if (result.accessToken != null && result.refreshToken != null) {
-        await ref.read(authSessionProvider.notifier).login(
+        await ref
+            .read(authSessionProvider.notifier)
+            .login(
               accessToken: result.accessToken!,
               refreshToken: result.refreshToken!,
             );
-        state = state.copyWith(
-          isLoading: false,
-          user: result.user,
-        );
+        state = state.copyWith(isLoading: false, user: result.user);
       } else {
         state = state.copyWith(
           isLoading: false,
@@ -84,44 +75,34 @@ class AuthController extends Notifier<AuthViewState> {
         );
       }
     } else {
-      state = state.copyWith(
-        isLoading: false,
-        error: result.error,
-      );
+      state = state.copyWith(isLoading: false, error: result.error);
     }
   }
 
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signIn({required String email, required String password}) async {
     state = state.copyWith(isLoading: true, error: null);
-    
+
     final useCase = ref.read(signInUseCaseProvider);
     final result = await useCase(email: email, password: password);
 
     if (result.success) {
       if (result.accessToken != null && result.refreshToken != null) {
-        await ref.read(authSessionProvider.notifier).login(
+        await ref
+            .read(authSessionProvider.notifier)
+            .login(
               accessToken: result.accessToken!,
               refreshToken: result.refreshToken!,
             );
-        state = state.copyWith(
-          isLoading: false,
-          user: result.user,
-        );
+        state = state.copyWith(isLoading: false, user: result.user);
       }
     } else {
-      state = state.copyWith(
-        isLoading: false,
-        error: result.error,
-      );
+      state = state.copyWith(isLoading: false, error: result.error);
     }
   }
 
   Future<void> resetPassword({required String email}) async {
     state = state.copyWith(isLoading: true, error: null);
-    
+
     final useCase = ref.read(resetPasswordUseCaseProvider);
     final result = await useCase(email: email);
 
@@ -133,10 +114,7 @@ class AuthController extends Notifier<AuthViewState> {
         successMessage: 'Reset code sent to $email',
       );
     } else {
-      state = state.copyWith(
-        isLoading: false,
-        error: result.error,
-      );
+      state = state.copyWith(isLoading: false, error: result.error);
     }
   }
 
@@ -146,7 +124,7 @@ class AuthController extends Notifier<AuthViewState> {
     required String newPassword,
   }) async {
     state = state.copyWith(isLoading: true, error: null);
-    
+
     final useCase = ref.read(confirmPasswordResetUseCaseProvider);
     final result = await useCase(
       email: email,
@@ -161,10 +139,7 @@ class AuthController extends Notifier<AuthViewState> {
         successMessage: 'Password reset successful. Please sign in.',
       );
     } else {
-      state = state.copyWith(
-        isLoading: false,
-        error: result.error,
-      );
+      state = state.copyWith(isLoading: false, error: result.error);
     }
   }
 

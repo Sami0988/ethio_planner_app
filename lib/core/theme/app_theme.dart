@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
-import 'app_text_styles.dart';
 import 'app_radii.dart';
+import 'app_text_styles.dart';
 
 class AppTheme {
   AppTheme._();
 
   static ThemeData get light => _buildTheme(
-        brightness: Brightness.light,
-        primary: AppColorsLight.primary,
-        background: AppColorsLight.background,
-        surface: AppColorsLight.surface,
-        textPrimary: AppColorsLight.textPrimary,
-        divider: AppColorsLight.divider,
-      );
+    brightness: Brightness.light,
+    primary: AppColorsLight.primary,
+    background: AppColorsLight.background,
+    surface: AppColorsLight.surface,
+    textPrimary: AppColorsLight.textPrimary,
+    divider: AppColorsLight.divider,
+  );
 
   static ThemeData get dark => _buildTheme(
-        brightness: Brightness.dark,
-        primary: AppColorsDark.primary,
-        background: AppColorsDark.background,
-        surface: AppColorsDark.surface,
-        textPrimary: AppColorsDark.textPrimary,
-        divider: AppColorsDark.divider,
-      );
+    brightness: Brightness.dark,
+    primary: AppColorsDark.primary,
+    background: AppColorsDark.background,
+    surface: AppColorsDark.surface,
+    textPrimary: AppColorsDark.textPrimary,
+    divider: AppColorsDark.divider,
+  );
 
   static ThemeData _buildTheme({
     required Brightness brightness,

@@ -26,15 +26,13 @@ class AuthRepositoryImpl implements AuthRepository {
         accessToken: data['access_token'] as String?,
         refreshToken: data['refresh_token'] as String?,
         user: data['user'] != null
-            ? UserModel.fromJson(data['user'] as Map<String, dynamic>)
-                .toEntity()
+            ? UserModel.fromJson(
+                data['user'] as Map<String, dynamic>,
+              ).toEntity()
             : null,
       );
     } on DioException catch (e) {
-      return AuthResult(
-        success: false,
-        error: _errorMessage(e),
-      );
+      return AuthResult(success: false, error: _errorMessage(e));
     }
   }
 
@@ -53,15 +51,13 @@ class AuthRepositoryImpl implements AuthRepository {
         accessToken: data['access_token'] as String?,
         refreshToken: data['refresh_token'] as String?,
         user: data['user'] != null
-            ? UserModel.fromJson(data['user'] as Map<String, dynamic>)
-                .toEntity()
+            ? UserModel.fromJson(
+                data['user'] as Map<String, dynamic>,
+              ).toEntity()
             : null,
       );
     } on DioException catch (e) {
-      return AuthResult(
-        success: false,
-        error: _errorMessage(e),
-      );
+      return AuthResult(success: false, error: _errorMessage(e));
     }
   }
 
@@ -80,15 +76,13 @@ class AuthRepositoryImpl implements AuthRepository {
         accessToken: data['access_token'] as String?,
         refreshToken: data['refresh_token'] as String?,
         user: data['user'] != null
-            ? UserModel.fromJson(data['user'] as Map<String, dynamic>)
-                .toEntity()
+            ? UserModel.fromJson(
+                data['user'] as Map<String, dynamic>,
+              ).toEntity()
             : null,
       );
     } on DioException catch (e) {
-      return AuthResult(
-        success: false,
-        error: _errorMessage(e),
-      );
+      return AuthResult(success: false, error: _errorMessage(e));
     }
   }
 
@@ -98,10 +92,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await _remoteDatasource.resetPassword(email: email);
       return const AuthResult(success: true);
     } on DioException catch (e) {
-      return AuthResult(
-        success: false,
-        error: _errorMessage(e),
-      );
+      return AuthResult(success: false, error: _errorMessage(e));
     }
   }
 
@@ -119,10 +110,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return const AuthResult(success: true);
     } on DioException catch (e) {
-      return AuthResult(
-        success: false,
-        error: _errorMessage(e),
-      );
+      return AuthResult(success: false, error: _errorMessage(e));
     }
   }
 

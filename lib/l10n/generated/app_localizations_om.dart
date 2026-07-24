@@ -132,9 +132,6 @@ class AppLocalizationsOm extends AppLocalizations {
   String get moreNotes => 'Barruuwwan';
 
   @override
-  String get morePrint => 'Waraabbii Studio';
-
-  @override
   String get moreSettings => 'Qindaa\'inaa';
 
   @override
@@ -433,6 +430,9 @@ class AppLocalizationsOm extends AppLocalizations {
   String get actionGo => 'Bori';
 
   @override
+  String get actionSave => 'Olkaa';
+
+  @override
   String get filterDay => 'Guyyaa';
 
   @override
@@ -491,4 +491,130 @@ class AppLocalizationsOm extends AppLocalizations {
 
   @override
   String get settingsTimezoneGMT => 'GMT';
+
+  @override
+  String get onboardingIntroBody =>
+      'Kan Itoophiyaa fi Gregoriyaan ta\'e, yaadannoo fi marmarkaa qabu personal planner. Deetaa kee alaa keessa qabduu dha.';
+
+  @override
+  String get onboardingGetStarted => 'Jalqabi';
+
+  @override
+  String get onboardingAccountTitle => 'Itti fufi';
+
+  @override
+  String get onboardingAccountBody =>
+      'Deetaa kee cuqaasuuf account godhi, ykn guests ta\'uu tuqi.';
+
+  @override
+  String get onboardingContinueGuest => 'Guest ta\'uu tuqi';
+
+  @override
+  String get onboardingCreateAccount => 'Account godhi';
+
+  @override
+  String get onboardingSignIn => 'Account qabdaa? Seeni';
+
+  @override
+  String get onboardingGuestTitle => 'Deetaa kee as keessa qabduu dha';
+
+  @override
+  String get onboardingGuestBody =>
+      'Deetaa guest alaa keessa qabduu dha. Hin cuqafamne fi app adda baasuun hadhaa.';
+
+  @override
+  String get onboardingGotIt => 'Naannoo';
+
+  @override
+  String get recurrenceTitle => 'Irra deebi\'uu haala';
+
+  @override
+  String get recurrenceFrequency => 'Hunda';
+
+  @override
+  String get recurrenceFreqDaily => 'Guuya guuya';
+
+  @override
+  String get recurrenceFreqWeekly => 'Torban torbatti';
+
+  @override
+  String get recurrenceFreqMonthly => 'Ji\'a ji\'atti';
+
+  @override
+  String get recurrenceFreqYearly => 'Waggaa waggaatti';
+
+  @override
+  String get recurrenceInterval => 'Irra deebi\'i';
+
+  @override
+  String get recurrenceDay => 'guyyaa';
+
+  @override
+  String get recurrenceDays => 'guyyaa';
+
+  @override
+  String get recurrenceWeek => 'torban';
+
+  @override
+  String get recurrenceWeeks => 'torba';
+
+  @override
+  String get recurrenceMonth => 'ji\'a';
+
+  @override
+  String get recurrenceMonths => 'ji\'a';
+
+  @override
+  String get recurrenceYear => 'waggaa';
+
+  @override
+  String get recurrenceYears => 'waggaa';
+
+  @override
+  String get recurrenceCalendarBasis => 'Guyaa haala';
+
+  @override
+  String get calendarBasisEthiopian => 'Itoophiyaa';
+
+  @override
+  String get calendarBasisGregorian => 'Gregoriyaan';
+
+  @override
+  String get recurrenceEnd => 'Arfata';
+
+  @override
+  String get recurrenceEndNever => 'Hin arfatu';
+
+  @override
+  String get recurrenceEndAfter => 'Waliin';
+
+  @override
+  String get recurrenceOccurrences => 'baay\'ee';
+
+  @override
+  String get recurrenceEndOnDate => 'Guyya keessa';
+
+  @override
+  String get recurrencePreview => 'Dursee arguu';
+
+  @override
+  String get recurrenceNone => 'Hin deebi\'u';
+
+  @override
+  String get recurrenceClear => 'Irra deebi\'uu haala kaa\'i';
+
+  @override
+  String get settingsContentPacks => 'Paakii Waa\'a';
+
+  @override
+  String get settingsEthiopianHolidays => 'Ayyaanaa Itoophiyaa';
+
+  @override
+  String get settingsEthiopianObservances => 'Ilaalchuu Itoophiyaa';
+
+  @override
+  String get settingsEnabled => 'Kaka\'ame';
+
+  @override
+  String get settingsDisabled => 'Dhabame';
 }

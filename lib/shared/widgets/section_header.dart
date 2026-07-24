@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_text_styles.dart';
 
 class SectionHeader extends StatelessWidget {
   final String label;
   final Widget? trailing;
 
-  const SectionHeader({
-    super.key,
-    required this.label,
-    this.trailing,
-  });
+  const SectionHeader({super.key, required this.label, this.trailing});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screenHorizontalPadding),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.screenHorizontalPadding,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -26,7 +25,7 @@ class SectionHeader extends StatelessWidget {
               color: context.colorTextSecondary,
             ),
           ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );

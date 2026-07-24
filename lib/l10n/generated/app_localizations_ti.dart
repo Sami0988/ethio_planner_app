@@ -9,58 +9,58 @@ class AppLocalizationsTi extends AppLocalizations {
   AppLocalizationsTi([String locale = 'ti']) : super(locale);
 
   @override
-  String get appTitle => 'Walia Planner';
+  String get appTitle => 'Planner';
 
   @override
-  String get todayTab => 'ልማዓልቲ';
+  String get todayTab => 'Today';
 
   @override
-  String get calendarTab => 'መዓልቲ መቕጻሪ';
+  String get calendarTab => 'Calendar';
 
   @override
-  String get plannerTab => 'ፕላነር';
+  String get plannerTab => 'Planner';
 
   @override
-  String get moreTab => 'ተወሳኝ';
+  String get moreTab => 'More';
 
   @override
-  String get searchLabel => 'ፈትን';
+  String get searchLabel => 'Search';
 
   @override
-  String get accountLabel => 'መለያ';
+  String get accountLabel => 'Account';
 
   @override
-  String get sectionUpNext => 'ዝቕጽል';
+  String get sectionUpNext => 'Up Next';
 
   @override
-  String get sectionEvents => 'ዝግባረት';
+  String get sectionEvents => 'Events';
 
   @override
-  String get sectionReminders => 'ኣዝናናር';
+  String get sectionReminders => 'Reminders';
 
   @override
-  String get sectionTodaySchedule => 'ናይ ልማዓልቲ መርሆ';
+  String get sectionTodaySchedule => 'Today\'s Schedule';
 
   @override
-  String get seeAll => 'ኩሉ ርኣይ';
+  String get seeAll => 'See all';
 
   @override
-  String get quickAddTitle => 'በመዝጊ ወስን';
+  String get quickAddTitle => 'Quick Add';
 
   @override
-  String get quickAddEvent => 'ዝግባረት';
+  String get quickAddEvent => 'Event';
 
   @override
-  String get quickAddReminder => 'ኣዝናናር';
+  String get quickAddReminder => 'Reminder';
 
   @override
-  String get quickAddNote => 'መዝammer';
+  String get quickAddNote => 'Note';
 
   @override
-  String get reminderOverdue => 'ዝወ🧿ዳ';
+  String get reminderOverdue => 'Overdue';
 
   @override
-  String get allDay => 'ምሉእ መዓልቲ';
+  String get allDay => 'All Day';
 
   @override
   String get ecSuffix => 'EC';
@@ -69,424 +69,551 @@ class AppLocalizationsTi extends AppLocalizations {
   String get gcSuffix => 'GC';
 
   @override
-  String get emptyTodayTitle => 'መዓልቲ ጽብቕቲ ከምዚ ኣሓ.datab';
+  String get emptyTodayTitle => 'A calm, fresh day';
 
   @override
   String get emptyTodayBody =>
-      'ልማዓልቲ ዝኾነ ነገር የለው። ዝግበረት፣ ኣዝናናር ወይ መዝammer ወስን።';
+      'You have nothing scheduled today. Add an event, reminder or note when you are ready.';
 
   @override
-  String get addSomething => 'ነገር ወስን';
+  String get addSomething => 'Add something';
 
   @override
-  String get syncOffline => 'ኣፍሪሃ';
+  String get syncOffline => 'Offline';
 
   @override
-  String get syncSavedLocally => 'ኣብ ቦታኡ ተቀሚጧል';
+  String get syncSavedLocally => 'Saved locally';
 
   @override
-  String get syncWaitingToSync => 'ይሰዓብ ክብል ይጠብقب';
+  String get syncWaitingToSync => 'Waiting to sync';
 
   @override
-  String get syncSyncing => 'ይሰዓብ ኣለው…';
+  String get syncSyncing => 'Syncing…';
 
   @override
-  String get syncingLabel => 'ይሰዓብ ኣለው…';
+  String get syncingLabel => 'Syncing…';
 
   @override
-  String get syncSynced => 'ተመስርሑ';
+  String get syncSynced => 'Synced';
 
   @override
-  String get syncFailed => 'ምስራሕ ኣይተሳ㎾ን';
+  String get syncFailed => 'Sync failed';
 
   @override
-  String get syncRetry => 'እንደገና ፈትን';
+  String get syncRetry => 'Retry';
 
   @override
-  String get syncRejected => 'ተቀባይነት ኣልተገበረን';
+  String get syncRejected => 'Rejected';
 
   @override
-  String get syncConflict => 'ግጭት ተገኝቷል';
+  String get syncConflict => 'Conflict detected';
 
   @override
-  String get syncReview => 'መርምር';
+  String get syncReview => 'Review';
 
   @override
-  String get syncActionRequired => 'ተግባር የድልዋል';
+  String get syncActionRequired => 'Action required';
 
   @override
   String syncWaiting(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count ለውጦች ለማመሳሰል በመጠባበቅ ላይ',
-      one: '1 ለውጥ ለማመሳሰል በመጠባበቅ ላይ',
+      other: '$count changes waiting to sync',
+      one: '1 change waiting to sync',
     );
     return '$_temp0';
   }
 
   @override
-  String get moreReminders => 'ኣዝናናር';
+  String get moreReminders => 'Reminders';
 
   @override
-  String get moreNotes => 'መዝammer';
+  String get moreNotes => 'Notes';
 
   @override
-  String get morePrint => 'ፕሪንት ስтуዲዮ';
+  String get moreSettings => 'Settings';
 
   @override
-  String get moreSettings => 'ቅንብሮች';
+  String get moreRecentlyDeleted => 'Recently Deleted';
 
   @override
-  String get moreRecentlyDeleted => 'ናይ ንቃሓ ግዜ';
+  String get settingsTheme => 'Theme';
 
   @override
-  String get settingsTheme => 'እርarence';
+  String get settingsThemeSystem => 'System';
 
   @override
-  String get settingsThemeSystem => 'ስርዓት';
+  String get settingsThemeLight => 'Light';
 
   @override
-  String get settingsThemeLight => 'ንጹህ';
+  String get settingsThemeDark => 'Dark';
 
   @override
-  String get settingsThemeDark => 'ጠል锒';
+  String get settingsLanguage => 'Language';
 
   @override
-  String get settingsLanguage => 'ቋንቋ';
+  String get settingsLanguageSystem => 'System';
 
   @override
-  String get settingsLanguageSystem => 'ስርዓት';
+  String get settingsLanguageEnglish => 'English';
 
   @override
-  String get settingsLanguageEnglish => 'እንግሊዝኛ';
+  String get settingsLanguageAmharic => 'Amharic';
 
   @override
-  String get settingsLanguageAmharic => 'አማርኛ';
+  String get settingsLanguageOromoo => 'Afaan Oromoo';
 
   @override
-  String get settingsLanguageOromoo => 'ኦሮምኛ';
+  String get settingsLanguageTigrinya => 'Tigrinya';
 
   @override
-  String get settingsLanguageTigrinya => 'ትግርኛ';
+  String get settingsVersion => 'Version';
 
   @override
-  String get settingsVersion => 'ስርስት';
+  String get authSignIn => 'Sign In';
 
   @override
-  String get authSignIn => 'እቶ';
+  String get authSignUp => 'Sign Up';
 
   @override
-  String get authSignUp => 'ተመዝገብ';
+  String get authEmail => 'Email';
 
   @override
-  String get authEmail => 'ኢሜይል';
+  String get authPassword => 'Password';
 
   @override
-  String get authPassword => 'ቃል ምስጢር';
+  String get authConfirmPassword => 'Confirm Password';
 
   @override
-  String get authConfirmPassword => 'ቃል ምስጢር ኣረጋግጽ';
+  String get authName => 'Name';
 
   @override
-  String get authName => 'ስም';
+  String get authForgotPassword => 'Forgot password?';
 
   @override
-  String get authForgotPassword => 'ቃል ምስጢር ረሳኽን?';
+  String get authNoAccount => 'Don\'t have an account?';
 
   @override
-  String get authNoAccount => 'መለያ የለዎትም?';
+  String get authHasAccount => 'Already have an account?';
 
   @override
-  String get authHasAccount => 'መለያ አለዎት?';
+  String get authVerifyEmail => 'Verify Email';
 
   @override
-  String get authVerifyEmail => 'ኢሜይል ኣረጋግጽ';
+  String get authVerificationCode => 'Verification Code';
 
   @override
-  String get authVerificationCode => 'ቁጽ ምርመራ';
+  String get authResetPassword => 'Reset Password';
 
   @override
-  String get authResetPassword => 'ቃል ምስጢር ሳን觪';
+  String get authSendCode => 'Send Code';
 
   @override
-  String get authSendCode => 'ቁጽ ስደድ';
+  String get authResetCodeSent => 'Reset code sent';
 
   @override
-  String get authResetCodeSent => 'ቁጽ ሳን觪 ተሰዲዱ';
+  String get recentlyDeletedTitle => 'Recently Deleted';
 
   @override
-  String get recentlyDeletedTitle => 'ናይ ንቃሓ ግዜ';
+  String get recentlyDeletedEmpty => 'No recently deleted items';
 
   @override
-  String get recentlyDeletedEmpty => 'ናይ ንቃሓ ግዜ ነገር የለን';
+  String get recentlyDeletedHint =>
+      'Deleted items will appear here for 30 days';
 
   @override
-  String get recentlyDeletedHint => 'ናይ ንቃሓ ግዜ ነገር ሰዓት 30 እዚህ ይርኣይ';
+  String get recentlyDeletedRestore => 'Restore';
 
   @override
-  String get recentlyDeletedRestore => 'መልስ';
-
-  @override
-  String get recentlyDeletedDelete => 'ሸንጥል';
+  String get recentlyDeletedDelete => 'Delete';
 
   @override
   String recentlyDeletedDaysLeft(Object count) {
-    return 'ምስጢር እስከ $count መዓልቲ';
+    return '$count days until permanent deletion';
   }
 
   @override
-  String get conflictCenterTitle => 'ማዕከል ግጭት';
+  String get conflictCenterTitle => 'Conflict Center';
 
   @override
-  String get conflictCenterEmpty => 'ግጭት የለን';
+  String get conflictCenterEmpty => 'No conflicts';
 
   @override
-  String get conflictCenterSynced => 'ኩሉ መረጠ ተመስርሑ';
+  String get conflictCenterSynced => 'All your data is in sync';
 
   @override
-  String get conflictKeepLocal => 'ምንጪ ምዝገባ';
+  String get conflictKeepLocal => 'Keep local version';
 
   @override
-  String get conflictKeepRemote => 'ርቀት ምዝገባ';
+  String get conflictKeepRemote => 'Keep remote version';
 
   @override
-  String get conflictKeepBoth => 'ክልተን ምዝገባ';
+  String get conflictKeepBoth => 'Keep both versions';
 
   @override
-  String get conflictResolve => 'ፈትን';
+  String get conflictResolve => 'Resolve';
 
   @override
-  String get notesTitle => 'መዝammer';
+  String get notesTitle => 'Notes';
 
   @override
-  String get notesEmpty => 'መዝammer የለን';
+  String get notesEmpty => 'No notes';
 
   @override
-  String get notesHint => 'መዝammer ለመፍጠር + ደምጽ';
+  String get notesHint => 'Tap + to create a note';
 
   @override
-  String get notesPinned => 'ተቀንሲ';
+  String get notesPinned => 'Pinned';
 
   @override
-  String get notesArchived => 'ተቀሚጧል';
+  String get notesArchived => 'Archived';
 
   @override
-  String get searchEmpty => 'ውጤት ኣልተገኘን';
+  String get searchEmpty => 'No results found';
 
   @override
-  String get searchHint => 'ተፈላጢ ፈትን';
+  String get searchHint => 'Try a different search term';
 
   @override
-  String get searchPlaceholder => 'ዝግባረት፣ ኣዝናናር፣ መዝammer ፈትን...';
+  String get searchPlaceholder => 'Search events, reminders, notes...';
 
   @override
   String searchResults(Object count) {
-    return 'ውጤት $count';
+    return '$count results';
   }
 
   @override
-  String get plannerFocus => 'ንዑስ';
+  String get plannerFocus => 'Focus';
 
   @override
-  String get plannerPriorities => 'ቀዳሞት';
+  String get plannerPriorities => 'Priorities';
 
   @override
-  String get plannerChecklist => 'ዝርዝር ምርመራ';
+  String get plannerChecklist => 'Checklist';
 
   @override
-  String get plannerNotes => 'መዝammer';
+  String get plannerNotes => 'Notes';
 
   @override
-  String get plannerReflection => 'ምutral';
+  String get plannerReflection => 'Reflection';
 
   @override
-  String get plannerNoItems => 'ነገር የለን';
+  String get plannerNoItems => 'No items';
 
   @override
-  String get calendarNoEvents => 'ኣብ መዓልቲ ዝግባረት የለን';
+  String get calendarNoEvents => 'No events for this day';
 
   @override
-  String get calendarNewEvent => 'ዝግባረት ሓድሽ';
+  String get calendarNewEvent => 'New Event';
 
   @override
-  String get calendarEditEvent => 'ዝግባረት ኣስተካክል';
+  String get calendarEditEvent => 'Edit Event';
 
   @override
-  String get calendarNewReminder => 'ኣዝናናር ሓድሽ';
+  String get calendarNewReminder => 'New Reminder';
 
   @override
-  String get calendarEditReminder => 'ኣዝናናር ኣስተካክል';
+  String get calendarEditReminder => 'Edit Reminder';
 
   @override
-  String get calendarTitle => 'ርእስ';
+  String get calendarTitle => 'Title';
 
   @override
-  String get calendarLocation => 'ቦታ (ኣማራጭ)';
+  String get calendarLocation => 'Location (optional)';
 
   @override
-  String get calendarCategory => 'ምድን (ኣማራጭ)';
+  String get calendarCategory => 'Category (optional)';
 
   @override
-  String get calendarDescription => 'ምብራህ (ኣማራጭ)';
+  String get calendarDescription => 'Description (optional)';
 
   @override
-  String get calendarAllDay => 'ምሉእ መዓልቲ';
+  String get calendarAllDay => 'All day';
 
   @override
-  String get calendarCreate => 'ፍጠር';
+  String get calendarCreate => 'Create';
 
   @override
-  String get calendarUpdate => 'ኣስተካክል';
+  String get calendarUpdate => 'Update';
 
   @override
-  String get calendarNoEventsForDay => 'ኣብ መዓልቲ ዝግባረት የለን';
+  String get calendarNoEventsForDay => 'No events for this day';
 
   @override
-  String get actionEdit => 'ኣስተካክል';
+  String get actionEdit => 'Edit';
 
   @override
-  String get actionDelete => 'ሸንጥል';
+  String get actionDelete => 'Delete';
 
   @override
-  String get actionCancel => 'ሰርዝ';
+  String get actionCancel => 'Cancel';
 
   @override
-  String get deleteEventConfirmTitle => 'ዝግባረት ሸንጥል';
+  String get deleteEventConfirmTitle => 'Delete Event';
 
   @override
   String deleteEventConfirmBody(Object title) {
-    return '\"$title\" ከትስኪ ትሰር🇽 ኢዩ?';
+    return 'Are you sure you want to delete \"$title\"?';
   }
 
   @override
-  String get eventSaveError => 'ዝግባረት ማስቀመጥ ኣይተ全力以';
+  String get eventSaveError => 'Failed to save event';
 
   @override
-  String get editEventTitle => 'ዝግባረት ኣስተካክል';
+  String get editEventTitle => 'Edit Event';
 
   @override
-  String get newEventTitle => 'ዝግባረት ሓድሽ';
+  String get newEventTitle => 'New Event';
 
   @override
-  String get fieldTitle => 'ርእስ';
+  String get fieldTitle => 'Title';
 
   @override
-  String get fieldTitleRequired => 'ርእስ የድልዋል';
+  String get fieldTitleRequired => 'Title is required';
 
   @override
-  String get fieldLocationOptional => 'ቦታ (ኣማራጭ)';
+  String get fieldLocationOptional => 'Location (optional)';
 
   @override
-  String get fieldCategoryOptional => 'ምድን (ኣማራጭ)';
+  String get fieldCategoryOptional => 'Category (optional)';
 
   @override
-  String get fieldDescriptionOptional => 'ምብራህ (ኣማራጭ)';
+  String get fieldDescriptionOptional => 'Description (optional)';
 
   @override
-  String get categoryNone => 'ኣይኰነን';
+  String get categoryNone => 'None';
 
   @override
-  String get categoryWork => 'ስራሕ';
+  String get categoryWork => 'Work';
 
   @override
-  String get categoryPersonal => 'ግል';
+  String get categoryPersonal => 'Personal';
 
   @override
-  String get categoryHoliday => 'በዓል';
+  String get categoryHoliday => 'Holiday';
 
   @override
-  String get categoryOther => 'ተወሳኝ';
+  String get categoryOther => 'Other';
 
   @override
-  String get actionUpdate => 'ኣስተካክል';
+  String get actionUpdate => 'Update';
 
   @override
-  String get actionCreate => 'ፍጠር';
+  String get actionCreate => 'Create';
 
   @override
-  String get actionToday => 'ልማዓልቲ';
+  String get actionToday => 'Today';
 
   @override
-  String get today => 'ልማዓልቲ';
+  String get today => 'Today';
 
   @override
   String eventsCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count ዝግባረት',
-      one: '1 ዝግባረት',
+      other: '$count events',
+      one: '1 event',
     );
     return '$_temp0';
   }
 
   @override
-  String get jumpToDateTitle => 'ቀጣ ናብ መዓልቲ';
+  String get jumpToDateTitle => 'Jump to Date';
 
   @override
-  String get jumpToDateHint => 'መዓልቲ ምረጽ';
+  String get jumpToDateHint => 'Select a date';
 
   @override
-  String get actionGo => 'ቀጣ';
+  String get actionGo => 'Go';
 
   @override
-  String get filterDay => 'መዓልቲ';
+  String get actionSave => 'Save';
 
   @override
-  String get filterWeek => 'ሳምንቲ';
+  String get filterDay => 'Day';
 
   @override
-  String get filterMonth => 'ወርሒ';
+  String get filterWeek => 'Week';
 
   @override
-  String get filterAll => 'ኩሉ';
+  String get filterMonth => 'Month';
 
   @override
-  String get calendarAllEvents => 'ኩሉ ዝግባረት';
+  String get filterAll => 'All';
 
   @override
-  String get settingsCalendar => 'መዓልቲ መቕጻሪ';
+  String get calendarAllEvents => 'All Events';
 
   @override
-  String get settingsPrimaryCalendar => 'ቀዳማይ መዓልቲ መቕጻሪ';
+  String get settingsCalendar => 'Calendar';
 
   @override
-  String get settingsPrimaryCalendarEthiopian => 'ኢትዮጵያዊ';
+  String get settingsPrimaryCalendar => 'Primary Calendar';
 
   @override
-  String get settingsPrimaryCalendarGregorian => 'ግregorያዊ';
+  String get settingsPrimaryCalendarEthiopian => 'Ethiopian';
 
   @override
-  String get settingsPrimaryCalendarDual => 'ክልተ';
+  String get settingsPrimaryCalendarGregorian => 'Gregorian';
 
   @override
-  String get settingsWeekStart => 'ምብตาร ሳምንቲ';
+  String get settingsPrimaryCalendarDual => 'Dual';
 
   @override
-  String get settingsWeekStartSaturday => 'ሰዓቡ';
+  String get settingsWeekStart => 'Week Start';
 
   @override
-  String get settingsWeekStartSunday => 'ሰዓት';
+  String get settingsWeekStartSaturday => 'Saturday';
 
   @override
-  String get settingsWeekStartMonday => 'ሰኞ';
+  String get settingsWeekStartSunday => 'Sunday';
 
   @override
-  String get settingsNumeralStyle => 'ቁጽሊ ዘይቤ';
+  String get settingsWeekStartMonday => 'Monday';
 
   @override
-  String get settingsNumeralGez => 'ግዕዝ';
+  String get settingsNumeralStyle => 'Numeral Style';
 
   @override
-  String get settingsNumeralLatin => 'ላቲን';
+  String get settingsNumeralGez => 'Ge\'ez';
 
   @override
-  String get settingsTimezone => 'ናይ ግዜ ዞን';
+  String get settingsNumeralLatin => 'Latin';
 
   @override
-  String get settingsTimezoneAddisAbaba => 'አዲስ አበባ';
+  String get settingsTimezone => 'Timezone';
 
   @override
-  String get settingsTimezoneGMT => 'ጂ.ኤም.ቲ';
+  String get settingsTimezoneAddisAbaba => 'Addis Ababa';
+
+  @override
+  String get settingsTimezoneGMT => 'GMT';
+
+  @override
+  String get onboardingIntroBody =>
+      'A personal planner with dual Ethiopian and Gregorian calendars, offline reminders and notes. Your data stays on your device.';
+
+  @override
+  String get onboardingGetStarted => 'Get Started';
+
+  @override
+  String get onboardingAccountTitle => 'Continue planning';
+
+  @override
+  String get onboardingAccountBody =>
+      'Create an account to back up your data and sync across devices, or continue as a guest.';
+
+  @override
+  String get onboardingContinueGuest => 'Continue as Guest';
+
+  @override
+  String get onboardingCreateAccount => 'Create Account';
+
+  @override
+  String get onboardingSignIn => 'Already have an account? Sign in';
+
+  @override
+  String get onboardingGuestTitle => 'Your data stays here';
+
+  @override
+  String get onboardingGuestBody =>
+      'Guest data is stored only on this device. It is not backed up and may be lost if you uninstall the app. You can import your data after creating an account later.';
+
+  @override
+  String get onboardingGotIt => 'Got it';
+
+  @override
+  String get recurrenceTitle => 'Repeat Pattern';
+
+  @override
+  String get recurrenceFrequency => 'Frequency';
+
+  @override
+  String get recurrenceFreqDaily => 'Daily';
+
+  @override
+  String get recurrenceFreqWeekly => 'Weekly';
+
+  @override
+  String get recurrenceFreqMonthly => 'Monthly';
+
+  @override
+  String get recurrenceFreqYearly => 'Yearly';
+
+  @override
+  String get recurrenceInterval => 'Every';
+
+  @override
+  String get recurrenceDay => 'day';
+
+  @override
+  String get recurrenceDays => 'Days';
+
+  @override
+  String get recurrenceWeek => 'week';
+
+  @override
+  String get recurrenceWeeks => 'Weeks';
+
+  @override
+  String get recurrenceMonth => 'month';
+
+  @override
+  String get recurrenceMonths => 'Months';
+
+  @override
+  String get recurrenceYear => 'year';
+
+  @override
+  String get recurrenceYears => 'Years';
+
+  @override
+  String get recurrenceCalendarBasis => 'Calendar basis';
+
+  @override
+  String get calendarBasisEthiopian => 'Ethiopian';
+
+  @override
+  String get calendarBasisGregorian => 'Gregorian';
+
+  @override
+  String get recurrenceEnd => 'Ends';
+
+  @override
+  String get recurrenceEndNever => 'Never';
+
+  @override
+  String get recurrenceEndAfter => 'After';
+
+  @override
+  String get recurrenceOccurrences => 'occurrences';
+
+  @override
+  String get recurrenceEndOnDate => 'On date';
+
+  @override
+  String get recurrencePreview => 'Preview';
+
+  @override
+  String get recurrenceNone => 'No repeat';
+
+  @override
+  String get recurrenceClear => 'Remove repeat';
+
+  @override
+  String get settingsContentPacks => 'Content Packs';
+
+  @override
+  String get settingsEthiopianHolidays => 'Ethiopian Holidays';
+
+  @override
+  String get settingsEthiopianObservances => 'Ethiopian Observances';
+
+  @override
+  String get settingsEnabled => 'Enabled';
+
+  @override
+  String get settingsDisabled => 'Disabled';
 }

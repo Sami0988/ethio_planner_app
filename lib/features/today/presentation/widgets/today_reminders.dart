@@ -35,10 +35,7 @@ class TodayReminders extends StatelessWidget {
       children: [
         SectionHeader(
           label: l10n.sectionReminders.toUpperCase(),
-          trailing: TextButton(
-            onPressed: onSeeAll,
-            child: Text(l10n.seeAll),
-          ),
+          trailing: TextButton(onPressed: onSeeAll, child: Text(l10n.seeAll)),
         ),
         const SizedBox(height: AppSpacing.sm),
         Padding(
@@ -55,10 +52,8 @@ class TodayReminders extends StatelessWidget {
                     tween: Tween(begin: 0, end: 1),
                     duration: Duration(milliseconds: 200 + (i * 50)),
                     curve: Curves.easeOut,
-                    builder: (context, value, child) => Opacity(
-                      opacity: value,
-                      child: child,
-                    ),
+                    builder: (context, value, child) =>
+                        Opacity(opacity: value, child: child),
                     child: AnimatedOpacity(
                       duration: const Duration(milliseconds: 250),
                       opacity: items[i].isCompleted ? 0.55 : 1,
@@ -85,7 +80,7 @@ class TodayReminders extends StatelessWidget {
                       child: Divider(
                         height: 1,
                         thickness: 1,
-                        color: context.colorDivider.withOpacity(0.5),
+                        color: context.colorDivider.withValues(alpha: 0.5),
                       ),
                     ),
                 ],

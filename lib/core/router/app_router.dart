@@ -7,6 +7,8 @@ import '../../features/calendar/presentation/pages/calendar_page.dart';
 import '../../features/conflict_center/presentation/pages/conflict_center_page.dart';
 import '../../features/more/presentation/pages/more_page.dart';
 import '../../features/notes/presentation/pages/notes_page.dart';
+import '../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../features/onboarding/providers/onboarding_provider.dart';
 import '../../features/planner/presentation/pages/planner_page.dart';
 import '../../features/recently_deleted/presentation/pages/recently_deleted_page.dart';
 import '../../features/reminders/presentation/pages/reminders_page.dart';
@@ -17,9 +19,17 @@ import 'route_names.dart';
 import 'shell_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
+  final onboardingState = ref.watch(onboardingControllerProvider);
+
   return GoRouter(
-    initialLocation: RouteNames.home,
+    initialLocation: onboardingState.hasCompletedOnboarding
+        ? RouteNames.home
+        : RouteNames.onboarding,
     routes: [
+      GoRoute(
+        path: RouteNames.onboarding,
+        builder: (context, state) => const OnboardingPage(),
+      ),
       ShellRoute(
         builder: (context, state, child) {
           final location = state.uri.toString();
@@ -102,8 +112,6 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('404')),
-    );
+    return const Scaffold(body: Center(child: Text('404')));
   }
 }

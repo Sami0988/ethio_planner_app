@@ -105,4 +105,15 @@ class NotesController extends Notifier<NotesViewState> {
     await _toggleArchived(id);
     await loadNotes();
   }
+
+  Future<void> searchNotes(String query) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final notes = await _searchNotes(query);
+      state = state.copyWith(allNotes: notes, isLoading: false);
+      _applyFilter();
+    } catch (e) {
+      state = state.copyWith(error: e.toString(), isLoading: false);
+    }
+  }
 }

@@ -17,7 +17,6 @@ final syncRepositoryProvider = Provider<SyncRepositoryImpl>(
   ),
 );
 
-final syncControllerProvider =
-    NotifierProvider<SyncController, SyncViewState>(
+final syncControllerProvider = NotifierProvider<SyncController, SyncViewState>(
   SyncController.new,
 );

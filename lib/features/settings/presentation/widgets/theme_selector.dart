@@ -8,7 +8,7 @@ class ThemeSelector extends ConsumerWidget {
   const ThemeSelector({super.key});
 
   static void show(BuildContext context) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (_) => const ThemeSelector(),
     );
@@ -30,9 +30,7 @@ class ThemeSelector extends ConsumerWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
-          RadioListTile<ThemeMode>(
-            title: Text(l10n.settingsThemeSystem),
-            value: ThemeMode.system,
+          RadioGroup<ThemeMode>(
             groupValue: currentMode,
             onChanged: (mode) {
               if (mode != null) {
@@ -40,28 +38,22 @@ class ThemeSelector extends ConsumerWidget {
                 Navigator.of(context).pop();
               }
             },
-          ),
-          RadioListTile<ThemeMode>(
-            title: Text(l10n.settingsThemeLight),
-            value: ThemeMode.light,
-            groupValue: currentMode,
-            onChanged: (mode) {
-              if (mode != null) {
-                ref.read(themeModeProvider.notifier).setThemeMode(mode);
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-          RadioListTile<ThemeMode>(
-            title: Text(l10n.settingsThemeDark),
-            value: ThemeMode.dark,
-            groupValue: currentMode,
-            onChanged: (mode) {
-              if (mode != null) {
-                ref.read(themeModeProvider.notifier).setThemeMode(mode);
-                Navigator.of(context).pop();
-              }
-            },
+            child: Column(
+              children: [
+                RadioListTile<ThemeMode>(
+                  title: Text(l10n.settingsThemeSystem),
+                  value: ThemeMode.system,
+                ),
+                RadioListTile<ThemeMode>(
+                  title: Text(l10n.settingsThemeLight),
+                  value: ThemeMode.light,
+                ),
+                RadioListTile<ThemeMode>(
+                  title: Text(l10n.settingsThemeDark),
+                  value: ThemeMode.dark,
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
         ],

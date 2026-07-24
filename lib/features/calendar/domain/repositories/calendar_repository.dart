@@ -8,5 +8,7 @@ abstract class CalendarRepository {
   Future<void> updateEvent(CalendarEvent event);
   Future<void> deleteEvent(String id);
   Stream<List<CalendarEvent>> watchEventsByDateRange(
-      DateTime start, DateTime end);
+    DateTime start,
+    DateTime end,
+  );
 }

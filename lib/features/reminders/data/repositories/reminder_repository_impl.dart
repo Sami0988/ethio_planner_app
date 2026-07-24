@@ -6,9 +6,7 @@ import '../models/reminder_model.dart';
 class ReminderRepositoryImpl implements ReminderRepository {
   final ReminderLocalDatasource localDatasource;
 
-  ReminderRepositoryImpl({
-    required this.localDatasource,
-  });
+  ReminderRepositoryImpl({required this.localDatasource});
 
   @override
   Future<List<Reminder>> getAllReminders() async {
@@ -92,15 +90,15 @@ class ReminderRepositoryImpl implements ReminderRepository {
 
   @override
   Stream<List<Reminder>> watchAllReminders() {
-    return localDatasource
-        .watchAllReminders()
-        .map((models) => models.map((m) => m.toEntity()).toList());
+    return localDatasource.watchAllReminders().map(
+      (models) => models.map((m) => m.toEntity()).toList(),
+    );
   }
 
   @override
   Stream<List<Reminder>> watchUpcomingReminders() {
-    return localDatasource
-        .watchUpcomingReminders()
-        .map((models) => models.map((m) => m.toEntity()).toList());
+    return localDatasource.watchUpcomingReminders().map(
+      (models) => models.map((m) => m.toEntity()).toList(),
+    );
   }
 }

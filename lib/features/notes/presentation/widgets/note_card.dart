@@ -23,10 +23,7 @@ class NoteCard extends ConsumerWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: AppSpacing.lg),
         color: theme.colorScheme.error,
-        child: Icon(
-          Icons.delete_outline,
-          color: theme.colorScheme.onError,
-        ),
+        child: Icon(Icons.delete_outline, color: theme.colorScheme.onError),
       ),
       confirmDismiss: (direction) async {
         return await showDialog<bool>(
@@ -82,17 +79,14 @@ class NoteCard extends ConsumerWidget {
                     ),
                     PopupMenuItem(
                       value: 'archive',
-                      child:
-                          Text(note.isArchived ? 'Unarchive' : 'Archive'),
+                      child: Text(note.isArchived ? 'Unarchive' : 'Archive'),
                     ),
-                    const PopupMenuItem(
-                      value: 'delete',
-                      child: Text('Delete'),
-                    ),
+                    const PopupMenuItem(value: 'delete', child: Text('Delete')),
                   ],
                   onSelected: (value) async {
-                    final controller =
-                        ref.read(notesControllerProvider.notifier);
+                    final controller = ref.read(
+                      notesControllerProvider.notifier,
+                    );
                     if (value == 'pin') {
                       await controller.togglePinned(note.id);
                     } else if (value == 'archive') {

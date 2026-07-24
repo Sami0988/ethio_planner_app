@@ -46,8 +46,7 @@ class EventListCard extends StatelessWidget {
                     child: _EventRow(
                       event: events[i],
                       allDayLabel: l10n.allDay,
-                      onTap:
-                          onTapEvent == null ? null : () => onTapEvent!(i),
+                      onTap: onTapEvent == null ? null : () => onTapEvent!(i),
                     ),
                   ),
                 ],
@@ -61,11 +60,7 @@ class EventListCard extends StatelessWidget {
 }
 
 class _EventRow extends StatelessWidget {
-  const _EventRow({
-    required this.event,
-    required this.allDayLabel,
-    this.onTap,
-  });
+  const _EventRow({required this.event, required this.allDayLabel, this.onTap});
 
   final EventPresentation event;
   final String allDayLabel;
@@ -79,8 +74,8 @@ class _EventRow extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        highlightColor: context.colorPrimary.withOpacity(0.04),
-        splashColor: context.colorPrimary.withOpacity(0.06),
+        highlightColor: context.colorPrimary.withValues(alpha: 0.04),
+        splashColor: context.colorPrimary.withValues(alpha: 0.06),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.cardPadding),
           child: Row(
@@ -185,11 +180,7 @@ class _SpinningSyncIconState extends State<_SpinningSyncIcon>
   Widget build(BuildContext context) {
     return RotationTransition(
       turns: _controller,
-      child: Icon(
-        Icons.sync_rounded,
-        size: 14,
-        color: context.colorTextMuted,
-      ),
+      child: Icon(Icons.sync_rounded, size: 14, color: context.colorTextMuted),
     );
   }
 }

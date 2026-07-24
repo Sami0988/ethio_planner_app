@@ -45,6 +45,4 @@ final toggleNoteArchivedProvider = Provider<ToggleNoteArchived>(
 );
 
 final notesControllerProvider =
-    NotifierProvider<NotesController, NotesViewState>(
-  NotesController.new,
-);
+    NotifierProvider<NotesController, NotesViewState>(NotesController.new);

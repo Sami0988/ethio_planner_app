@@ -1,7 +1,12 @@
+import 'package:ethiopian_calendar_core/ethiopian_calendar_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../core/recurrence/recurrence_engine.dart';
+import '../../../../core/recurrence/recurrence_rule.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../calendar/presentation/widgets/recurrence_pattern_sheet.dart';
 import '../../domain/entities/reminder.dart';
 import '../providers/reminders_providers.dart';
 
@@ -19,7 +24,8 @@ class ReminderFormSheet extends ConsumerStatefulWidget {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) => ReminderFormSheet(reminder: reminder, initialDate: initialDate),
+      builder: (_) =>
+          ReminderFormSheet(reminder: reminder, initialDate: initialDate),
     );
   }
 
@@ -33,6 +39,7 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
   String? _selectedCategory;
+  RecurrenceRule? _recurrenceRule;
 
   bool get _isEditing => widget.reminder != null;
 
@@ -41,11 +48,15 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
     super.initState();
     final reminder = widget.reminder;
     _titleController = TextEditingController(text: reminder?.title ?? '');
-    _descriptionController =
-        TextEditingController(text: reminder?.description ?? '');
+    _descriptionController = TextEditingController(
+      text: reminder?.description ?? '',
+    );
     _selectedDate = reminder?.gcDate ?? widget.initialDate ?? DateTime.now();
     _selectedTime = TimeOfDay.fromDateTime(reminder?.gcDate ?? DateTime.now());
     _selectedCategory = reminder?.category;
+    if (reminder?.recurrenceRule != null) {
+      _recurrenceRule = RecurrenceRule.fromJson(reminder!.recurrenceRule!);
+    }
   }
 
   @override
@@ -88,6 +99,10 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
       _selectedTime.minute,
     );
 
+    final gcGregorian = GregorianDate.fromDateTime(gcDate);
+    final ec = CalendarConversion.gregorianToEthiopian(gcGregorian);
+    final ecDate = DateTime(ec.year, ec.month, ec.day);
+
     final controller = ref.read(remindersControllerProvider.notifier);
 
     if (_isEditing) {
@@ -97,19 +112,21 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
             ? null
             : _descriptionController.text.trim(),
         gcDate: gcDate,
-        ecDate: gcDate, // TODO: Proper EC conversion
+        ecDate: ecDate,
         category: _selectedCategory,
+        recurrenceRule: _recurrenceRule?.toJson(),
       );
       await controller.updateReminder(updated);
     } else {
       await controller.createReminder(
         title: _titleController.text.trim(),
         gcDate: gcDate,
-        ecDate: gcDate, // TODO: Proper EC conversion
+        ecDate: ecDate,
         description: _descriptionController.text.trim().isEmpty
             ? null
             : _descriptionController.text.trim(),
         category: _selectedCategory,
+        recurrenceRule: _recurrenceRule?.toJson(),
       );
     }
 
@@ -168,19 +185,61 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
           ),
           const SizedBox(height: AppSpacing.md),
           DropdownButtonFormField<String>(
-            value: _selectedCategory,
+            initialValue: _selectedCategory,
             decoration: const InputDecoration(
               labelText: 'Category (optional)',
               border: OutlineInputBorder(),
             ),
             items: const [
-              DropdownMenuItem(value: null, child: Text('None')),
+              DropdownMenuItem(child: Text('None')),
               DropdownMenuItem(value: 'work', child: Text('Work')),
               DropdownMenuItem(value: 'personal', child: Text('Personal')),
               DropdownMenuItem(value: 'health', child: Text('Health')),
               DropdownMenuItem(value: 'other', child: Text('Other')),
             ],
             onChanged: (value) => setState(() => _selectedCategory = value),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          // Recurrence picker
+          Material(
+            color: theme.colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.3,
+            ),
+            borderRadius: BorderRadius.circular(8),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () async {
+                final rule = await RecurrencePatternSheet.show(
+                  context,
+                  rule: _recurrenceRule,
+                );
+                setState(() => _recurrenceRule = rule);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      _recurrenceRule != null
+                          ? Icons.repeat_rounded
+                          : Icons.repeat_one_rounded,
+                      size: 18,
+                      color: theme.colorScheme.primary,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      _recurrenceRule != null
+                          ? RecurrenceEngine.describe(_recurrenceRule!)
+                          : 'No repeat',
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           TextField(

@@ -19,10 +19,8 @@ class ConflictResolutionSheet extends StatelessWidget {
   }) {
     return showModalBottomSheet(
       context: context,
-      builder: (_) => ConflictResolutionSheet(
-        conflict: conflict,
-        onResolve: onResolve,
-      ),
+      builder: (_) =>
+          ConflictResolutionSheet(conflict: conflict, onResolve: onResolve),
     );
   }
 
@@ -36,10 +34,7 @@ class ConflictResolutionSheet extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Text(
-              'Resolve Conflict',
-              style: theme.textTheme.titleLarge,
-            ),
+            child: Text('Resolve Conflict', style: theme.textTheme.titleLarge),
           ),
           const Divider(height: 1),
           ListTile(

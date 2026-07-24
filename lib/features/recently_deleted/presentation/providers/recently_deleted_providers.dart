@@ -6,10 +6,10 @@ import 'recently_deleted_view_state.dart';
 
 final recentlyDeletedRepositoryProvider =
     Provider<RecentlyDeletedRepositoryImpl>(
-  (ref) => RecentlyDeletedRepositoryImpl(ref.watch(databaseProvider)),
-);
+      (ref) => RecentlyDeletedRepositoryImpl(ref.watch(databaseProvider)),
+    );
 
 final recentlyDeletedControllerProvider =
     NotifierProvider<RecentlyDeletedController, RecentlyDeletedViewState>(
-  RecentlyDeletedController.new,
-);
+      RecentlyDeletedController.new,
+    );

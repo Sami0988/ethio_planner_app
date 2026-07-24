@@ -1,14 +1,17 @@
 import 'dart:io';
+
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import 'tables.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'daos/calendar_events_dao.dart';
-import 'daos/reminders_dao.dart';
-import 'daos/planner_items_dao.dart';
 import 'daos/notes_dao.dart';
+import 'daos/outbox_dao.dart';
+import 'daos/planner_items_dao.dart';
 import 'daos/recently_deleted_dao.dart';
+import 'daos/reminders_dao.dart';
+import 'tables.dart';
 
 part 'app_database.g.dart';
 
@@ -19,6 +22,7 @@ part 'app_database.g.dart';
     Reminders,
     Notes,
     RecentlyDeletedItems,
+    OutboxOperations,
   ],
   daos: [
     CalendarEventsDao,
@@ -26,13 +30,14 @@ part 'app_database.g.dart';
     PlannerItemsDao,
     NotesDao,
     RecentlyDeletedDao,
+    OutboxDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration {
@@ -60,6 +65,32 @@ class AppDatabase extends _$AppDatabase {
         if (from < 5) {
           // Print Studio is deferred (Phase 1D); drop its out-of-scope table.
           await m.deleteTable('print_jobs');
+        }
+        if (from < 6) {
+          // Sprint 1 foundation: add sync-metadata + accountId to all
+          // business tables for account isolation and offline-first sync.
+          await m.addColumn(calendarEvents, calendarEvents.accountId);
+          await m.addColumn(calendarEvents, calendarEvents.serverVersion);
+          await m.addColumn(calendarEvents, calendarEvents.syncStatus);
+          await m.addColumn(calendarEvents, calendarEvents.lastOperationId);
+          await m.addColumn(plannerItems, plannerItems.accountId);
+          await m.addColumn(plannerItems, plannerItems.serverVersion);
+          await m.addColumn(plannerItems, plannerItems.syncStatus);
+          await m.addColumn(plannerItems, plannerItems.lastOperationId);
+          await m.addColumn(reminders, reminders.accountId);
+          await m.addColumn(reminders, reminders.serverVersion);
+          await m.addColumn(reminders, reminders.syncStatus);
+          await m.addColumn(reminders, reminders.lastOperationId);
+          await m.addColumn(notes, notes.accountId);
+          await m.addColumn(notes, notes.serverVersion);
+          await m.addColumn(notes, notes.syncStatus);
+          await m.addColumn(notes, notes.lastOperationId);
+          await m.createTable(outboxOperations);
+        }
+      },
+      beforeOpen: (details) async {
+        if (details.wasCreated) {
+          // Fresh database — all columns created via onCreate.
         }
       },
     );

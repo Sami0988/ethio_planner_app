@@ -132,9 +132,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moreNotes => 'Notes';
 
   @override
-  String get morePrint => 'Print Studio';
-
-  @override
   String get moreSettings => 'Settings';
 
   @override
@@ -432,6 +429,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionGo => 'Go';
 
   @override
+  String get actionSave => 'Save';
+
+  @override
   String get filterDay => 'Day';
 
   @override
@@ -490,4 +490,130 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsTimezoneGMT => 'GMT';
+
+  @override
+  String get onboardingIntroBody =>
+      'A personal planner with dual Ethiopian and Gregorian calendars, offline reminders and notes. Your data stays on your device.';
+
+  @override
+  String get onboardingGetStarted => 'Get Started';
+
+  @override
+  String get onboardingAccountTitle => 'Continue planning';
+
+  @override
+  String get onboardingAccountBody =>
+      'Create an account to back up your data and sync across devices, or continue as a guest.';
+
+  @override
+  String get onboardingContinueGuest => 'Continue as Guest';
+
+  @override
+  String get onboardingCreateAccount => 'Create Account';
+
+  @override
+  String get onboardingSignIn => 'Already have an account? Sign in';
+
+  @override
+  String get onboardingGuestTitle => 'Your data stays here';
+
+  @override
+  String get onboardingGuestBody =>
+      'Guest data is stored only on this device. It is not backed up and may be lost if you uninstall the app. You can import your data after creating an account later.';
+
+  @override
+  String get onboardingGotIt => 'Got it';
+
+  @override
+  String get recurrenceTitle => 'Repeat Pattern';
+
+  @override
+  String get recurrenceFrequency => 'Frequency';
+
+  @override
+  String get recurrenceFreqDaily => 'Daily';
+
+  @override
+  String get recurrenceFreqWeekly => 'Weekly';
+
+  @override
+  String get recurrenceFreqMonthly => 'Monthly';
+
+  @override
+  String get recurrenceFreqYearly => 'Yearly';
+
+  @override
+  String get recurrenceInterval => 'Repeat every';
+
+  @override
+  String get recurrenceDay => 'day';
+
+  @override
+  String get recurrenceDays => 'days';
+
+  @override
+  String get recurrenceWeek => 'week';
+
+  @override
+  String get recurrenceWeeks => 'weeks';
+
+  @override
+  String get recurrenceMonth => 'month';
+
+  @override
+  String get recurrenceMonths => 'months';
+
+  @override
+  String get recurrenceYear => 'year';
+
+  @override
+  String get recurrenceYears => 'years';
+
+  @override
+  String get recurrenceCalendarBasis => 'Calendar basis';
+
+  @override
+  String get calendarBasisEthiopian => 'Ethiopian';
+
+  @override
+  String get calendarBasisGregorian => 'Gregorian';
+
+  @override
+  String get recurrenceEnd => 'Ends';
+
+  @override
+  String get recurrenceEndNever => 'Never';
+
+  @override
+  String get recurrenceEndAfter => 'After';
+
+  @override
+  String get recurrenceOccurrences => 'occurrences';
+
+  @override
+  String get recurrenceEndOnDate => 'On date';
+
+  @override
+  String get recurrencePreview => 'Preview';
+
+  @override
+  String get recurrenceNone => 'No repeat';
+
+  @override
+  String get recurrenceClear => 'Remove repeat';
+
+  @override
+  String get settingsContentPacks => 'Content Packs';
+
+  @override
+  String get settingsEthiopianHolidays => 'Ethiopian Holidays';
+
+  @override
+  String get settingsEthiopianObservances => 'Ethiopian Observances';
+
+  @override
+  String get settingsEnabled => 'Enabled';
+
+  @override
+  String get settingsDisabled => 'Disabled';
 }

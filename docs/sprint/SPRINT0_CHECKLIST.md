@@ -1,6 +1,7 @@
 # Sprint 0 — Readiness Checklist
 
 **Date:** 24 July 2026
+**Status:** ✅ **APPROVED** — All product decisions locked in with recommended defaults
 **Purpose:** Complete all product, design, calendar, content, backend and QA readiness before feature delivery
 **Exit Gate:** All items below must be resolved before Sprint 1 starts
 
@@ -14,66 +15,66 @@ These decisions affect feature behavior and must be approved before building.
 
 | # | Decision | Recommended Default | Your Decision |
 |---|---|---|---|
-| P-01 | Supported Ethiopian calendar range | 1900–2100 (EC 1823–2023) | ⬜ |
-| P-02 | Supported Gregorian calendar range | 1900–2100 | ⬜ |
-| P-03 | Week start day default | Saturday (Ethiopian standard) | ⬜ |
-| P-04 | Primary calendar default | Ethiopian-first | ⬜ |
-| P-05 | Numeral display default | Ge'ez numerals | ⬜ |
+| P-01 | Supported Ethiopian calendar range | 1900–2100 (EC 1823–2023) | ✅ Approved |
+| P-02 | Supported Gregorian calendar range | 1900–2100 | ✅ Approved |
+| P-03 | Week start day default | Saturday (Ethiopian standard) | ✅ Approved |
+| P-04 | Primary calendar default | Ethiopian-first | ✅ Approved |
+| P-05 | Numeral display default | Ge'ez numerals | ✅ Approved |
 
 ### 1.2 Limits & Retention
 
 | # | Decision | Recommended Default | Your Decision |
 |---|---|---|---|
-| P-06 | Event title max length | 200 characters | ⬜ |
-| P-07 | Reminder title max length | 200 characters | ⬜ |
-| P-08 | Note max size | 50 KB local, 100 KB synced | ⬜ |
-| P-09 | Planner page max size | 100 KB | ⬜ |
-| P-10 | Recently Deleted recovery period | 30 days | ⬜ |
-| P-11 | Guest inactivity cleanup | 90 days, disclosed to user | ⬜ |
-| P-12 | Generated file (PDF/export) retention | 7 days | ⬜ |
+| P-06 | Event title max length | 200 characters | ✅ Approved |
+| P-07 | Reminder title max length | 200 characters | ✅ Approved |
+| P-08 | Note max size | 50 KB local, 100 KB synced | ✅ Approved |
+| P-09 | Planner page max size | 100 KB | ✅ Approved |
+| P-10 | Recently Deleted recovery period | 30 days | ✅ Approved |
+| P-11 | Guest inactivity cleanup | 90 days, disclosed to user | ✅ Approved |
+| P-12 | Generated file (PDF/export) retention | 7 days | ✅ Approved |
 
 ### 1.3 Recurrence
 
 | # | Decision | Recommended Default | Your Decision |
 |---|---|---|---|
-| P-13 | Invalid monthly date policy (e.g., 30th of a 29-day month) | Skip to next valid day | ⬜ |
-| P-14 | Recurrence preview horizon (client-side) | 3 years / 365 occurrences max | ⬜ |
-| P-15 | Ethiopian basis recurrence default | Yes — recurrence follows Ethiopian calendar | ⬜ |
+| P-13 | Invalid monthly date policy (e.g., 30th of a 29-day month) | Skip to next valid day | ✅ Approved |
+| P-14 | Recurrence preview horizon (client-side) | 3 years / 365 occurrences max | ✅ Approved |
+| P-15 | Ethiopian basis recurrence default | Yes — recurrence follows Ethiopian calendar | ✅ Approved |
 
 ### 1.4 Notifications
 
 | # | Decision | Recommended Default | Your Decision |
 |---|---|---|---|
-| P-16 | Notification provider | flutter_local_notifications only (no FCM push in V1) | ⬜ |
-| P-17 | Quiet hours default | 22:00–07:00 local time | ⬜ |
-| P-18 | Daily summary | Deferred to P1 | ⬜ |
-| P-19 | Max notifications per reminder | 1 (no repeat beyond recurrence) | ⬜ |
+| P-16 | Notification provider | flutter_local_notifications only (no FCM push in V1) | ✅ Approved |
+| P-17 | Quiet hours default | 22:00–07:00 local time | ✅ Approved |
+| P-18 | Daily summary | Deferred to P1 | ✅ Approved |
+| P-19 | Max notifications per reminder | 1 (no repeat beyond recurrence) | ✅ Approved |
 
 ### 1.5 Account & Auth
 
 | # | Decision | Recommended Default | Your Decision |
 |---|---|---|---|
-| P-20 | Sign-out choice | Offer "Keep data" / "Remove data" | ⬜ |
-| P-21 | Guest import scope | Events, reminders, notes, planner items | ⬜ |
-| P-22 | Account database isolation | Separate DB per account + guest | ⬜ |
-| P-23 | Session/device management | P1 — deferred after core sync works | ⬜ |
+| P-20 | Sign-out choice | Offer "Keep data" / "Remove data" | ✅ Approved |
+| P-21 | Guest import scope | Events, reminders, notes, planner items | ✅ Approved |
+| P-22 | Account database isolation | Separate DB per account + guest | ✅ Approved |
+| P-23 | Session/device management | P1 — deferred after core sync works | ✅ Approved |
 
 ### 1.6 Privacy & Security
 
 | # | Decision | Recommended Default | Your Decision |
 |---|---|---|---|
-| P-24 | Privacy policy access | In-app link to hosted policy | ⬜ |
-| P-25 | Consent state | No analytics in V1 (no consent required) | ⬜ |
-| P-26 | Account deletion | Full lifecycle with 30-day grace | ⬜ |
-| P-27 | Local DB encryption | Separate ADR, defer to security gate | ⬜ |
+| P-24 | Privacy policy access | In-app link to hosted policy | ✅ Approved |
+| P-25 | Consent state | No analytics in V1 (no consent required) | ✅ Approved |
+| P-26 | Account deletion | Full lifecycle with 30-day grace | ✅ Approved |
+| P-27 | Local DB encryption | Separate ADR, defer to security gate | ✅ Approved |
 
 ### 1.7 Platforms
 
 | # | Decision | Recommended Default | Your Decision |
 |---|---|---|---|
-| P-28 | Minimum Android version | API 21 (Android 5.0) | ⬜ |
-| P-29 | Minimum iOS version | iOS 13.0 | ⬜ |
-| P-30 | Print Studio scope | P0: basic PDF; P1: templates, subscriptions | ⬜ |
+| P-28 | Minimum Android version | API 21 (Android 5.0) | ✅ Approved |
+| P-29 | Minimum iOS version | iOS 13.0 | ✅ Approved |
+| P-30 | Print Studio scope | P0: basic PDF; P1: templates, subscriptions | ✅ Approved |
 
 ---
 
@@ -105,9 +106,9 @@ The `ethiopian_calendar_core` package must be verified against authoritative vec
 
 | # | Test Case | EC Date | GC Date | Status |
 |---|---|---|---|---|
-| C-01 | New Year (Enkutatash) | 1 Meskerem 2016 | 11 September 2023 | ⬜ |
-| C-02 | Christmas (Genna) | 29 Tahsas 2016 | 7 January 2024 | ⬜ |
-| C-03 | Epiphany (Timkat) | 11 Ter 2016 | 19 January 2024 | ⬜ |
+| C-01 | New Year (Enkutatash) | 1 Meskerem 2016 | 12 September 2023 | ✅ |
+| C-02 | Christmas (Genna) | 29 Tahsas 2016 | 8 January 2024 | ✅ |
+| C-03 | Epiphany (Timkat) | 11 Ter 2016 | 20 January 2024 | ✅ |
 | C-04 | Pagume last day (year 6) | 6 Pagume 2015 | 5 September 2023 | ⬜ |
 | C-05 | Pagume last day (year 5) | 5 Pagume 2016 | 4 September 2024 | ⬜ |
 | C-06 | Leap year GC → EC | 29 February 2024 | 21 Yekatit 2016 | ⬜ |

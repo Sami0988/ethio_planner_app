@@ -49,9 +49,7 @@ class MorePage extends StatelessWidget {
             ),
             title: Text(
               'Recently Deleted',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.error,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => context.push(RouteNames.recentlyDeleted),

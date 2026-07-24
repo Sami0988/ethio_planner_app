@@ -8,10 +8,7 @@ class SyncPage extends ConsumerWidget {
   const SyncPage({super.key});
 
   static Future<void> show(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (_) => const SyncPage(),
-    );
+    return showDialog(context: context, builder: (_) => const SyncPage());
   }
 
   @override
@@ -30,9 +27,7 @@ class SyncPage extends ConsumerWidget {
               padding: const EdgeInsets.only(top: AppSpacing.md),
               child: Text(
                 state.error!,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.error,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
           if (state.itemsSynced > 0 || state.itemsPending > 0)
@@ -108,10 +103,7 @@ class _SyncStatusIndicator extends StatelessWidget {
       case SyncStatus.success:
         return Row(
           children: [
-            Icon(
-              Icons.check_circle,
-              color: theme.colorScheme.primary,
-            ),
+            Icon(Icons.check_circle, color: theme.colorScheme.primary),
             const SizedBox(width: AppSpacing.sm),
             const Text('Sync complete'),
           ],
@@ -119,10 +111,7 @@ class _SyncStatusIndicator extends StatelessWidget {
       case SyncStatus.error:
         return Row(
           children: [
-            Icon(
-              Icons.error_outline,
-              color: theme.colorScheme.error,
-            ),
+            Icon(Icons.error_outline, color: theme.colorScheme.error),
             const SizedBox(width: AppSpacing.sm),
             const Text('Sync failed'),
           ],
@@ -130,10 +119,7 @@ class _SyncStatusIndicator extends StatelessWidget {
       case SyncStatus.conflictDetected:
         return Row(
           children: [
-            Icon(
-              Icons.warning_amber,
-              color: theme.colorScheme.error,
-            ),
+            Icon(Icons.warning_amber, color: theme.colorScheme.error),
             const SizedBox(width: AppSpacing.sm),
             const Text('Conflicts detected'),
           ],

@@ -25,10 +25,7 @@ class ReminderCard extends ConsumerWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: AppSpacing.lg),
         color: theme.colorScheme.error,
-        child: Icon(
-          Icons.delete_outline,
-          color: theme.colorScheme.onError,
-        ),
+        child: Icon(Icons.delete_outline, color: theme.colorScheme.onError),
       ),
       confirmDismiss: (direction) async {
         return await showDialog<bool>(
@@ -50,7 +47,9 @@ class ReminderCard extends ConsumerWidget {
         );
       },
       onDismissed: (direction) {
-        ref.read(remindersControllerProvider.notifier).deleteReminder(reminder.id);
+        ref
+            .read(remindersControllerProvider.notifier)
+            .deleteReminder(reminder.id);
       },
       child: AppCard(
         onTap: () => ReminderFormSheet.show(context, reminder: reminder),
@@ -108,10 +107,7 @@ class ReminderCard extends ConsumerWidget {
               ),
             ),
             if (isOverdue)
-              const StatusBadge(
-                label: 'Overdue',
-                status: BadgeStatus.overdue,
-              ),
+              const StatusBadge(label: 'Overdue', status: BadgeStatus.overdue),
           ],
         ),
       ),

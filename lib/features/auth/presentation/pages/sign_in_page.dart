@@ -23,16 +23,16 @@ class SignInPage extends ConsumerWidget {
               Text(
                 'Welcome Back',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Sign in to your account',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.xxl),
@@ -41,7 +41,9 @@ class SignInPage extends ConsumerWidget {
                 isLoading: state.isLoading,
                 error: state.error,
                 onSubmit: (data) {
-                  ref.read(authControllerProvider.notifier).signIn(
+                  ref
+                      .read(authControllerProvider.notifier)
+                      .signIn(
                         email: data['email']!,
                         password: data['password']!,
                       );
@@ -50,9 +52,9 @@ class SignInPage extends ConsumerWidget {
               const SizedBox(height: AppSpacing.lg),
               TextButton(
                 onPressed: () {
-                  ref.read(authControllerProvider.notifier).setView(
-                        AuthView.resetPassword,
-                      );
+                  ref
+                      .read(authControllerProvider.notifier)
+                      .setView(AuthView.resetPassword);
                 },
                 child: const Text('Forgot password?'),
               ),
@@ -63,9 +65,9 @@ class SignInPage extends ConsumerWidget {
                   const Text("Don't have an account?"),
                   TextButton(
                     onPressed: () {
-                      ref.read(authControllerProvider.notifier).setView(
-                            AuthView.register,
-                          );
+                      ref
+                          .read(authControllerProvider.notifier)
+                          .setView(AuthView.register);
                     },
                     child: const Text('Sign up'),
                   ),

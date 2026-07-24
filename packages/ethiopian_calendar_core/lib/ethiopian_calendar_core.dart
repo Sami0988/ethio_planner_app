@@ -9,4 +9,5 @@ library;
 export 'src/calendar_basis.dart';
 export 'src/calendar_conversion.dart';
 export 'src/ethiopian_date.dart';
+export 'src/ethiopian_date_math.dart';
 export 'src/gregorian_date.dart';

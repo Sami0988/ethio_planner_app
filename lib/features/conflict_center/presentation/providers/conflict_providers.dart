@@ -9,5 +9,5 @@ final conflictRepositoryProvider = Provider<ConflictRepositoryImpl>(
 
 final conflictControllerProvider =
     NotifierProvider<ConflictController, ConflictViewState>(
-  ConflictController.new,
-);
+      ConflictController.new,
+    );

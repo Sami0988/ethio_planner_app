@@ -116,13 +116,13 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
           ),
           const SizedBox(height: AppSpacing.md),
           DropdownButtonFormField<String>(
-            value: _selectedCategory,
+            initialValue: _selectedCategory,
             decoration: const InputDecoration(
               labelText: 'Category (optional)',
               border: OutlineInputBorder(),
             ),
             items: const [
-              DropdownMenuItem(value: null, child: Text('None')),
+              DropdownMenuItem(child: Text('None')),
               DropdownMenuItem(value: 'work', child: Text('Work')),
               DropdownMenuItem(value: 'personal', child: Text('Personal')),
               DropdownMenuItem(value: 'ideas', child: Text('Ideas')),

@@ -38,5 +38,5 @@ final deleteCalendarEventProvider = Provider<DeleteCalendarEvent>(
 
 final calendarControllerProvider =
     NotifierProvider<CalendarController, CalendarViewState>(
-  CalendarController.new,
-);
+      CalendarController.new,
+    );

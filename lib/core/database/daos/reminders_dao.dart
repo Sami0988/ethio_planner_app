@@ -7,11 +7,10 @@ part 'reminders_dao.g.dart';
 @DriftAccessor(tables: [Reminders])
 class RemindersDao extends DatabaseAccessor<AppDatabase>
     with _$RemindersDaoMixin {
-  RemindersDao(AppDatabase db) : super(db);
+  RemindersDao(super.db);
 
   Future<int> insertReminder(RemindersCompanion reminder) {
-    return into(reminders)
-        .insert(reminder, mode: InsertMode.insertOrReplace);
+    return into(reminders).insert(reminder, mode: InsertMode.insertOrReplace);
   }
 
   Future<bool> updateReminder(RemindersCompanion reminder) {
@@ -23,50 +22,66 @@ class RemindersDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<Reminder?> getReminderById(String id) {
-    return (select(reminders)..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (select(reminders)..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
-  Future<List<Reminder>> getRemindersByDate(DateTime date) {
+  Future<List<Reminder>> getRemindersByDate(
+    DateTime date, {
+    String? accountId,
+  }) {
     final start = DateTime(date.year, date.month, date.day);
     final end = start.add(const Duration(days: 1));
-    return (select(reminders)
-          ..where((t) => t.gcDate.isBetweenValues(start, end))
-          ..orderBy([(t) => OrderingTerm.asc(t.gcDate)]))
-        .get();
+    final query = select(reminders)
+      ..where((t) => t.gcDate.isBetweenValues(start, end));
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    query.orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
+    return query.get();
   }
 
-  Future<List<Reminder>> getOverdueReminders() {
+  Future<List<Reminder>> getOverdueReminders({String? accountId}) {
     final now = DateTime.now();
-    return (select(reminders)
-          ..where((t) =>
-              t.gcDate.isSmallerThanValue(now) &
-              t.isCompleted.equals(false))
-          ..orderBy([(t) => OrderingTerm.asc(t.gcDate)]))
-        .get();
+    final query = select(reminders)
+      ..where(
+        (t) => t.gcDate.isSmallerThanValue(now) & t.isCompleted.equals(false),
+      );
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    query.orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
+    return query.get();
   }
 
-  Future<List<Reminder>> getUpcomingReminders() {
+  Future<List<Reminder>> getUpcomingReminders({String? accountId}) {
     final now = DateTime.now();
-    return (select(reminders)
-          ..where((t) =>
-              t.gcDate.isBiggerOrEqualValue(now) &
-              t.isCompleted.equals(false))
-          ..orderBy([(t) => OrderingTerm.asc(t.gcDate)]))
-        .get();
+    final query = select(reminders)
+      ..where(
+        (t) => t.gcDate.isBiggerOrEqualValue(now) & t.isCompleted.equals(false),
+      );
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    query.orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
+    return query.get();
   }
 
-  Future<List<Reminder>> getCompletedReminders() {
-    return (select(reminders)
-          ..where((t) => t.isCompleted.equals(true))
-          ..orderBy([(t) => OrderingTerm.desc(t.gcDate)]))
-        .get();
+  Future<List<Reminder>> getCompletedReminders({String? accountId}) {
+    final query = select(reminders)..where((t) => t.isCompleted.equals(true));
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    query.orderBy([(t) => OrderingTerm.desc(t.gcDate)]);
+    return query.get();
   }
 
-  Future<List<Reminder>> getAllReminders() {
-    return (select(reminders)
-          ..orderBy([(t) => OrderingTerm.asc(t.gcDate)]))
-        .get();
+  Future<List<Reminder>> getAllReminders({String? accountId}) {
+    final query = select(reminders)
+      ..orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    return query.get();
   }
 
   Future<void> toggleCompleted(String id, bool isCompleted) async {
@@ -75,19 +90,25 @@ class RemindersDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-  Stream<List<Reminder>> watchAllReminders() {
-    return (select(reminders)
-          ..orderBy([(t) => OrderingTerm.asc(t.gcDate)]))
-        .watch();
+  Stream<List<Reminder>> watchAllReminders({String? accountId}) {
+    final query = select(reminders)
+      ..orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    return query.watch();
   }
 
-  Stream<List<Reminder>> watchUpcomingReminders() {
+  Stream<List<Reminder>> watchUpcomingReminders({String? accountId}) {
     final now = DateTime.now();
-    return (select(reminders)
-          ..where((t) =>
-              t.gcDate.isBiggerOrEqualValue(now) &
-              t.isCompleted.equals(false))
-          ..orderBy([(t) => OrderingTerm.asc(t.gcDate)]))
-        .watch();
+    final query = select(reminders)
+      ..where(
+        (t) => t.gcDate.isBiggerOrEqualValue(now) & t.isCompleted.equals(false),
+      );
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    query.orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
+    return query.watch();
   }
 }

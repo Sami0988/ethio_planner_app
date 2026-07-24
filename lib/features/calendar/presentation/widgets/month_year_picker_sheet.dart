@@ -38,8 +38,10 @@ class _MonthYearPickerSheetState extends State<MonthYearPickerSheet> {
   void initState() {
     super.initState();
     final baseYear = DateTime.now().year;
-    _years =
-        List.generate(_yearsBefore + _yearsAfter + 1, (i) => baseYear - _yearsBefore + i);
+    _years = List.generate(
+      _yearsBefore + _yearsAfter + 1,
+      (i) => baseYear - _yearsBefore + i,
+    );
     _selectedYear = widget.initialMonth.year;
     _selectedMonth = widget.initialMonth.month;
 
@@ -82,8 +84,9 @@ class _MonthYearPickerSheetState extends State<MonthYearPickerSheet> {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.onSurfaceVariant
-                      .withValues(alpha: 0.3),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(
+                    alpha: 0.3,
+                  ),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -91,15 +94,17 @@ class _MonthYearPickerSheetState extends State<MonthYearPickerSheet> {
             Text(
               l10n.jumpToDateTitle,
               textAlign: TextAlign.center,
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w800),
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               l10n.jumpToDateHint,
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 12),
             SizedBox(
@@ -111,8 +116,9 @@ class _MonthYearPickerSheetState extends State<MonthYearPickerSheet> {
                     height: 44,
                     margin: const EdgeInsets.symmetric(horizontal: 60),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primaryContainer
-                          .withValues(alpha: 0.35),
+                      color: theme.colorScheme.primaryContainer.withValues(
+                        alpha: 0.35,
+                      ),
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
@@ -133,13 +139,14 @@ class _MonthYearPickerSheetState extends State<MonthYearPickerSheet> {
                           child: AnimatedDefaultTextStyle(
                             duration: const Duration(milliseconds: 150),
                             style: theme.textTheme.titleLarge!.copyWith(
-                              fontWeight:
-                                  isSelected ? FontWeight.w800 : FontWeight.w400,
+                              fontWeight: isSelected
+                                  ? FontWeight.w800
+                                  : FontWeight.w400,
                               fontSize: isSelected ? 26 : 18,
                               color: isSelected
                                   ? theme.colorScheme.primary
                                   : theme.colorScheme.onSurfaceVariant
-                                      .withValues(alpha: 0.45),
+                                        .withValues(alpha: 0.45),
                             ),
                             child: Text('$year'),
                           ),
@@ -167,8 +174,9 @@ class _MonthYearPickerSheetState extends State<MonthYearPickerSheet> {
                 return Material(
                   color: isSelected
                       ? theme.colorScheme.primary
-                      : theme.colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.4),
+                      : theme.colorScheme.surfaceContainerHighest.withValues(
+                          alpha: 0.4,
+                        ),
                   borderRadius: BorderRadius.circular(14),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(14),

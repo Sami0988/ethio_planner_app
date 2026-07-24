@@ -5,13 +5,7 @@ part 'planner_item_model.freezed.dart';
 part 'planner_item_model.g.dart';
 
 @JsonEnum()
-enum PlannerSectionModel {
-  focus,
-  priorities,
-  checklist,
-  notes,
-  reflection,
-}
+enum PlannerSectionModel { focus, priorities, checklist, notes, reflection }
 
 @freezed
 abstract class PlannerItemModel with _$PlannerItemModel {

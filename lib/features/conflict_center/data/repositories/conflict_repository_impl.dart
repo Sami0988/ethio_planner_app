@@ -16,6 +16,7 @@ class ConflictRepositoryImpl implements ConflictRepository {
   ) async {
     final index = _conflicts.indexWhere((c) => c.id == conflictId);
     if (index != -1) {
+      // ignore: todo
       // TODO: Apply the resolution (merge data, keep local/remote, etc.)
       _conflicts.removeAt(index);
     }
@@ -23,6 +24,7 @@ class ConflictRepositoryImpl implements ConflictRepository {
 
   @override
   Future<void> resolveAllConflicts(ConflictResolution resolution) async {
+    // ignore: todo
     // TODO: Apply the resolution to all conflicts
     _conflicts.clear();
   }

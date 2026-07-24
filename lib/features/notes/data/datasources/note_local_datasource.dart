@@ -53,9 +53,9 @@ class NoteLocalDatasource {
   }
 
   Stream<List<NoteModel>> watchAllNotes() {
-    return _database.notesDao
-        .watchAllNotes()
-        .map((notes) => notes.map(_toModel).toList());
+    return _database.notesDao.watchAllNotes().map(
+      (notes) => notes.map(_toModel).toList(),
+    );
   }
 
   NoteModel _toModel(Note note) {

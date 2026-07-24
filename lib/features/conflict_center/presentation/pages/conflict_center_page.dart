@@ -10,14 +10,13 @@ class ConflictCenterPage extends ConsumerStatefulWidget {
   const ConflictCenterPage({super.key});
 
   static Future<void> show(BuildContext context) {
-    return Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const ConflictCenterPage()),
-    );
+    return Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const ConflictCenterPage()));
   }
 
   @override
-  ConsumerState<ConflictCenterPage> createState() =>
-      _ConflictCenterPageState();
+  ConsumerState<ConflictCenterPage> createState() => _ConflictCenterPageState();
 }
 
 class _ConflictCenterPageState extends ConsumerState<ConflictCenterPage> {
@@ -61,23 +60,23 @@ class _ConflictCenterPageState extends ConsumerState<ConflictCenterPage> {
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.conflicts.isEmpty
-              ? _EmptyState()
-              : ListView.separated(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  itemCount: state.conflicts.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 8),
-                  itemBuilder: (context, index) {
-                    final conflict = state.conflicts[index];
-                    return _ConflictCard(
-                      conflict: conflict,
-                      onResolve: (resolution) {
-                        ref
-                            .read(conflictControllerProvider.notifier)
-                            .resolveConflict(conflict.id, resolution);
-                      },
-                    );
+          ? _EmptyState()
+          : ListView.separated(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              itemCount: state.conflicts.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 8),
+              itemBuilder: (context, index) {
+                final conflict = state.conflicts[index];
+                return _ConflictCard(
+                  conflict: conflict,
+                  onResolve: (resolution) {
+                    ref
+                        .read(conflictControllerProvider.notifier)
+                        .resolveConflict(conflict.id, resolution);
                   },
-                ),
+                );
+              },
+            ),
     );
   }
 }
@@ -98,15 +97,15 @@ class _EmptyState extends StatelessWidget {
           Text(
             'No conflicts',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             'All your data is in sync',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -115,10 +114,7 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _ConflictCard extends StatelessWidget {
-  const _ConflictCard({
-    required this.conflict,
-    required this.onResolve,
-  });
+  const _ConflictCard({required this.conflict, required this.onResolve});
 
   final SyncConflictItem conflict;
   final void Function(ConflictResolution) onResolve;

@@ -29,7 +29,7 @@ class DioClient {
       AuthInterceptor(secureStorage),
       RefreshInterceptor(secureStorage, _dio),
       if (const bool.fromEnvironment('dart.vm.product') == false)
-        LogInterceptor(requestBody: true, responseBody: true),
+        LogInterceptor(),
     ]);
   }
 

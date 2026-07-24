@@ -23,16 +23,16 @@ class RegisterPage extends ConsumerWidget {
               Text(
                 'Create Account',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Sign up to get started',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.xxl),
@@ -41,7 +41,9 @@ class RegisterPage extends ConsumerWidget {
                 isLoading: state.isLoading,
                 error: state.error,
                 onSubmit: (data) {
-                  ref.read(authControllerProvider.notifier).register(
+                  ref
+                      .read(authControllerProvider.notifier)
+                      .register(
                         email: data['email']!,
                         password: data['password']!,
                         displayName: data['displayName'],
@@ -55,9 +57,9 @@ class RegisterPage extends ConsumerWidget {
                   const Text('Already have an account?'),
                   TextButton(
                     onPressed: () {
-                      ref.read(authControllerProvider.notifier).setView(
-                            AuthView.signIn,
-                          );
+                      ref
+                          .read(authControllerProvider.notifier)
+                          .setView(AuthView.signIn);
                     },
                     child: const Text('Sign in'),
                   ),

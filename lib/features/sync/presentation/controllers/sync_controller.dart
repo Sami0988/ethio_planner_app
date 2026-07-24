@@ -42,10 +42,7 @@ class SyncController extends Notifier<SyncViewState> {
     final repository = ref.read(syncRepositoryProvider);
     final result = await repository.fullResync();
 
-    state = state.copyWith(
-      status: result.status,
-      error: result.error,
-    );
+    state = state.copyWith(status: result.status, error: result.error);
   }
 
   void resetStatus() {

@@ -5,6 +5,8 @@ class PlannerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Card(child: Padding(padding: EdgeInsets.all(8), child: Text('Planner Item')));
+    return const Card(
+      child: Padding(padding: EdgeInsets.all(8), child: Text('Planner Item')),
+    );
   }
 }

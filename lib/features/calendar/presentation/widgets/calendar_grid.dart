@@ -189,7 +189,7 @@ class _MonthGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final firstDay = DateTime(currentMonth.year, currentMonth.month, 1);
+    final firstDay = DateTime(currentMonth.year, currentMonth.month);
     final lastDay = DateTime(currentMonth.year, currentMonth.month + 1, 0);
     // Calculate starting weekday offset based on configured week start.
     // DateTime.weekday: Monday=1..Sunday=7. We need offset from 0.

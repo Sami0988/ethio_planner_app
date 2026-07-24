@@ -19,21 +19,8 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initAndLoad();
+      ref.read(plannerControllerProvider.notifier).loadItems();
     });
-  }
-
-  void _initAndLoad() {
-    final controller = ref.read(plannerControllerProvider.notifier);
-    controller.setDependencies(
-      getItemsByDate: ref.read(getPlannerItemsByDateProvider),
-      getItemsByDateRange: ref.read(getPlannerItemsByDateRangeProvider),
-      createItem: ref.read(createPlannerItemProvider),
-      updateItem: ref.read(updatePlannerItemProvider),
-      deleteItem: ref.read(deletePlannerItemProvider),
-      reorderItems: ref.read(reorderPlannerItemsProvider),
-    );
-    controller.loadItems();
   }
 
   @override
@@ -93,7 +80,8 @@ class _DateHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final today = DateTime.now();
-    final isToday = selectedDate.year == today.year &&
+    final isToday =
+        selectedDate.year == today.year &&
         selectedDate.month == today.month &&
         selectedDate.day == today.day;
 
@@ -126,8 +114,10 @@ class _DateHeader extends StatelessWidget {
               if (isToday)
                 Container(
                   margin: const EdgeInsets.only(top: 4),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(4),

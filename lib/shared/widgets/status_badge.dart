@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
 import '../../core/theme/app_radii.dart';
+import '../../core/theme/app_text_styles.dart';
 
 enum BadgeStatus { holiday, overdue, completed, neutral }
 
@@ -9,11 +10,7 @@ class StatusBadge extends StatelessWidget {
   final String label;
   final BadgeStatus status;
 
-  const StatusBadge({
-    super.key,
-    required this.label,
-    required this.status,
-  });
+  const StatusBadge({super.key, required this.label, required this.status});
 
   Color get _backgroundColor {
     switch (status) {

@@ -1,7 +1,8 @@
 import 'package:drift/drift.dart';
+
 import '../../../../core/database/app_database.dart';
-import '../models/planner_item_model.dart';
 import '../../domain/entities/planner_item.dart' show PlannerSection;
+import '../models/planner_item_model.dart';
 
 class PlannerLocalDatasource {
   final AppDatabase _database;
@@ -14,8 +15,13 @@ class PlannerLocalDatasource {
   }
 
   Future<List<PlannerItemModel>> getItemsByDateRange(
-      DateTime start, DateTime end) async {
-    final items = await _database.plannerItemsDao.getItemsByDateRange(start, end);
+    DateTime start,
+    DateTime end,
+  ) async {
+    final items = await _database.plannerItemsDao.getItemsByDateRange(
+      start,
+      end,
+    );
     return items.map(_toModel).toList();
   }
 
@@ -42,7 +48,9 @@ class PlannerLocalDatasource {
   }
 
   Stream<List<PlannerItemModel>> watchItemsByDateRange(
-      DateTime start, DateTime end) {
+    DateTime start,
+    DateTime end,
+  ) {
     return _database.plannerItemsDao
         .watchItemsByDateRange(start, end)
         .map((items) => items.map(_toModel).toList());

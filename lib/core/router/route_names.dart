@@ -16,6 +16,7 @@ class RouteNames {
   static const String auth = '/auth';
   static const String recentlyDeleted = '/recently-deleted';
   static const String conflictCenter = '/conflict-center';
+  static const String onboarding = '/onboarding';
 
   static const String error = '/error';
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../../core/accessibility/accessibility_helper.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_text_styles.dart';
 import 'status_badge.dart';
 
 class CheckboxTile extends StatelessWidget {

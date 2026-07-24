@@ -1,0 +1,78 @@
+{
+  "id": "ethiopian_observances",
+  "name": "Ethiopian Observances",
+  "enabledByDefault": true,
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "et_obs_newyear",
+      "type": "observance",
+      "calendarBasis": "ethiopian",
+      "ecMonth": 1,
+      "ecDay": 1,
+      "titleEn": "Ethiopian New Year (Enkutatash)",
+      "titleAm": "አዲስ ዓመት",
+      "titleOm": "Waggaa Haaraa",
+      "titleTi": "አዲስ ዓመት",
+      "descriptionEn": "Ethiopian New Year, marking the end of the three-month rainy season.",
+      "descriptionAm": "የኢትዮጵያ አዲስ ዓመት፣ ሦስት ወራት ውድቀት ከጠረጴታ በኋላ።",
+      "source": "Ethiopian cultural tradition"
+    },
+    {
+      "id": "et_obs_irreecha",
+      "type": "observance",
+      "calendarBasis": "ethiopian",
+      "ecMonth": 1,
+      "ecDay": 1,
+      "titleEn": "Irreecha (Oromo Thanksgiving)",
+      "titleAm": "ኢሬቻ",
+      "titleOm": "Irreechaa",
+      "titleTi": "ኢሬቻ",
+      "descriptionEn": "Oromo thanksgiving festival celebrating the end of the rainy season.",
+      "descriptionAm": "የኦሮሞ በዓል፣ ውድቀት ማብቂያን ያከብራል።",
+      "source": "Oromo cultural tradition"
+    },
+    {
+      "id": "et_obs_victory",
+      "type": "observance",
+      "calendarBasis": "ethiopian",
+      "ecMonth": 6,
+      "ecDay": 1,
+      "titleEn": "Victory of Adwa (Yekatit 12)",
+      "titleAm": "የካቲት ፲፪",
+      "titleOm": "Yekaatit 12",
+      "titleTi": "የካቲት ፲፪",
+      "descriptionEn": "Commemorates the Italian bombardment of Addis Ababa in 1937.",
+      "descriptionAm": "በ1937 በጣሊያን የአዲስ አበባ ጥፋትን ያመለክታል።",
+      "source": "Federal Democratic Republic of Ethiopia"
+    },
+    {
+      "id": "et_obs_fenkil",
+      "type": "observance",
+      "calendarBasis": "ethiopian",
+      "ecMonth": 11,
+      "ecDay": 20,
+      "titleEn": "Fenkil (Liberation of Massawa)",
+      "titleAm": "ፍንቅል",
+      "titleOm": "Fenkil",
+      "titleTi": "ፍንቅል",
+      "descriptionEn": "Commemorates the liberation of Massawa from Ethiopian rule in 1990.",
+      "descriptionAm": "በ1990 የማሳዋን ነፃ ማንቃትን ያመለክታል።",
+      "source": "Eritrean cultural tradition"
+    },
+    {
+      "id": "et_obs_awd_basho",
+      "type": "observance",
+      "calendarBasis": "ethiopian",
+      "ecMonth": 10,
+      "ecDay": 1,
+      "titleEn": "Awd Basho",
+      "titleAm": "አውድ ባሶ",
+      "titleOm": "Awd Baashoo",
+      "titleTi": "አውድ ባሶ",
+      "descriptionEn": "Traditional Oromo thanksgiving at the end of harvest season.",
+      "descriptionAm": "የኦሮሞ ባህላዊ በዓል፣ ማbrace ማብቂያ።",
+      "source": "Oromo cultural tradition"
+    }
+  ]
+}

@@ -3,7 +3,13 @@ import '../../domain/entities/user.dart';
 
 part 'auth_view_state.freezed.dart';
 
-enum AuthView { signIn, register, verifyEmail, resetPassword, confirmPasswordReset }
+enum AuthView {
+  signIn,
+  register,
+  verifyEmail,
+  resetPassword,
+  confirmPasswordReset,
+}
 
 @freezed
 abstract class AuthViewState with _$AuthViewState {

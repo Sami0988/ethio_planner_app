@@ -35,44 +35,60 @@ class SyncRepositoryImpl implements SyncRepository {
 
       // Prepare data for import
       final guestData = {
-        'events': events.map((e) => {
-              'id': e.id,
-              'title': e.title,
-              'ec_date': e.ecDate.toIso8601String(),
-              'gc_date': e.gcDate.toIso8601String(),
-              'description': e.description,
-              'is_all_day': e.isAllDay,
-              'category': e.category,
-              'location': e.location,
-            }).toList(),
-        'reminders': reminders.map((r) => {
-              'id': r.id,
-              'title': r.title,
-              'ec_date': r.ecDate.toIso8601String(),
-              'gc_date': r.gcDate.toIso8601String(),
-              'description': r.description,
-              'is_completed': r.isCompleted,
-            }).toList(),
-        'planner_items': plannerItems.map((p) => {
-              'id': p.id,
-              'title': p.title,
-              'ec_date': p.ecDate.toIso8601String(),
-              'gc_date': p.gcDate.toIso8601String(),
-              'description': p.description,
-            }).toList(),
-        'notes': notes.map((n) => {
-              'id': n.id,
-              'title': n.title,
-              'content': n.content,
-              'created_at': n.createdAt.toIso8601String(),
-              'updated_at': n.updatedAt.toIso8601String(),
-              'is_pinned': n.isPinned,
-              'category': n.category,
-            }).toList(),
+        'events': events
+            .map(
+              (e) => {
+                'id': e.id,
+                'title': e.title,
+                'ec_date': e.ecDate.toIso8601String(),
+                'gc_date': e.gcDate.toIso8601String(),
+                'description': e.description,
+                'is_all_day': e.isAllDay,
+                'category': e.category,
+                'location': e.location,
+              },
+            )
+            .toList(),
+        'reminders': reminders
+            .map(
+              (r) => {
+                'id': r.id,
+                'title': r.title,
+                'ec_date': r.ecDate.toIso8601String(),
+                'gc_date': r.gcDate.toIso8601String(),
+                'description': r.description,
+                'is_completed': r.isCompleted,
+              },
+            )
+            .toList(),
+        'planner_items': plannerItems
+            .map(
+              (p) => {
+                'id': p.id,
+                'title': p.title,
+                'ec_date': p.ecDate.toIso8601String(),
+                'gc_date': p.gcDate.toIso8601String(),
+                'description': p.description,
+              },
+            )
+            .toList(),
+        'notes': notes
+            .map(
+              (n) => {
+                'id': n.id,
+                'title': n.title,
+                'content': n.content,
+                'created_at': n.createdAt.toIso8601String(),
+                'updated_at': n.updatedAt.toIso8601String(),
+                'is_pinned': n.isPinned,
+                'category': n.category,
+              },
+            )
+            .toList(),
       };
 
       // Import to server
-      final result = await _remoteDatasource.importGuestData(guestData);
+      await _remoteDatasource.importGuestData(guestData);
 
       _syncStatusController.add(SyncStatus.success);
 
@@ -85,10 +101,7 @@ class SyncRepositoryImpl implements SyncRepository {
       );
     } catch (e) {
       _syncStatusController.add(SyncStatus.error);
-      return GuestImportResult(
-        success: false,
-        error: e.toString(),
-      );
+      return GuestImportResult(success: false, error: e.toString());
     }
   }
 
@@ -125,10 +138,7 @@ class SyncRepositoryImpl implements SyncRepository {
       );
     } catch (e) {
       _syncStatusController.add(SyncStatus.error);
-      return SyncResult(
-        status: SyncStatus.error,
-        error: e.toString(),
-      );
+      return SyncResult(status: SyncStatus.error, error: e.toString());
     }
   }
 
@@ -136,16 +146,11 @@ class SyncRepositoryImpl implements SyncRepository {
   Future<SyncResult> syncCalendarEvents() async {
     try {
       final events = await _database.calendarEventsDao.getAllEvents();
+      // ignore: todo
       // TODO: Implement actual sync logic with server
-      return SyncResult(
-        status: SyncStatus.success,
-        itemsSynced: events.length,
-      );
+      return SyncResult(status: SyncStatus.success, itemsSynced: events.length);
     } catch (e) {
-      return SyncResult(
-        status: SyncStatus.error,
-        error: e.toString(),
-      );
+      return SyncResult(status: SyncStatus.error, error: e.toString());
     }
   }
 
@@ -153,16 +158,14 @@ class SyncRepositoryImpl implements SyncRepository {
   Future<SyncResult> syncReminders() async {
     try {
       final reminders = await _database.remindersDao.getAllReminders();
+      // ignore: todo
       // TODO: Implement actual sync logic with server
       return SyncResult(
         status: SyncStatus.success,
         itemsSynced: reminders.length,
       );
     } catch (e) {
-      return SyncResult(
-        status: SyncStatus.error,
-        error: e.toString(),
-      );
+      return SyncResult(status: SyncStatus.error, error: e.toString());
     }
   }
 
@@ -170,16 +173,11 @@ class SyncRepositoryImpl implements SyncRepository {
   Future<SyncResult> syncPlannerItems() async {
     try {
       final items = await _database.plannerItemsDao.getAllItems();
+      // ignore: todo
       // TODO: Implement actual sync logic with server
-      return SyncResult(
-        status: SyncStatus.success,
-        itemsSynced: items.length,
-      );
+      return SyncResult(status: SyncStatus.success, itemsSynced: items.length);
     } catch (e) {
-      return SyncResult(
-        status: SyncStatus.error,
-        error: e.toString(),
-      );
+      return SyncResult(status: SyncStatus.error, error: e.toString());
     }
   }
 
@@ -187,16 +185,11 @@ class SyncRepositoryImpl implements SyncRepository {
   Future<SyncResult> syncNotes() async {
     try {
       final notes = await _database.notesDao.getAllNotes();
+      // ignore: todo
       // TODO: Implement actual sync logic with server
-      return SyncResult(
-        status: SyncStatus.success,
-        itemsSynced: notes.length,
-      );
+      return SyncResult(status: SyncStatus.success, itemsSynced: notes.length);
     } catch (e) {
-      return SyncResult(
-        status: SyncStatus.error,
-        error: e.toString(),
-      );
+      return SyncResult(status: SyncStatus.error, error: e.toString());
     }
   }
 
@@ -205,18 +198,14 @@ class SyncRepositoryImpl implements SyncRepository {
     try {
       _syncStatusController.add(SyncStatus.syncing);
 
+      // ignore: todo
       // TODO: Implement full resync logic
       _syncStatusController.add(SyncStatus.success);
 
-      return const SyncResult(
-        status: SyncStatus.success,
-      );
+      return const SyncResult(status: SyncStatus.success);
     } catch (e) {
       _syncStatusController.add(SyncStatus.error);
-      return SyncResult(
-        status: SyncStatus.error,
-        error: e.toString(),
-      );
+      return SyncResult(status: SyncStatus.error, error: e.toString());
     }
   }
 

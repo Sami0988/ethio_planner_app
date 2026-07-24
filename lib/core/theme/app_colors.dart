@@ -51,19 +51,34 @@ class AppColorsDark {
 extension AppColorsX on BuildContext {
   bool get _isDark => Theme.of(this).brightness == Brightness.dark;
 
-  Color get colorPrimary => _isDark ? AppColorsDark.primary : AppColorsLight.primary;
-  Color get colorPrimaryDark => _isDark ? AppColorsDark.primaryDark : AppColorsLight.primaryDark;
-  Color get colorPrimaryLight => _isDark ? AppColorsDark.primaryLight : AppColorsLight.primaryLight;
-  Color get colorBackground => _isDark ? AppColorsDark.background : AppColorsLight.background;
-  Color get colorSurface => _isDark ? AppColorsDark.surface : AppColorsLight.surface;
-  Color get colorSurfaceMuted => _isDark ? AppColorsDark.surfaceMuted : AppColorsLight.surfaceMuted;
-  Color get colorTextPrimary => _isDark ? AppColorsDark.textPrimary : AppColorsLight.textPrimary;
-  Color get colorTextSecondary => _isDark ? AppColorsDark.textSecondary : AppColorsLight.textSecondary;
-  Color get colorTextMuted => _isDark ? AppColorsDark.textMuted : AppColorsLight.textMuted;
-  Color get colorHoliday => _isDark ? AppColorsDark.holiday : AppColorsLight.holiday;
-  Color get colorOverdue => _isDark ? AppColorsDark.overdue : AppColorsLight.overdue;
-  Color get colorSuccess => _isDark ? AppColorsDark.success : AppColorsLight.success;
-  Color get colorCompleted => _isDark ? AppColorsDark.completed : AppColorsLight.completed;
-  Color get colorDivider => _isDark ? AppColorsDark.divider : AppColorsLight.divider;
-  Color get colorTimelineTrack => _isDark ? AppColorsDark.timelineTrack : AppColorsLight.timelineTrack;
+  Color get colorPrimary =>
+      _isDark ? AppColorsDark.primary : AppColorsLight.primary;
+  Color get colorPrimaryDark =>
+      _isDark ? AppColorsDark.primaryDark : AppColorsLight.primaryDark;
+  Color get colorPrimaryLight =>
+      _isDark ? AppColorsDark.primaryLight : AppColorsLight.primaryLight;
+  Color get colorBackground =>
+      _isDark ? AppColorsDark.background : AppColorsLight.background;
+  Color get colorSurface =>
+      _isDark ? AppColorsDark.surface : AppColorsLight.surface;
+  Color get colorSurfaceMuted =>
+      _isDark ? AppColorsDark.surfaceMuted : AppColorsLight.surfaceMuted;
+  Color get colorTextPrimary =>
+      _isDark ? AppColorsDark.textPrimary : AppColorsLight.textPrimary;
+  Color get colorTextSecondary =>
+      _isDark ? AppColorsDark.textSecondary : AppColorsLight.textSecondary;
+  Color get colorTextMuted =>
+      _isDark ? AppColorsDark.textMuted : AppColorsLight.textMuted;
+  Color get colorHoliday =>
+      _isDark ? AppColorsDark.holiday : AppColorsLight.holiday;
+  Color get colorOverdue =>
+      _isDark ? AppColorsDark.overdue : AppColorsLight.overdue;
+  Color get colorSuccess =>
+      _isDark ? AppColorsDark.success : AppColorsLight.success;
+  Color get colorCompleted =>
+      _isDark ? AppColorsDark.completed : AppColorsLight.completed;
+  Color get colorDivider =>
+      _isDark ? AppColorsDark.divider : AppColorsLight.divider;
+  Color get colorTimelineTrack =>
+      _isDark ? AppColorsDark.timelineTrack : AppColorsLight.timelineTrack;
 }

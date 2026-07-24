@@ -9,6 +9,5 @@ abstract class PlannerRepository {
   Future<void> updateItem(PlannerItem item);
   Future<void> deleteItem(String id);
   Future<void> reorderItems(List<PlannerItem> items);
-  Stream<List<PlannerItem>> watchItemsByDateRange(
-      DateTime start, DateTime end);
+  Stream<List<PlannerItem>> watchItemsByDateRange(DateTime start, DateTime end);
 }

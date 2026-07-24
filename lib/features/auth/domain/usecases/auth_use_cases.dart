@@ -23,10 +23,7 @@ class VerifyEmailUseCase {
 
   VerifyEmailUseCase(this._repository);
 
-  Future<AuthResult> call({
-    required String email,
-    required String code,
-  }) async {
+  Future<AuthResult> call({required String email, required String code}) async {
     return _repository.verifyEmail(email: email, code: code);
   }
 }

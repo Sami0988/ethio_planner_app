@@ -330,12 +330,6 @@ abstract class AppLocalizations {
   /// **'Notes'**
   String get moreNotes;
 
-  /// No description provided for @morePrint.
-  ///
-  /// In en, this message translates to:
-  /// **'Print Studio'**
-  String get morePrint;
-
   /// No description provided for @moreSettings.
   ///
   /// In en, this message translates to:
@@ -900,6 +894,12 @@ abstract class AppLocalizations {
   /// **'Go'**
   String get actionGo;
 
+  /// No description provided for @actionSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get actionSave;
+
   /// No description provided for @filterDay.
   ///
   /// In en, this message translates to:
@@ -1019,6 +1019,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'GMT'**
   String get settingsTimezoneGMT;
+
+  /// No description provided for @onboardingIntroBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A personal planner with dual Ethiopian and Gregorian calendars, offline reminders and notes. Your data stays on your device.'**
+  String get onboardingIntroBody;
+
+  /// No description provided for @onboardingGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStarted;
+
+  /// No description provided for @onboardingAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue planning'**
+  String get onboardingAccountTitle;
+
+  /// No description provided for @onboardingAccountBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account to back up your data and sync across devices, or continue as a guest.'**
+  String get onboardingAccountBody;
+
+  /// No description provided for @onboardingContinueGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Guest'**
+  String get onboardingContinueGuest;
+
+  /// No description provided for @onboardingCreateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get onboardingCreateAccount;
+
+  /// No description provided for @onboardingSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get onboardingSignIn;
+
+  /// No description provided for @onboardingGuestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data stays here'**
+  String get onboardingGuestTitle;
+
+  /// No description provided for @onboardingGuestBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest data is stored only on this device. It is not backed up and may be lost if you uninstall the app. You can import your data after creating an account later.'**
+  String get onboardingGuestBody;
+
+  /// No description provided for @onboardingGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get onboardingGotIt;
+
+  /// No description provided for @recurrenceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat Pattern'**
+  String get recurrenceTitle;
+
+  /// No description provided for @recurrenceFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get recurrenceFrequency;
+
+  /// No description provided for @recurrenceFreqDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get recurrenceFreqDaily;
+
+  /// No description provided for @recurrenceFreqWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get recurrenceFreqWeekly;
+
+  /// No description provided for @recurrenceFreqMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get recurrenceFreqMonthly;
+
+  /// No description provided for @recurrenceFreqYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get recurrenceFreqYearly;
+
+  /// No description provided for @recurrenceInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat every'**
+  String get recurrenceInterval;
+
+  /// No description provided for @recurrenceDay.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get recurrenceDay;
+
+  /// No description provided for @recurrenceDays.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get recurrenceDays;
+
+  /// No description provided for @recurrenceWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'week'**
+  String get recurrenceWeek;
+
+  /// No description provided for @recurrenceWeeks.
+  ///
+  /// In en, this message translates to:
+  /// **'weeks'**
+  String get recurrenceWeeks;
+
+  /// No description provided for @recurrenceMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'month'**
+  String get recurrenceMonth;
+
+  /// No description provided for @recurrenceMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get recurrenceMonths;
+
+  /// No description provided for @recurrenceYear.
+  ///
+  /// In en, this message translates to:
+  /// **'year'**
+  String get recurrenceYear;
+
+  /// No description provided for @recurrenceYears.
+  ///
+  /// In en, this message translates to:
+  /// **'years'**
+  String get recurrenceYears;
+
+  /// No description provided for @recurrenceCalendarBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar basis'**
+  String get recurrenceCalendarBasis;
+
+  /// No description provided for @calendarBasisEthiopian.
+  ///
+  /// In en, this message translates to:
+  /// **'Ethiopian'**
+  String get calendarBasisEthiopian;
+
+  /// No description provided for @calendarBasisGregorian.
+  ///
+  /// In en, this message translates to:
+  /// **'Gregorian'**
+  String get calendarBasisGregorian;
+
+  /// No description provided for @recurrenceEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get recurrenceEnd;
+
+  /// No description provided for @recurrenceEndNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get recurrenceEndNever;
+
+  /// No description provided for @recurrenceEndAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'After'**
+  String get recurrenceEndAfter;
+
+  /// No description provided for @recurrenceOccurrences.
+  ///
+  /// In en, this message translates to:
+  /// **'occurrences'**
+  String get recurrenceOccurrences;
+
+  /// No description provided for @recurrenceEndOnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'On date'**
+  String get recurrenceEndOnDate;
+
+  /// No description provided for @recurrencePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get recurrencePreview;
+
+  /// No description provided for @recurrenceNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No repeat'**
+  String get recurrenceNone;
+
+  /// No description provided for @recurrenceClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove repeat'**
+  String get recurrenceClear;
+
+  /// No description provided for @settingsContentPacks.
+  ///
+  /// In en, this message translates to:
+  /// **'Content Packs'**
+  String get settingsContentPacks;
+
+  /// No description provided for @settingsEthiopianHolidays.
+  ///
+  /// In en, this message translates to:
+  /// **'Ethiopian Holidays'**
+  String get settingsEthiopianHolidays;
+
+  /// No description provided for @settingsEthiopianObservances.
+  ///
+  /// In en, this message translates to:
+  /// **'Ethiopian Observances'**
+  String get settingsEthiopianObservances;
+
+  /// No description provided for @settingsEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get settingsEnabled;
+
+  /// No description provided for @settingsDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get settingsDisabled;
 }
 
 class _AppLocalizationsDelegate

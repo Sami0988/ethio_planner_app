@@ -6,13 +6,11 @@ import '../models/calendar_event_model.dart';
 class CalendarRepositoryImpl implements CalendarRepository {
   final CalendarLocalDatasource localDatasource;
 
-  CalendarRepositoryImpl({
-    required this.localDatasource,
-  });
+  CalendarRepositoryImpl({required this.localDatasource});
 
   @override
   Future<List<CalendarEvent>> getEvents(DateTime month) async {
-    final start = DateTime(month.year, month.month, 1);
+    final start = DateTime(month.year, month.month);
     final end = DateTime(month.year, month.month + 1, 0, 23, 59, 59);
     final models = await localDatasource.getEventsByDateRange(start, end);
     return models.map((m) => m.toEntity()).toList();
@@ -69,7 +67,9 @@ class CalendarRepositoryImpl implements CalendarRepository {
 
   @override
   Stream<List<CalendarEvent>> watchEventsByDateRange(
-      DateTime start, DateTime end) {
+    DateTime start,
+    DateTime end,
+  ) {
     return localDatasource
         .watchEventsByDateRange(start, end)
         .map((models) => models.map((m) => m.toEntity()).toList());

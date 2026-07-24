@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/sync/sync_status.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_radii.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_styles.dart';
-import '../../core/theme/app_radii.dart';
 
 /// Subtle, always-honest synchronization indicator (SYNC-FR-004).
 ///
@@ -78,39 +78,36 @@ class SyncStatusBanner extends StatelessWidget {
   }
 
   IconData get _icon => switch (status) {
-        SyncStatus.offline => Icons.cloud_off_rounded,
-        SyncStatus.savedLocally => Icons.save_rounded,
-        SyncStatus.waitingToSync => Icons.schedule_rounded,
-        SyncStatus.syncing => Icons.sync_rounded,
-        SyncStatus.synced => Icons.check_circle_rounded,
-        SyncStatus.syncFailed => Icons.error_outline_rounded,
-        SyncStatus.rejected => Icons.block_rounded,
-        SyncStatus.conflictDetected => Icons.merge_type_rounded,
-        SyncStatus.actionRequired => Icons.priority_high_rounded,
-      };
+    SyncStatus.offline => Icons.cloud_off_rounded,
+    SyncStatus.savedLocally => Icons.save_rounded,
+    SyncStatus.waitingToSync => Icons.schedule_rounded,
+    SyncStatus.syncing => Icons.sync_rounded,
+    SyncStatus.synced => Icons.check_circle_rounded,
+    SyncStatus.syncFailed => Icons.error_outline_rounded,
+    SyncStatus.rejected => Icons.block_rounded,
+    SyncStatus.conflictDetected => Icons.merge_type_rounded,
+    SyncStatus.actionRequired => Icons.priority_high_rounded,
+  };
 
   String _label(AppLocalizations l10n) => switch (status) {
-        SyncStatus.offline => l10n.syncOffline,
-        SyncStatus.savedLocally => l10n.syncSavedLocally,
-        SyncStatus.waitingToSync => l10n.syncWaiting(pendingCount),
-        SyncStatus.syncing => l10n.syncingLabel,
-        SyncStatus.synced => l10n.syncSynced,
-        SyncStatus.syncFailed => l10n.syncFailed,
-        SyncStatus.rejected => l10n.syncRejected,
-        SyncStatus.conflictDetected => l10n.syncConflict,
-        SyncStatus.actionRequired => l10n.syncActionRequired,
-      };
+    SyncStatus.offline => l10n.syncOffline,
+    SyncStatus.savedLocally => l10n.syncSavedLocally,
+    SyncStatus.waitingToSync => l10n.syncWaiting(pendingCount),
+    SyncStatus.syncing => l10n.syncingLabel,
+    SyncStatus.synced => l10n.syncSynced,
+    SyncStatus.syncFailed => l10n.syncFailed,
+    SyncStatus.rejected => l10n.syncRejected,
+    SyncStatus.conflictDetected => l10n.syncConflict,
+    SyncStatus.actionRequired => l10n.syncActionRequired,
+  };
 
   Color _tone(BuildContext context) => switch (status) {
-        SyncStatus.syncFailed ||
-        SyncStatus.rejected =>
-          context.colorOverdue,
-        SyncStatus.conflictDetected ||
-        SyncStatus.actionRequired =>
-          context.colorHoliday,
-        SyncStatus.offline || SyncStatus.savedLocally => context.colorTextSecondary,
-        _ => context.colorPrimary,
-      };
+    SyncStatus.syncFailed || SyncStatus.rejected => context.colorOverdue,
+    SyncStatus.conflictDetected ||
+    SyncStatus.actionRequired => context.colorHoliday,
+    SyncStatus.offline || SyncStatus.savedLocally => context.colorTextSecondary,
+    _ => context.colorPrimary,
+  };
 
   _BannerAction? _action(BuildContext context, AppLocalizations l10n) {
     if (status == SyncStatus.syncFailed && onRetry != null) {

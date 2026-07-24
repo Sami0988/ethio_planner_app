@@ -16,9 +16,7 @@ Future<void> bootstrap(AppFlavor flavor) async {
 
   runApp(
     ProviderScope(
-      observers: [
-        if (AppConfig.instance.enableVerboseLogging) AppObserver(),
-      ],
+      observers: [if (AppConfig.instance.enableVerboseLogging) AppObserver()],
       child: const App(),
     ),
   );

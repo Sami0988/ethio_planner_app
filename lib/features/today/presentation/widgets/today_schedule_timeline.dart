@@ -104,7 +104,9 @@ class _TimelineEntry extends StatelessWidget {
                         ? []
                         : [
                             BoxShadow(
-                              color: context.colorPrimary.withOpacity(0.25),
+                              color: context.colorPrimary.withValues(
+                                alpha: 0.25,
+                              ),
                               blurRadius: 6,
                               spreadRadius: 2,
                             ),
@@ -125,7 +127,7 @@ class _TimelineEntry extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(vertical: 2),
                       decoration: BoxDecoration(
                         color: item.isCompleted
-                            ? context.colorCompleted.withOpacity(0.4)
+                            ? context.colorCompleted.withValues(alpha: 0.4)
                             : context.colorTimelineTrack,
                         borderRadius: BorderRadius.circular(1),
                       ),

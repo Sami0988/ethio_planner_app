@@ -30,9 +30,9 @@ class PlannerSectionView extends ConsumerWidget {
             children: [
               Text(
                 _sectionTitle(section),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
               ),
               IconButton(
                 icon: const Icon(Icons.add_circle_outline, size: 20),
@@ -53,14 +53,12 @@ class PlannerSectionView extends ConsumerWidget {
             child: Text(
               'No items',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           )
         else
-          ...items.map(
-            (item) => _PlannerItemTile(item: item),
-          ),
+          ...items.map((item) => _PlannerItemTile(item: item)),
       ],
     );
   }
@@ -97,10 +95,7 @@ class _PlannerItemTile extends ConsumerWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: AppSpacing.lg),
         color: theme.colorScheme.error,
-        child: Icon(
-          Icons.delete_outline,
-          color: theme.colorScheme.onError,
-        ),
+        child: Icon(Icons.delete_outline, color: theme.colorScheme.onError),
       ),
       onDismissed: (direction) {
         ref.read(plannerControllerProvider.notifier).deleteItem(item.id);
@@ -134,8 +129,7 @@ class _PlannerItemTile extends ConsumerWidget {
                           : null,
                     ),
                   ),
-                  if (item.description != null &&
-                      item.description!.isNotEmpty)
+                  if (item.description != null && item.description!.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 2),
                       child: Text(

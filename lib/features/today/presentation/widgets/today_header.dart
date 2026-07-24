@@ -40,7 +40,10 @@ class TodayHeader extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [context.colorPrimary.withOpacity(0.06), Colors.transparent],
+          colors: [
+            context.colorPrimary.withValues(alpha: 0.06),
+            Colors.transparent,
+          ],
         ),
       ),
       child: Padding(

@@ -7,7 +7,7 @@ part 'recently_deleted_dao.g.dart';
 @DriftAccessor(tables: [RecentlyDeletedItems])
 class RecentlyDeletedDao extends DatabaseAccessor<AppDatabase>
     with _$RecentlyDeletedDaoMixin {
-  RecentlyDeletedDao(AppDatabase db) : super(db);
+  RecentlyDeletedDao(super.db);
 
   static const _retentionDays = 30;
 
@@ -31,21 +31,24 @@ class RecentlyDeletedDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<List<RecentlyDeletedItem>> getAllRecentlyDeleted() async {
-    final cutoff = DateTime.now().subtract(const Duration(days: _retentionDays));
-    
-    // Auto-delete expired items
-    await (delete(recentlyDeletedItems)
-          ..where((t) => t.deletedAt.isSmallerThanValue(cutoff)))
-        .go();
+    final cutoff = DateTime.now().subtract(
+      const Duration(days: _retentionDays),
+    );
 
-    return (select(recentlyDeletedItems)
-          ..orderBy([(t) => OrderingTerm.desc(t.deletedAt)]))
-        .get();
+    // Auto-delete expired items
+    await (delete(
+      recentlyDeletedItems,
+    )..where((t) => t.deletedAt.isSmallerThanValue(cutoff))).go();
+
+    return (select(
+      recentlyDeletedItems,
+    )..orderBy([(t) => OrderingTerm.desc(t.deletedAt)])).get();
   }
 
   Future<RecentlyDeletedItem?> getById(String id) async {
-    return (select(recentlyDeletedItems)..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (select(
+      recentlyDeletedItems,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   Future<void> removeFromRecentlyDeleted(String id) async {

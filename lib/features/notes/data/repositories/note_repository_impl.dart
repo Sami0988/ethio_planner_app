@@ -6,9 +6,7 @@ import '../models/note_model.dart';
 class NoteRepositoryImpl implements NoteRepository {
   final NoteLocalDatasource localDatasource;
 
-  NoteRepositoryImpl({
-    required this.localDatasource,
-  });
+  NoteRepositoryImpl({required this.localDatasource});
 
   @override
   Future<List<Note>> getAllNotes() async {
@@ -99,8 +97,8 @@ class NoteRepositoryImpl implements NoteRepository {
 
   @override
   Stream<List<Note>> watchAllNotes() {
-    return localDatasource
-        .watchAllNotes()
-        .map((models) => models.map((m) => m.toEntity()).toList());
+    return localDatasource.watchAllNotes().map(
+      (models) => models.map((m) => m.toEntity()).toList(),
+    );
   }
 }

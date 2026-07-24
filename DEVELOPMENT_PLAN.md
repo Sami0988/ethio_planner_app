@@ -3,7 +3,7 @@
 > Product: **Ethiopian Calendar, Reminder, Simple Planner & Custom Print SaaS Platform** (Walia Nexus).
 > Companion to `refined_flutter_planner_app_master_prompt.md` (which scopes ONLY the Flutter app).
 > This document covers the **entire platform**; the Flutter app is Workstream 6.
-> Status date: 2026-07-22.
+> Status date: 2026-07-24.
 
 > **Scope note.** The master prompt deliberately restricts *Claude's coding scope* to the Flutter
 > customer app. This plan is broader: it maps every platform component so the Flutter work fits a
@@ -125,28 +125,28 @@ SyncCoordinator, Ethiopian calendar core, EN/Amharic, Android/iOS (Web/PWA optio
 
 ## SECTION D — FLUTTER APP DETAIL (WS6)
 
-Current readiness **~10%** (clean scaffold; every repository and the date converter throw
-`UnimplementedError`; zero sync/outbox code in `lib/`). Develop in place per A2/A3.
+Current readiness **~60%** (foundation + calendar + events/reminders + planner/notes complete; 
+print/commerce deferred). Develop in place per A2/A3.
 
 ### D0 — Foundation hardening (Phase 0)
-- [ ] Strict lints (`very_good_analysis` + `riverpod_lint` + `custom_lint`), replace default `flutter_lints`.
-- [ ] Flavors `main_development/staging/production` + `bootstrap()`; centralized env via `--dart-define`.
-- [ ] Consume shared **`ethiopian_calendar_core`** (WS0); delete throwing `lib/core/utils/date_converter.dart`.
-- [ ] **Drift redesign:** sync metadata on every synced table (`id, owner_id, server_version, sync_status, created_at, updated_at, deleted_at, last_operation_id`); add outbox, sync_receipts, sync_cursors, sync_conflicts, deletion_tombstones, sync_lease, device-only tables; indexes on date ranges; versioned migrations + migration tests; bounded occurrence horizon.
-- [ ] Typed failures, monitoring abstraction (redacted), feature-flag service, l10n shell (EN + Amharic).
-- [ ] CI: format → analyze → codegen verify → unit/drift/widget tests → build Android/Web/(iOS on macOS).
-- [ ] ADRs (SSOT, outbox sync, conflict policy, recurrence storage, DB encryption, native-vs-web auth).
+- [x] Strict lints (`very_good_analysis` + `riverpod_lint` + `custom_lint`), replace default `flutter_lints`.
+- [x] Flavors `main_development/staging/production` + `bootstrap()`; centralized env via `--dart-define`.
+- [x] Consume shared **`ethiopian_calendar_core`** (WS0); delete throwing `lib/core/utils/date_converter.dart`.
+- [x] **Drift redesign:** sync metadata on every synced table (`id, owner_id, server_version, sync_status, created_at, updated_at, deleted_at, last_operation_id`); add outbox, sync_receipts, sync_cursors, sync_conflicts, deletion_tombstones, sync_lease, device-only tables; indexes on date ranges; versioned migrations + migration tests; bounded occurrence horizon.
+- [x] Typed failures, monitoring abstraction (redacted), feature-flag service, l10n shell (EN + Amharic).
+- [x] CI: format → analyze → codegen verify → unit/drift/widget tests → build Android/Web/(iOS on macOS).
+- [x] ADRs (SSOT, outbox sync, conflict policy, recurrence storage, DB encryption, native-vs-web auth).
 
 ### D1 — Calendar foundation (Phase 1A)
-Guest mode, auth shell, preferences; calendar views (EC/GC/dual, year/month/week/day, week-start, jump-to-New-Year); calendar packs; **initial SyncCoordinator** (session → reachability → lease → push outbox → pull cursor → apply in txn → release); sync-status UI.
+- [x] Guest mode, auth shell, preferences; calendar views (EC/GC/dual, year/month/week/day, week-start, jump-to-New-Year); calendar packs; **initial SyncCoordinator** (session → reachability → lease → push outbox → pull cursor → apply in txn → release); sync-status UI.
 **Gate:** calendar reference suite, offline restart, migration tests, security baseline.
 
 ### D2 — Events & reminders (Phase 1B)
-Events CRUD/duplicate/move/recurrence/exceptions/category/attachment-metadata/search; reminders (recurrence, multi-notify, snooze, reschedule, complete/undo, skip, quiet hours, daily summary); notification registration + provisional local fallback reconciled after sync; public-event extension foundation (flagged).
+- [x] Events CRUD/duplicate/move/recurrence/exceptions/category/attachment-metadata/search; reminders (recurrence, multi-notify, snooze, reschedule, complete/undo, skip, quiet hours, daily summary); notification registration + provisional local fallback reconciled after sync; public-event extension foundation (flagged).
 **Gate:** reminder accuracy, idempotent retry (same `operation_id` → no dup), notification cancellation, recurrence tests.
 
 ### D3 — Planner & notes (Phase 1C)
-Yearly/monthly/weekly planner (+configurable sections/carry-forward); **notes feature (create `features/notes/`)**; profiles/templates (no hierarchy/KPI); autosave (debounced/coalesced), undo, Recently Deleted; guest→account migration; polls/questions (flagged).
+- [x] Yearly/monthly/weekly planner (+configurable sections/carry-forward); **notes feature (create `features/notes/`)**; profiles/templates (no hierarchy/KPI); autosave (debounced/coalesced), undo, Recently Deleted; guest→account migration; polls/questions (flagged).
 **Gate:** privacy, offline autosave, multi-device conflict (Keep Mine/Server/Both/Merge), 10k-record perf.
 
 ### D4 — Print & commercialization (Phase 1D)
