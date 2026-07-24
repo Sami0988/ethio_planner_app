@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/localization/locale_provider.dart';
+import '../../../../core/providers/calendar_settings_provider.dart';
 import '../../../../core/providers/theme_mode_provider.dart';
+import '../widgets/calendar_settings_sheet.dart';
 import '../widgets/language_selector.dart';
 import '../widgets/theme_selector.dart';
 
@@ -39,11 +41,36 @@ class SettingsPage extends ConsumerWidget {
     }
   }
 
+  String _calendarModeLabel(BuildContext context, CalendarDisplayMode mode) {
+    final l10n = AppLocalizations.of(context);
+    switch (mode) {
+      case CalendarDisplayMode.ethiopian:
+        return l10n.settingsPrimaryCalendarEthiopian;
+      case CalendarDisplayMode.gregorian:
+        return l10n.settingsPrimaryCalendarGregorian;
+      case CalendarDisplayMode.dual:
+        return l10n.settingsPrimaryCalendarDual;
+    }
+  }
+
+  String _weekStartLabel(BuildContext context, WeekStartDay day) {
+    final l10n = AppLocalizations.of(context);
+    switch (day) {
+      case WeekStartDay.saturday:
+        return l10n.settingsWeekStartSaturday;
+      case WeekStartDay.sunday:
+        return l10n.settingsWeekStartSunday;
+      case WeekStartDay.monday:
+        return l10n.settingsWeekStartMonday;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(localeProvider);
+    final calendarSettings = ref.watch(calendarSettingsProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.moreSettings)),
@@ -63,6 +90,16 @@ class SettingsPage extends ConsumerWidget {
             subtitle: Text(_localeLabel(context, locale)),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => LanguageSelector.show(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_today_outlined),
+            title: Text(l10n.settingsCalendar),
+            subtitle: Text(
+              '${_calendarModeLabel(context, calendarSettings.displayMode)} · '
+              '${_weekStartLabel(context, calendarSettings.weekStart)}',
+            ),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => CalendarSettingsSheet.show(context),
           ),
           const Divider(height: 32),
           ListTile(

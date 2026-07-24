@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/providers/calendar_settings_provider.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../providers/calendar_providers.dart';
 import 'month_year_picker_sheet.dart';
@@ -14,6 +15,7 @@ class CalendarGrid extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(calendarControllerProvider);
     final controller = ref.read(calendarControllerProvider.notifier);
+    final settings = ref.watch(calendarSettingsProvider);
     final locale = Localizations.localeOf(context).toString();
 
     return Column(
@@ -33,13 +35,16 @@ class CalendarGrid extends ConsumerWidget {
             }
           },
         ),
-        _WeekdayHeader(locale: locale),
+        _WeekdayHeader(locale: locale, weekStart: settings.weekStartDay),
         Expanded(
           child: _MonthGrid(
             currentMonth: state.currentMonth,
             selectedDate: state.selectedDate,
             hasEvents: controller.hasEventsOnDate,
             onDateSelected: controller.selectDate,
+            weekStartDay: settings.weekStartDay,
+            displayMode: settings.displayMode,
+            numeralPreference: settings.numeralPreference,
           ),
         ),
       ],
@@ -121,15 +126,20 @@ class _NavButton extends StatelessWidget {
 }
 
 class _WeekdayHeader extends StatelessWidget {
-  const _WeekdayHeader({required this.locale});
+  const _WeekdayHeader({required this.locale, required this.weekStart});
 
   final String locale;
+  final int weekStart;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // Build weekday names starting from the configured week start day.
+    // DateTime(1970, 1, 4) is a Sunday. We offset from there.
     final weekdays = List.generate(7, (i) {
-      final refDate = DateTime(1970, 1, 4 + i);
+      final dayNum = (weekStart - 1 + i) % 7;
+      // Sunday=7, Monday=1..Saturday=6 in DateTime.weekday
+      final refDate = DateTime(1970, 1, 4 + dayNum);
       return DateFormat.E(locale).format(refDate);
     });
 
@@ -163,19 +173,28 @@ class _MonthGrid extends StatelessWidget {
     required this.selectedDate,
     required this.hasEvents,
     required this.onDateSelected,
+    required this.weekStartDay,
+    required this.displayMode,
+    required this.numeralPreference,
   });
 
   final DateTime currentMonth;
   final DateTime? selectedDate;
   final bool Function(DateTime) hasEvents;
   final void Function(DateTime) onDateSelected;
+  final int weekStartDay;
+  final CalendarDisplayMode displayMode;
+  final NumeralPreference numeralPreference;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final firstDay = DateTime(currentMonth.year, currentMonth.month, 1);
     final lastDay = DateTime(currentMonth.year, currentMonth.month + 1, 0);
-    final startingWeekday = firstDay.weekday % 7;
+    // Calculate starting weekday offset based on configured week start.
+    // DateTime.weekday: Monday=1..Sunday=7. We need offset from 0.
+    final firstWeekday = firstDay.weekday; // 1-7
+    final startingWeekday = (firstWeekday - weekStartDay + 7) % 7;
     final daysInMonth = lastDay.day;
 
     final today = DateTime.now();
@@ -204,7 +223,10 @@ class _MonthGrid extends StatelessWidget {
             selectedDate!.day == date.day;
         final hasEventsToday = hasEvents(date);
         final isWeekend = date.weekday == 6 || date.weekday == 7;
-        final ecDay = _ethiopianDayFor(date);
+        final secondaryDay = _secondaryDayFor(date, displayMode);
+        final primaryNumeral = numeralPreference == NumeralPreference.gez
+            ? _toGez(day)
+            : '$day';
 
         return Material(
           color: Colors.transparent,
@@ -229,8 +251,11 @@ class _MonthGrid extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '$day',
+                    primaryNumeral,
                     style: theme.textTheme.bodyMedium?.copyWith(
+                      fontFamily: numeralPreference == NumeralPreference.gez
+                          ? 'NotoSansEthiopic'
+                          : null,
                       color: isSelected
                           ? theme.colorScheme.onPrimary
                           : isWeekend
@@ -241,27 +266,18 @@ class _MonthGrid extends StatelessWidget {
                           : null,
                     ),
                   ),
-                  if (ecDay != null) ...[
+                  if (secondaryDay != null) ...[
                     const SizedBox(height: 1),
                     Text(
-                      ecDay,
-                      // Explicit font family so Ge'ez glyphs render
-                      // consistently across devices instead of relying on
-                      // whichever fallback font the OS happens to pick.
-                      // Requires bundling e.g. Noto Sans Ethiopic in
-                      // pubspec.yaml and registering it under this family
-                      // name (or your existing app font if it already
-                      // covers the Ethiopic Unicode block).
+                      secondaryDay,
                       style: theme.textTheme.labelSmall?.copyWith(
                         fontFamily: 'NotoSansEthiopic',
-                        fontSize: 11,
+                        fontSize: 10,
                         height: 1,
                         fontWeight: FontWeight.w500,
                         color: isSelected
-                            ? theme.colorScheme.onPrimary.withValues(
-                                alpha: 0.85,
-                              )
-                            : theme.colorScheme.primary.withValues(alpha: 0.75),
+                            ? theme.colorScheme.onPrimary.withValues(alpha: 0.8)
+                            : theme.colorScheme.primary.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -286,12 +302,24 @@ class _MonthGrid extends StatelessWidget {
     );
   }
 
-  /// Converts a Gregorian date to its Ethiopian day number in Ge'ez numerals.
-  String? _ethiopianDayFor(DateTime date) {
+  /// Returns the secondary day label based on display mode.
+  /// In Ethiopian mode, shows the Ethiopian day. In Gregorian mode, shows
+  /// the Ethiopian day. In dual mode, no secondary needed (both shown as
+  /// primary).
+  String? _secondaryDayFor(DateTime date, CalendarDisplayMode mode) {
     try {
       final gc = GregorianDate(date.year, date.month, date.day);
       final ec = CalendarConversion.gregorianToEthiopian(gc);
-      return _toGez(ec.day);
+      if (mode == CalendarDisplayMode.dual) {
+        // In dual mode, show Ethiopian as secondary below Gregorian
+        return _toGez(ec.day);
+      }
+      if (mode == CalendarDisplayMode.gregorian) {
+        // Gregorian primary, show Ethiopian as secondary
+        return _toGez(ec.day);
+      }
+      // Ethiopian primary, show Gregorian as secondary
+      return '${date.day}';
     } catch (_) {
       return null;
     }

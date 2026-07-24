@@ -445,4 +445,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendarAllEvents => 'All Events';
+
+  @override
+  String get settingsCalendar => 'Calendar';
+
+  @override
+  String get settingsPrimaryCalendar => 'Primary Calendar';
+
+  @override
+  String get settingsPrimaryCalendarEthiopian => 'Ethiopian';
+
+  @override
+  String get settingsPrimaryCalendarGregorian => 'Gregorian';
+
+  @override
+  String get settingsPrimaryCalendarDual => 'Dual';
+
+  @override
+  String get settingsWeekStart => 'Week Start';
+
+  @override
+  String get settingsWeekStartSaturday => 'Saturday';
+
+  @override
+  String get settingsWeekStartSunday => 'Sunday';
+
+  @override
+  String get settingsWeekStartMonday => 'Monday';
+
+  @override
+  String get settingsNumeralStyle => 'Numeral Style';
+
+  @override
+  String get settingsNumeralGez => 'Ge\'ez';
+
+  @override
+  String get settingsNumeralLatin => 'Latin';
+
+  @override
+  String get settingsTimezone => 'Timezone';
+
+  @override
+  String get settingsTimezoneAddisAbaba => 'Addis Ababa';
+
+  @override
+  String get settingsTimezoneGMT => 'GMT';
 }

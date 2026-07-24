@@ -444,4 +444,49 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get calendarAllEvents => 'ሁሉም ዝግጅቶች';
+
+  @override
+  String get settingsCalendar => 'ቀን መቁጠሪያ';
+
+  @override
+  String get settingsPrimaryCalendar => 'ዋና ቀን መቁጠሪያ';
+
+  @override
+  String get settingsPrimaryCalendarEthiopian => 'ኢትዮጵያዊ';
+
+  @override
+  String get settingsPrimaryCalendarGregorian => '껑ሮርያ';
+
+  @override
+  String get settingsPrimaryCalendarDual => 'দ্বৈত';
+
+  @override
+  String get settingsWeekStart => 'ሳምንት መጀመሪያ';
+
+  @override
+  String get settingsWeekStartSaturday => 'ቅዳሜ';
+
+  @override
+  String get settingsWeekStartSunday => 'እሑድ';
+
+  @override
+  String get settingsWeekStartMonday => 'ሰኞ';
+
+  @override
+  String get settingsNumeralStyle => 'የቁጥር ዘይቤ';
+
+  @override
+  String get settingsNumeralGez => 'ግዕዝ';
+
+  @override
+  String get settingsNumeralLatin => 'ላቲን';
+
+  @override
+  String get settingsTimezone => 'የጊዜ ዞን';
+
+  @override
+  String get settingsTimezoneAddisAbaba => 'አዲስ አበባ';
+
+  @override
+  String get settingsTimezoneGMT => 'ጂ.ኤም.ቲ';
 }

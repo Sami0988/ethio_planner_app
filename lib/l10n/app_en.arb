@@ -146,5 +146,20 @@
   "filterWeek": "Week",
   "filterMonth": "Month",
   "filterAll": "All",
-  "calendarAllEvents": "All Events"
+  "calendarAllEvents": "All Events",
+  "settingsCalendar": "Calendar",
+  "settingsPrimaryCalendar": "Primary Calendar",
+  "settingsPrimaryCalendarEthiopian": "Ethiopian",
+  "settingsPrimaryCalendarGregorian": "Gregorian",
+  "settingsPrimaryCalendarDual": "Dual",
+  "settingsWeekStart": "Week Start",
+  "settingsWeekStartSaturday": "Saturday",
+  "settingsWeekStartSunday": "Sunday",
+  "settingsWeekStartMonday": "Monday",
+  "settingsNumeralStyle": "Numeral Style",
+  "settingsNumeralGez": "Ge'ez",
+  "settingsNumeralLatin": "Latin",
+  "settingsTimezone": "Timezone",
+  "settingsTimezoneAddisAbaba": "Addis Ababa",
+  "settingsTimezoneGMT": "GMT"
 }
