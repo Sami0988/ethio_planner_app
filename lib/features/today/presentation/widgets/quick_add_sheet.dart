@@ -1,17 +1,24 @@
 import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart';
 
-import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../calendar/presentation/widgets/event_form_sheet.dart';
+import '../../../notes/presentation/widgets/note_form_sheet.dart';
+import '../../../reminders/presentation/widgets/reminder_form_sheet.dart';
 
-/// Quick Add action sheet (APP-FR-002): lets the user choose the item type
-/// before any editor opens. Navigation is via go_router.
+/// Quick Add action sheet (APP-FR-002): lets the user pick an item type and
+/// opens the matching editor directly, so "Add Reminder" lands on the reminder
+/// editor rather than a list screen.
 class QuickAddSheet extends StatelessWidget {
-  const QuickAddSheet({super.key});
+  const QuickAddSheet({super.key, required this.parentContext});
+
+  /// The page context used to open the editor after this sheet is dismissed
+  /// (this sheet's own context is gone once it pops).
+  final BuildContext parentContext;
 
   static Future<void> show(BuildContext context) {
     return showModalBottomSheet<void>(
@@ -21,7 +28,7 @@ class QuickAddSheet extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (_) => const QuickAddSheet(),
+      builder: (_) => QuickAddSheet(parentContext: context),
     );
   }
 
@@ -49,26 +56,26 @@ class QuickAddSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            // Interim targets until dedicated editors exist (Phase 1B/1C).
             _QuickAddOption(
               icon: Icons.event_rounded,
               label: l10n.quickAddEvent,
               color: context.colorPrimary,
-              onTap: () => _go(context, RouteNames.calendar),
+              onTap: () => _open(context, () => EventFormSheet.show(parentContext)),
             ),
             const SizedBox(height: AppSpacing.sm),
             _QuickAddOption(
               icon: Icons.notifications_rounded,
               label: l10n.quickAddReminder,
               color: context.colorHoliday,
-              onTap: () => _go(context, RouteNames.reminders),
+              onTap: () =>
+                  _open(context, () => ReminderFormSheet.show(parentContext)),
             ),
             const SizedBox(height: AppSpacing.sm),
             _QuickAddOption(
               icon: Icons.sticky_note_2_rounded,
               label: l10n.quickAddNote,
               color: context.colorSuccess,
-              onTap: () => _go(context, RouteNames.planner),
+              onTap: () => _open(context, () => NoteFormSheet.show(parentContext)),
             ),
           ],
         ),
@@ -76,9 +83,11 @@ class QuickAddSheet extends StatelessWidget {
     );
   }
 
-  void _go(BuildContext context, String route) {
-    Navigator.of(context).pop();
-    context.go(route);
+  /// Dismisses this sheet, then opens the chosen editor on the page context.
+  void _open(BuildContext sheetContext, VoidCallback openEditor) {
+    HapticFeedback.selectionClick();
+    Navigator.of(sheetContext).pop();
+    openEditor();
   }
 }
 

@@ -1,7 +1,9 @@
 import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/sync_status_banner.dart';
 import '../controllers/today_controller.dart';
@@ -51,6 +53,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
   Widget _build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(todayControllerProvider);
+    final reduceMotion = MediaQuery.of(context).disableAnimations;
 
     return Scaffold(
       appBar: AppBar(
@@ -82,13 +85,13 @@ class _TodayPageState extends ConsumerState<TodayPage> {
           IconButton(
             icon: const Icon(Icons.search_rounded),
             tooltip: l10n.searchLabel,
-            onPressed: () {},
+            onPressed: () => context.push(RouteNames.search),
           ),
           Padding(
             padding: const EdgeInsets.only(right: AppSpacing.sm),
             child: IconButton(
               tooltip: l10n.accountLabel,
-              onPressed: () {},
+              onPressed: () => context.push(RouteNames.settings),
               icon: const Hero(
                 tag: 'account-avatar',
                 child: CircleAvatar(
@@ -131,7 +134,9 @@ class _TodayPageState extends ConsumerState<TodayPage> {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: reduceMotion
+                      ? Duration.zero
+                      : const Duration(milliseconds: 300),
                   switchInCurve: Curves.easeOut,
                   switchOutCurve: Curves.easeIn,
                   transitionBuilder: (child, animation) => FadeTransition(
@@ -152,7 +157,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
                       : Column(
                           key: const ValueKey('loaded'),
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: _sections(state),
+                          children: _sections(state, reduceMotion),
                         ),
                 ),
                 const SizedBox(height: 96),
@@ -164,7 +169,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     );
   }
 
-  List<Widget> _sections(TodayViewState state) {
+  List<Widget> _sections(TodayViewState state, bool reduceMotion) {
     final upNext = state.upNext;
     final controller = ref.read(todayControllerProvider.notifier);
     final sections = <Widget>[
@@ -181,19 +186,22 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
     return [
       for (var i = 0; i < sections.length; i++) ...[
-        TweenAnimationBuilder<double>(
-          tween: Tween(begin: 0, end: 1),
-          duration: Duration(milliseconds: 350 + (i * 100)),
-          curve: Curves.easeOutCubic,
-          builder: (context, value, child) => Opacity(
-            opacity: value,
-            child: Transform.translate(
-              offset: Offset(0, 16 * (1 - value)),
-              child: child,
+        if (reduceMotion)
+          sections[i]
+        else
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0, end: 1),
+            duration: Duration(milliseconds: 350 + (i * 100)),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, child) => Opacity(
+              opacity: value,
+              child: Transform.translate(
+                offset: Offset(0, 16 * (1 - value)),
+                child: child,
+              ),
             ),
+            child: sections[i],
           ),
-          child: sections[i],
-        ),
         if (i != sections.length - 1) const SizedBox(height: AppSpacing.xl),
       ],
     ];

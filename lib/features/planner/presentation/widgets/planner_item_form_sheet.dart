@@ -1,7 +1,10 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:ethiopian_calendar_core/ethiopian_calendar_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/planner_item.dart';
 import '../providers/planner_providers.dart';
@@ -35,6 +38,7 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
   late final TextEditingController _descriptionController;
   late DateTime _selectedDate;
   PlannerSection _selectedSection = PlannerSection.focus;
+  bool _titleError = false;
 
   bool get _isEditing => widget.item != null;
 
@@ -69,8 +73,21 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
     }
   }
 
+  String _sectionLabel(AppLocalizations l10n, PlannerSection section) =>
+      switch (section) {
+        PlannerSection.focus => l10n.plannerFocus,
+        PlannerSection.priorities => l10n.plannerPriorities,
+        PlannerSection.checklist => l10n.plannerChecklist,
+        PlannerSection.notes => l10n.plannerNotes,
+        PlannerSection.reflection => l10n.plannerReflection,
+      };
+
   Future<void> _save() async {
-    if (_titleController.text.trim().isEmpty) return;
+    if (_titleController.text.trim().isEmpty) {
+      setState(() => _titleError = true);
+      return;
+    }
+    await HapticFeedback.lightImpact();
 
     final controller = ref.read(plannerControllerProvider.notifier);
 
@@ -107,6 +124,7 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return Padding(
@@ -121,18 +139,21 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            _isEditing ? 'Edit Item' : 'New Item',
+            _isEditing ? l10n.actionEdit : l10n.actionCreate,
             style: theme.textTheme.titleLarge,
           ),
           const SizedBox(height: AppSpacing.lg),
           TextField(
             controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'Title',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.fieldTitle,
+              errorText: _titleError ? l10n.fieldTitleRequired : null,
             ),
             textCapitalization: TextCapitalization.sentences,
             autofocus: true,
+            onChanged: (_) {
+              if (_titleError) setState(() => _titleError = false);
+            },
           ),
           const SizedBox(height: AppSpacing.md),
           OutlinedButton.icon(
@@ -143,31 +164,13 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
           const SizedBox(height: AppSpacing.md),
           DropdownButtonFormField<PlannerSection>(
             initialValue: _selectedSection,
-            decoration: const InputDecoration(
-              labelText: 'Section',
-              border: OutlineInputBorder(),
-            ),
-            items: const [
-              DropdownMenuItem(
-                value: PlannerSection.focus,
-                child: Text('Focus'),
-              ),
-              DropdownMenuItem(
-                value: PlannerSection.priorities,
-                child: Text('Priorities'),
-              ),
-              DropdownMenuItem(
-                value: PlannerSection.checklist,
-                child: Text('Checklist'),
-              ),
-              DropdownMenuItem(
-                value: PlannerSection.notes,
-                child: Text('Notes'),
-              ),
-              DropdownMenuItem(
-                value: PlannerSection.reflection,
-                child: Text('Reflection'),
-              ),
+            decoration: const InputDecoration(),
+            items: [
+              for (final section in PlannerSection.values)
+                DropdownMenuItem(
+                  value: section,
+                  child: Text(_sectionLabel(l10n, section)),
+                ),
             ],
             onChanged: (value) {
               if (value != null) setState(() => _selectedSection = value);
@@ -176,17 +179,31 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
           const SizedBox(height: AppSpacing.md),
           TextField(
             controller: _descriptionController,
-            decoration: const InputDecoration(
-              labelText: 'Description (optional)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.fieldDescriptionOptional,
             ),
             maxLines: 3,
             textCapitalization: TextCapitalization.sentences,
           ),
           const SizedBox(height: AppSpacing.lg),
-          FilledButton(
-            onPressed: _save,
-            child: Text(_isEditing ? 'Update' : 'Create'),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(l10n.actionCancel),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: FilledButton(
+                  onPressed: _save,
+                  child: Text(
+                    _isEditing ? l10n.actionUpdate : l10n.actionCreate,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

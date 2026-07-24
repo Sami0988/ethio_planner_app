@@ -13,7 +13,8 @@ class AppColorsLight {
 
   static const Color textPrimary = Color(0xFF1A1A1A);
   static const Color textSecondary = Color(0xFF6B6B6B);
-  static const Color textMuted = Color(0xFF9B9B9B);
+  // Darkened from 0xFF9B9B9B (~2.6:1) to meet WCAG AA (~4.5:1) on background.
+  static const Color textMuted = Color(0xFF6E6E6E);
 
   static const Color holiday = Color(0xFFE0A030);
   static const Color overdue = Color(0xFFD64545);
@@ -37,7 +38,8 @@ class AppColorsDark {
 
   static const Color textPrimary = Color(0xFFF2F1F5);
   static const Color textSecondary = Color(0xFFA8A6B3);
-  static const Color textMuted = Color(0xFF7A7885);
+  // Lightened from 0xFF7A7885 (~3.9:1) to meet WCAG AA on dark background.
+  static const Color textMuted = Color(0xFF8A8896);
 
   static const Color holiday = Color(0xFFE8B34D);
   static const Color overdue = Color(0xFFE86A6A);

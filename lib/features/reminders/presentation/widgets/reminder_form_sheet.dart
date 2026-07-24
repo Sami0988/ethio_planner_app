@@ -1,5 +1,7 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:ethiopian_calendar_core/ethiopian_calendar_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -40,6 +42,7 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
   late TimeOfDay _selectedTime;
   String? _selectedCategory;
   RecurrenceRule? _recurrenceRule;
+  bool _titleError = false;
 
   bool get _isEditing => widget.reminder != null;
 
@@ -89,7 +92,11 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
   }
 
   Future<void> _save() async {
-    if (_titleController.text.trim().isEmpty) return;
+    if (_titleController.text.trim().isEmpty) {
+      setState(() => _titleError = true);
+      return;
+    }
+    await HapticFeedback.lightImpact();
 
     final gcDate = DateTime(
       _selectedDate.year,
@@ -136,6 +143,7 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return Padding(
@@ -150,18 +158,21 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            _isEditing ? 'Edit Reminder' : 'New Reminder',
+            _isEditing ? l10n.calendarEditReminder : l10n.calendarNewReminder,
             style: theme.textTheme.titleLarge,
           ),
           const SizedBox(height: AppSpacing.lg),
           TextField(
             controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'Title',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.fieldTitle,
+              errorText: _titleError ? l10n.fieldTitleRequired : null,
             ),
             textCapitalization: TextCapitalization.sentences,
             autofocus: true,
+            onChanged: (_) {
+              if (_titleError) setState(() => _titleError = false);
+            },
           ),
           const SizedBox(height: AppSpacing.md),
           Row(
@@ -186,16 +197,19 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
           const SizedBox(height: AppSpacing.md),
           DropdownButtonFormField<String>(
             initialValue: _selectedCategory,
-            decoration: const InputDecoration(
-              labelText: 'Category (optional)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.fieldCategoryOptional,
             ),
-            items: const [
-              DropdownMenuItem(child: Text('None')),
-              DropdownMenuItem(value: 'work', child: Text('Work')),
-              DropdownMenuItem(value: 'personal', child: Text('Personal')),
-              DropdownMenuItem(value: 'health', child: Text('Health')),
-              DropdownMenuItem(value: 'other', child: Text('Other')),
+            items: [
+              DropdownMenuItem(child: Text(l10n.categoryNone)),
+              DropdownMenuItem(value: 'work', child: Text(l10n.categoryWork)),
+              DropdownMenuItem(
+                value: 'personal',
+                child: Text(l10n.categoryPersonal),
+              ),
+              // 'Health' has no ARB key yet; localized once one is added.
+              const DropdownMenuItem(value: 'health', child: Text('Health')),
+              DropdownMenuItem(value: 'other', child: Text(l10n.categoryOther)),
             ],
             onChanged: (value) => setState(() => _selectedCategory = value),
           ),
@@ -244,17 +258,31 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
           const SizedBox(height: AppSpacing.md),
           TextField(
             controller: _descriptionController,
-            decoration: const InputDecoration(
-              labelText: 'Note (optional)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.fieldDescriptionOptional,
             ),
             maxLines: 3,
             textCapitalization: TextCapitalization.sentences,
           ),
           const SizedBox(height: AppSpacing.lg),
-          FilledButton(
-            onPressed: _save,
-            child: Text(_isEditing ? 'Update' : 'Create'),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(l10n.actionCancel),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: FilledButton(
+                  onPressed: _save,
+                  child: Text(
+                    _isEditing ? l10n.actionUpdate : l10n.actionCreate,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

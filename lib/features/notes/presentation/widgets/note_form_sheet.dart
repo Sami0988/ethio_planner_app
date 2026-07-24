@@ -1,6 +1,9 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/note.dart';
 import '../providers/notes_providers.dart';
@@ -26,6 +29,7 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
   late final TextEditingController _titleController;
   late final TextEditingController _contentController;
   String? _selectedCategory;
+  bool _titleError = false;
 
   bool get _isEditing => widget.note != null;
 
@@ -46,7 +50,11 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
   }
 
   Future<void> _save() async {
-    if (_titleController.text.trim().isEmpty) return;
+    if (_titleController.text.trim().isEmpty) {
+      setState(() => _titleError = true);
+      return;
+    }
+    await HapticFeedback.lightImpact();
 
     final controller = ref.read(notesControllerProvider.notifier);
 
@@ -75,6 +83,7 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return Padding(
@@ -92,12 +101,12 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _isEditing ? 'Edit Note' : 'New Note',
+                _isEditing ? l10n.actionEdit : l10n.actionCreate,
                 style: theme.textTheme.titleLarge,
               ),
               if (_isEditing)
                 Text(
-                  'Last edited: ${DateFormat('MMM d, y • h:mm a').format(widget.note!.updatedAt)}',
+                  DateFormat('MMM d, y • h:mm a').format(widget.note!.updatedAt),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -107,44 +116,60 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
           const SizedBox(height: AppSpacing.lg),
           TextField(
             controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'Title',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.fieldTitle,
+              errorText: _titleError ? l10n.fieldTitleRequired : null,
             ),
             textCapitalization: TextCapitalization.sentences,
             autofocus: true,
+            onChanged: (_) {
+              if (_titleError) setState(() => _titleError = false);
+            },
           ),
           const SizedBox(height: AppSpacing.md),
           DropdownButtonFormField<String>(
             initialValue: _selectedCategory,
-            decoration: const InputDecoration(
-              labelText: 'Category (optional)',
-              border: OutlineInputBorder(),
-            ),
-            items: const [
-              DropdownMenuItem(child: Text('None')),
-              DropdownMenuItem(value: 'work', child: Text('Work')),
-              DropdownMenuItem(value: 'personal', child: Text('Personal')),
-              DropdownMenuItem(value: 'ideas', child: Text('Ideas')),
-              DropdownMenuItem(value: 'other', child: Text('Other')),
+            decoration: InputDecoration(labelText: l10n.fieldCategoryOptional),
+            items: [
+              DropdownMenuItem(child: Text(l10n.categoryNone)),
+              DropdownMenuItem(value: 'work', child: Text(l10n.categoryWork)),
+              DropdownMenuItem(
+                value: 'personal',
+                child: Text(l10n.categoryPersonal),
+              ),
+              DropdownMenuItem(value: 'other', child: Text(l10n.categoryOther)),
             ],
             onChanged: (value) => setState(() => _selectedCategory = value),
           ),
           const SizedBox(height: AppSpacing.md),
           TextField(
             controller: _contentController,
-            decoration: const InputDecoration(
-              labelText: 'Content',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.fieldDescriptionOptional,
               alignLabelWithHint: true,
             ),
             maxLines: 8,
             textCapitalization: TextCapitalization.sentences,
           ),
           const SizedBox(height: AppSpacing.lg),
-          FilledButton(
-            onPressed: _save,
-            child: Text(_isEditing ? 'Update' : 'Create'),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(l10n.actionCancel),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: FilledButton(
+                  onPressed: _save,
+                  child: Text(
+                    _isEditing ? l10n.actionUpdate : l10n.actionCreate,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
