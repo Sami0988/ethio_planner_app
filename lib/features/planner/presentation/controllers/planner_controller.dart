@@ -105,7 +105,7 @@ class PlannerController extends Notifier<PlannerViewState> {
       case PlannerViewMode.month:
         return DateTime(date.year, date.month + delta);
       case PlannerViewMode.year:
-        return DateTime(date.year + delta, 1);
+        return DateTime(date.year + delta);
     }
   }
 
