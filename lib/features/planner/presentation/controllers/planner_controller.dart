@@ -26,11 +26,56 @@ class PlannerController extends Notifier<PlannerViewState> {
   Future<void> loadItems() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final items = await _getItemsByDate(state.selectedDate);
+      final items = await _getItemsForCurrentRange();
       state = state.copyWith(items: items, isLoading: false);
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoading: false);
     }
+  }
+
+  Future<List<PlannerItem>> _getItemsForCurrentRange() async {
+    switch (state.viewMode) {
+      case PlannerViewMode.day:
+        return _getItemsByDate(state.selectedDate);
+      case PlannerViewMode.week:
+        return _getItemsForWeek(state.selectedDate);
+      case PlannerViewMode.month:
+        return _getItemsForMonth(state.selectedDate);
+      case PlannerViewMode.year:
+        return _getItemsForYear(state.selectedDate);
+    }
+  }
+
+  Future<List<PlannerItem>> _getItemsForWeek(DateTime date) async {
+    final startOfWeek = date.subtract(Duration(days: date.weekday - 1));
+    final allItems = <PlannerItem>[];
+    for (var i = 0; i <= 6; i++) {
+      final day = startOfWeek.add(Duration(days: i));
+      final items = await _getItemsByDate(day);
+      allItems.addAll(items);
+    }
+    return allItems;
+  }
+
+  Future<List<PlannerItem>> _getItemsForMonth(DateTime date) async {
+    final startOfMonth = DateTime(date.year, date.month);
+    final allItems = <PlannerItem>[];
+    for (var day = startOfMonth; !day.isAfter(DateTime(date.year, date.month + 1, 0)); day = day.add(const Duration(days: 1))) {
+      final items = await _getItemsByDate(day);
+      allItems.addAll(items);
+    }
+    return allItems;
+  }
+
+  Future<List<PlannerItem>> _getItemsForYear(DateTime date) async {
+    final allItems = <PlannerItem>[];
+    for (var month = 1; month <= 12; month++) {
+      for (var day = DateTime(date.year, month); !day.isAfter(DateTime(date.year, month + 1, 0)); day = day.add(const Duration(days: 1))) {
+        final items = await _getItemsByDate(day);
+        allItems.addAll(items);
+      }
+    }
+    return allItems;
   }
 
   Future<void> selectDate(DateTime date) async {
@@ -39,19 +84,34 @@ class PlannerController extends Notifier<PlannerViewState> {
   }
 
   Future<void> goToPreviousDay() async {
-    final newDate = state.selectedDate.subtract(const Duration(days: 1));
+    final newDate = _navigate(state.viewMode, state.selectedDate, false);
     state = state.copyWith(selectedDate: newDate);
     await loadItems();
   }
 
   Future<void> goToNextDay() async {
-    final newDate = state.selectedDate.add(const Duration(days: 1));
+    final newDate = _navigate(state.viewMode, state.selectedDate, true);
     state = state.copyWith(selectedDate: newDate);
     await loadItems();
   }
 
+  DateTime _navigate(PlannerViewMode mode, DateTime date, bool forward) {
+    final delta = forward ? 1 : -1;
+    switch (mode) {
+      case PlannerViewMode.day:
+        return date.add(Duration(days: delta));
+      case PlannerViewMode.week:
+        return date.add(Duration(days: 7 * delta));
+      case PlannerViewMode.month:
+        return DateTime(date.year, date.month + delta);
+      case PlannerViewMode.year:
+        return DateTime(date.year + delta, 1);
+    }
+  }
+
   void setViewMode(PlannerViewMode mode) {
     state = state.copyWith(viewMode: mode);
+    loadItems();
   }
 
   Future<void> createItem({
@@ -91,7 +151,84 @@ class PlannerController extends Notifier<PlannerViewState> {
   }
 
   List<PlannerItem> getItemsForSection(PlannerSection section) {
+    if (state.hiddenSections.contains(section)) return [];
     return state.items.where((i) => i.section == section).toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+  }
+
+  void toggleSectionVisibility(PlannerSection section) {
+    final hidden = List<PlannerSection>.from(state.hiddenSections);
+    if (hidden.contains(section)) {
+      hidden.remove(section);
+    } else {
+      hidden.add(section);
+    }
+    state = state.copyWith(hiddenSections: hidden);
+  }
+
+  Future<void> reorderItems(String itemId, int oldIndex, int newIndex) async {
+    final item = state.items.firstWhere((i) => i.id == itemId);
+    await _updateItem(item.copyWith(sortOrder: newIndex));
+    await loadItems();
+  }
+
+  Future<void> copyFromPreviousPeriod() async {
+    final previousDate = _navigate(state.viewMode, state.selectedDate, false);
+    final previousItems = await _getItemsForDate(previousDate);
+    final now = clock.now();
+
+    for (final item in previousItems) {
+      final newItem = PlannerItem(
+        id: _uuid.v4(),
+        title: item.title,
+        ecDate: item.ecDate,
+        gcDate: now,
+        description: item.description,
+        section: item.section,
+        sortOrder: item.sortOrder,
+      );
+      await _createItem(newItem);
+    }
+    await loadItems();
+  }
+
+  Future<void> carryForwardIncomplete() async {
+    final previousDate = _navigate(state.viewMode, state.selectedDate, false);
+    final previousItems = await _getItemsForDate(previousDate);
+    final incompleteItems = previousItems.where((i) => !i.isCompleted).toList();
+    final now = clock.now();
+
+    for (final item in incompleteItems) {
+      final newItem = PlannerItem(
+        id: _uuid.v4(),
+        title: item.title,
+        ecDate: item.ecDate,
+        gcDate: now,
+        description: item.description,
+        section: item.section,
+        sortOrder: item.sortOrder,
+      );
+      await _createItem(newItem);
+    }
+    await loadItems();
+  }
+
+  Future<List<PlannerItem>> _getItemsForDate(DateTime date) async {
+    return _getItemsByDate(date);
+  }
+
+  String getPeriodLabel() {
+    switch (state.viewMode) {
+      case PlannerViewMode.day:
+        return '${state.selectedDate.day}/${state.selectedDate.month}/${state.selectedDate.year}';
+      case PlannerViewMode.week:
+        final start = state.selectedDate.subtract(Duration(days: state.selectedDate.weekday - 1));
+        final end = start.add(const Duration(days: 6));
+        return '${start.day}/${start.month} – ${end.day}/${end.month}';
+      case PlannerViewMode.month:
+        return '${state.selectedDate.month}/${state.selectedDate.year}';
+      case PlannerViewMode.year:
+        return '${state.selectedDate.year}';
+    }
   }
 }

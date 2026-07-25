@@ -9,5 +9,6 @@ abstract class RecentlyDeletedViewState with _$RecentlyDeletedViewState {
     @Default([]) List<DeletedItem> items,
     @Default(false) bool isLoading,
     String? error,
+    DeletedEntityType? filterType,
   }) = _RecentlyDeletedViewState;
 }

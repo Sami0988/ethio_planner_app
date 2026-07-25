@@ -97,6 +97,19 @@ class Notes extends Table {
 // Non-business tables (no sync metadata needed)
 // ---------------------------------------------------------------------------
 
+class NoteRevisions extends Table {
+  TextColumn get id => text()();
+  TextColumn get noteId => text()();
+  TextColumn get title => text()();
+  TextColumn get content => text().nullable()();
+  TextColumn get category => text().nullable()();
+  IntColumn get revisionNumber => integer()();
+  DateTimeColumn get createdAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 class RecentlyDeletedItems extends Table {
   TextColumn get id => text()();
   TextColumn get entityType => text()();

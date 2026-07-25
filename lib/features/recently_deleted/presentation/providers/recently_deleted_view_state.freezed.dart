@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RecentlyDeletedViewState {
 
- List<DeletedItem> get items; bool get isLoading; String? get error;
+ List<DeletedItem> get items; bool get isLoading; String? get error; DeletedEntityType? get filterType;
 /// Create a copy of RecentlyDeletedViewState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $RecentlyDeletedViewStateCopyWith<RecentlyDeletedViewState> get copyWith => _$Re
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecentlyDeletedViewState&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecentlyDeletedViewState&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error)&&(identical(other.filterType, filterType) || other.filterType == filterType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(items),isLoading,error);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(items),isLoading,error,filterType);
 
 @override
 String toString() {
-  return 'RecentlyDeletedViewState(items: $items, isLoading: $isLoading, error: $error)';
+  return 'RecentlyDeletedViewState(items: $items, isLoading: $isLoading, error: $error, filterType: $filterType)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $RecentlyDeletedViewStateCopyWith<$Res>  {
   factory $RecentlyDeletedViewStateCopyWith(RecentlyDeletedViewState value, $Res Function(RecentlyDeletedViewState) _then) = _$RecentlyDeletedViewStateCopyWithImpl;
 @useResult
 $Res call({
- List<DeletedItem> items, bool isLoading, String? error
+ List<DeletedItem> items, bool isLoading, String? error, DeletedEntityType? filterType
 });
 
 
@@ -62,12 +62,13 @@ class _$RecentlyDeletedViewStateCopyWithImpl<$Res>
 
 /// Create a copy of RecentlyDeletedViewState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? isLoading = null,Object? error = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? isLoading = null,Object? error = freezed,Object? filterType = freezed,}) {
   return _then(_self.copyWith(
 items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<DeletedItem>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,filterType: freezed == filterType ? _self.filterType : filterType // ignore: cast_nullable_to_non_nullable
+as DeletedEntityType?,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<DeletedItem> items,  bool isLoading,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<DeletedItem> items,  bool isLoading,  String? error,  DeletedEntityType? filterType)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecentlyDeletedViewState() when $default != null:
-return $default(_that.items,_that.isLoading,_that.error);case _:
+return $default(_that.items,_that.isLoading,_that.error,_that.filterType);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.items,_that.isLoading,_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<DeletedItem> items,  bool isLoading,  String? error)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<DeletedItem> items,  bool isLoading,  String? error,  DeletedEntityType? filterType)  $default,) {final _that = this;
 switch (_that) {
 case _RecentlyDeletedViewState():
-return $default(_that.items,_that.isLoading,_that.error);case _:
+return $default(_that.items,_that.isLoading,_that.error,_that.filterType);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.items,_that.isLoading,_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<DeletedItem> items,  bool isLoading,  String? error)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<DeletedItem> items,  bool isLoading,  String? error,  DeletedEntityType? filterType)?  $default,) {final _that = this;
 switch (_that) {
 case _RecentlyDeletedViewState() when $default != null:
-return $default(_that.items,_that.isLoading,_that.error);case _:
+return $default(_that.items,_that.isLoading,_that.error,_that.filterType);case _:
   return null;
 
 }
@@ -208,7 +209,7 @@ return $default(_that.items,_that.isLoading,_that.error);case _:
 
 
 class _RecentlyDeletedViewState implements RecentlyDeletedViewState {
-  const _RecentlyDeletedViewState({final  List<DeletedItem> items = const [], this.isLoading = false, this.error}): _items = items;
+  const _RecentlyDeletedViewState({final  List<DeletedItem> items = const [], this.isLoading = false, this.error, this.filterType}): _items = items;
   
 
  final  List<DeletedItem> _items;
@@ -220,6 +221,7 @@ class _RecentlyDeletedViewState implements RecentlyDeletedViewState {
 
 @override@JsonKey() final  bool isLoading;
 @override final  String? error;
+@override final  DeletedEntityType? filterType;
 
 /// Create a copy of RecentlyDeletedViewState
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +233,16 @@ _$RecentlyDeletedViewStateCopyWith<_RecentlyDeletedViewState> get copyWith => __
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecentlyDeletedViewState&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecentlyDeletedViewState&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error)&&(identical(other.filterType, filterType) || other.filterType == filterType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),isLoading,error);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),isLoading,error,filterType);
 
 @override
 String toString() {
-  return 'RecentlyDeletedViewState(items: $items, isLoading: $isLoading, error: $error)';
+  return 'RecentlyDeletedViewState(items: $items, isLoading: $isLoading, error: $error, filterType: $filterType)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$RecentlyDeletedViewStateCopyWith<$Res> implements $Recent
   factory _$RecentlyDeletedViewStateCopyWith(_RecentlyDeletedViewState value, $Res Function(_RecentlyDeletedViewState) _then) = __$RecentlyDeletedViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<DeletedItem> items, bool isLoading, String? error
+ List<DeletedItem> items, bool isLoading, String? error, DeletedEntityType? filterType
 });
 
 
@@ -268,12 +270,13 @@ class __$RecentlyDeletedViewStateCopyWithImpl<$Res>
 
 /// Create a copy of RecentlyDeletedViewState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? isLoading = null,Object? error = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? isLoading = null,Object? error = freezed,Object? filterType = freezed,}) {
   return _then(_RecentlyDeletedViewState(
 items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<DeletedItem>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,filterType: freezed == filterType ? _self.filterType : filterType // ignore: cast_nullable_to_non_nullable
+as DeletedEntityType?,
   ));
 }
 

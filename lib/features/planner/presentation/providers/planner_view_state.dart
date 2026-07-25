@@ -3,7 +3,7 @@ import '../../domain/entities/planner_item.dart';
 
 part 'planner_view_state.freezed.dart';
 
-enum PlannerViewMode { day, week }
+enum PlannerViewMode { day, week, month, year }
 
 @freezed
 abstract class PlannerViewState with _$PlannerViewState {
@@ -13,5 +13,6 @@ abstract class PlannerViewState with _$PlannerViewState {
     @Default([]) List<PlannerItem> items,
     @Default(false) bool isLoading,
     String? error,
+    @Default([]) List<PlannerSection> hiddenSections,
   }) = _PlannerViewState;
 }

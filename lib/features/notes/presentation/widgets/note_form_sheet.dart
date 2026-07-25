@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/note.dart';
 import '../providers/notes_providers.dart';
+import 'note_link_picker_sheet.dart';
 
 class NoteFormSheet extends ConsumerStatefulWidget {
   const NoteFormSheet({super.key, this.note});
@@ -30,6 +31,12 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
   late final TextEditingController _contentController;
   String? _selectedCategory;
   bool _titleError = false;
+  String? _linkedEventId;
+  String? _linkedReminderId;
+  String? _linkedPlannerItemId;
+  String? _linkedEventTitle;
+  String? _linkedReminderTitle;
+  String? _linkedPlannerItemTitle;
 
   bool get _isEditing => widget.note != null;
 
@@ -40,6 +47,9 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
     _titleController = TextEditingController(text: note?.title ?? '');
     _contentController = TextEditingController(text: note?.content ?? '');
     _selectedCategory = note?.category;
+    _linkedEventId = note?.linkedEventId;
+    _linkedReminderId = note?.linkedReminderId;
+    _linkedPlannerItemId = note?.linkedPlannerItemId;
   }
 
   @override
@@ -151,6 +161,39 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
             maxLines: 8,
             textCapitalization: TextCapitalization.sentences,
           ),
+          const SizedBox(height: AppSpacing.md),
+          _LinkSection(
+            linkedEventId: _linkedEventId,
+            linkedReminderId: _linkedReminderId,
+            linkedPlannerItemId: _linkedPlannerItemId,
+            linkedEventTitle: _linkedEventTitle,
+            linkedReminderTitle: _linkedReminderTitle,
+            linkedPlannerItemTitle: _linkedPlannerItemTitle,
+            onEventLinked: (id, title) => setState(() {
+              _linkedEventId = id;
+              _linkedEventTitle = title;
+            }),
+            onReminderLinked: (id, title) => setState(() {
+              _linkedReminderId = id;
+              _linkedReminderTitle = title;
+            }),
+            onPlannerLinked: (id, title) => setState(() {
+              _linkedPlannerItemId = id;
+              _linkedPlannerItemTitle = title;
+            }),
+            onEventUnlinked: () => setState(() {
+              _linkedEventId = null;
+              _linkedEventTitle = null;
+            }),
+            onReminderUnlinked: () => setState(() {
+              _linkedReminderId = null;
+              _linkedReminderTitle = null;
+            }),
+            onPlannerUnlinked: () => setState(() {
+              _linkedPlannerItemId = null;
+              _linkedPlannerItemTitle = null;
+            }),
+          ),
           const SizedBox(height: AppSpacing.lg),
           Row(
             children: [
@@ -173,6 +216,148 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _LinkSection extends StatelessWidget {
+  const _LinkSection({
+    required this.linkedEventId,
+    required this.linkedReminderId,
+    required this.linkedPlannerItemId,
+    required this.linkedEventTitle,
+    required this.linkedReminderTitle,
+    required this.linkedPlannerItemTitle,
+    required this.onEventLinked,
+    required this.onReminderLinked,
+    required this.onPlannerLinked,
+    required this.onEventUnlinked,
+    required this.onReminderUnlinked,
+    required this.onPlannerUnlinked,
+  });
+
+  final String? linkedEventId;
+  final String? linkedReminderId;
+  final String? linkedPlannerItemId;
+  final String? linkedEventTitle;
+  final String? linkedReminderTitle;
+  final String? linkedPlannerItemTitle;
+  final void Function(String id, String title) onEventLinked;
+  final void Function(String id, String title) onReminderLinked;
+  final void Function(String id, String title) onPlannerLinked;
+  final VoidCallback onEventUnlinked;
+  final VoidCallback onReminderUnlinked;
+  final VoidCallback onPlannerUnlinked;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Links',
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.xs,
+          children: [
+            _LinkChip(
+              icon: Icons.event,
+              label: linkedEventTitle ?? 'Event',
+              isLinked: linkedEventId != null,
+              onLink: () => _showPicker(context, 'event', onEventLinked),
+              onUnlink: onEventUnlinked,
+            ),
+            _LinkChip(
+              icon: Icons.notifications,
+              label: linkedReminderTitle ?? 'Reminder',
+              isLinked: linkedReminderId != null,
+              onLink: () => _showPicker(context, 'reminder', onReminderLinked),
+              onUnlink: onReminderUnlinked,
+            ),
+            _LinkChip(
+              icon: Icons.check_circle,
+              label: linkedPlannerItemTitle ?? 'Planner',
+              isLinked: linkedPlannerItemId != null,
+              onLink: () => _showPicker(context, 'planner', onPlannerLinked),
+              onUnlink: onPlannerUnlinked,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showPicker(
+    BuildContext context,
+    String type,
+    void Function(String id, String title) onSelected,
+  ) async {
+    final pickerType = _getPickerType(type);
+    final result = await NoteLinkPickerSheet.show(context, type: pickerType);
+    if (result != null) {
+      onSelected(result.id, result.title);
+    }
+  }
+
+  LinkPickerType _getPickerType(String type) {
+    switch (type) {
+      case 'event':
+        return LinkPickerType.event;
+      case 'reminder':
+        return LinkPickerType.reminder;
+      case 'planner':
+        return LinkPickerType.planner;
+      default:
+        return LinkPickerType.event;
+    }
+  }
+}
+
+class _LinkChip extends StatelessWidget {
+  const _LinkChip({
+    required this.icon,
+    required this.label,
+    required this.isLinked,
+    required this.onLink,
+    required this.onUnlink,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool isLinked;
+  final VoidCallback onLink;
+  final VoidCallback onUnlink;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    if (isLinked) {
+      return Chip(
+        avatar: Icon(icon, size: 16),
+        label: Text(
+          label,
+          style: theme.textTheme.labelSmall,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        deleteIcon: const Icon(Icons.close, size: 16),
+        onDeleted: onUnlink,
+        backgroundColor: theme.colorScheme.primaryContainer,
+      );
+    }
+
+    return ActionChip(
+      avatar: Icon(icon, size: 16),
+      label: Text(label),
+      onPressed: onLink,
     );
   }
 }

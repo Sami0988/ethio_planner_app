@@ -10,5 +10,6 @@ abstract class SearchViewState with _$SearchViewState {
     @Default([]) List<SearchResult> results,
     @Default(false) bool isLoading,
     String? error,
+    @Default(SearchFilters()) SearchFilters filters,
   }) = _SearchViewState;
 }

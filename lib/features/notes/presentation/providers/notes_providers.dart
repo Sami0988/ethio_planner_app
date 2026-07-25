@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/database/app_database.dart';
+import '../../../../core/database/daos/note_revisions_dao.dart';
 import '../../../../core/providers/database_provider.dart';
 import '../../data/datasources/note_local_datasource.dart';
 import '../../data/repositories/note_repository_impl.dart';
@@ -14,6 +16,10 @@ final noteRepositoryProvider = Provider<NoteRepositoryImpl>(
   (ref) => NoteRepositoryImpl(
     localDatasource: ref.watch(noteLocalDatasourceProvider),
   ),
+);
+
+final noteRevisionsDaoProvider = Provider<NoteRevisionsDao>(
+  (ref) => NoteRevisionsDao(ref.watch(databaseProvider)),
 );
 
 final getAllNotesProvider = Provider<GetAllNotes>(
@@ -46,3 +52,10 @@ final toggleNoteArchivedProvider = Provider<ToggleNoteArchived>(
 
 final notesControllerProvider =
     NotifierProvider<NotesController, NotesViewState>(NotesController.new);
+
+final noteRevisionsProvider = FutureProvider.autoDispose.family<List<NoteRevision>, String>(
+  (ref, noteId) async {
+    final dao = ref.watch(noteRevisionsDaoProvider);
+    return dao.getRevisionsForNote(noteId);
+  },
+);

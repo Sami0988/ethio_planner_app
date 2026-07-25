@@ -8,95 +8,132 @@ class SearchRepositoryImpl implements SearchRepository {
   SearchRepositoryImpl(this._database);
 
   @override
-  Future<List<SearchResult>> search(String query) async {
+  Future<List<SearchResult>> search(String query, {SearchFilters? filters}) async {
     if (query.trim().isEmpty) return [];
 
     final lowerQuery = '%${query.toLowerCase()}%';
     final results = <SearchResult>[];
+    final types = filters?.types;
+    final dateRange = filters?.dateRange;
+    final category = filters?.category;
 
     // Search calendar events
-    final events =
-        await (_database.select(_database.calendarEvents)
-              ..where(
-                (t) =>
-                    t.title.like(lowerQuery) | t.description.like(lowerQuery),
-              )
-              ..limit(20))
-            .get();
-    for (final event in events) {
-      results.add(
-        SearchResult(
-          id: event.id,
-          title: event.title,
-          subtitle: event.description,
-          type: SearchResultType.event,
-          date: event.gcDate,
-          category: event.category,
-        ),
-      );
+    if (types == null || types.contains(SearchResultType.event)) {
+      final events =
+          await (_database.select(_database.calendarEvents)
+                ..where(
+                  (t) =>
+                      t.title.like(lowerQuery) | t.description.like(lowerQuery),
+                )
+                ..limit(20))
+              .get();
+      for (final event in events) {
+        if (dateRange != null) {
+          if (event.gcDate.isBefore(dateRange.start) || event.gcDate.isAfter(dateRange.end)) {
+            continue;
+          }
+        }
+        if (category != null && event.category != category) {
+          continue;
+        }
+        results.add(
+          SearchResult(
+            id: event.id,
+            title: event.title,
+            subtitle: event.description,
+            type: SearchResultType.event,
+            date: event.gcDate,
+            category: event.category,
+          ),
+        );
+      }
     }
 
     // Search reminders
-    final reminders =
-        await (_database.select(_database.reminders)
-              ..where(
-                (t) =>
-                    t.title.like(lowerQuery) | t.description.like(lowerQuery),
-              )
-              ..limit(20))
-            .get();
-    for (final reminder in reminders) {
-      results.add(
-        SearchResult(
-          id: reminder.id,
-          title: reminder.title,
-          subtitle: reminder.description,
-          type: SearchResultType.reminder,
-          date: reminder.gcDate,
-        ),
-      );
+    if (types == null || types.contains(SearchResultType.reminder)) {
+      final reminders =
+          await (_database.select(_database.reminders)
+                ..where(
+                  (t) =>
+                      t.title.like(lowerQuery) | t.description.like(lowerQuery),
+                )
+                ..limit(20))
+              .get();
+      for (final reminder in reminders) {
+        if (dateRange != null) {
+          if (reminder.gcDate.isBefore(dateRange.start) || reminder.gcDate.isAfter(dateRange.end)) {
+            continue;
+          }
+        }
+        results.add(
+          SearchResult(
+            id: reminder.id,
+            title: reminder.title,
+            subtitle: reminder.description,
+            type: SearchResultType.reminder,
+            date: reminder.gcDate,
+          ),
+        );
+      }
     }
 
     // Search planner items
-    final plannerItems =
-        await (_database.select(_database.plannerItems)
-              ..where(
-                (t) =>
-                    t.title.like(lowerQuery) | t.description.like(lowerQuery),
-              )
-              ..limit(20))
-            .get();
-    for (final item in plannerItems) {
-      results.add(
-        SearchResult(
-          id: item.id,
-          title: item.title,
-          subtitle: item.description,
-          type: SearchResultType.plannerItem,
-          date: item.gcDate,
-        ),
-      );
+    if (types == null || types.contains(SearchResultType.plannerItem)) {
+      final plannerItems =
+          await (_database.select(_database.plannerItems)
+                ..where(
+                  (t) =>
+                      t.title.like(lowerQuery) | t.description.like(lowerQuery),
+                )
+                ..limit(20))
+              .get();
+      for (final item in plannerItems) {
+        if (dateRange != null) {
+          if (item.gcDate.isBefore(dateRange.start) || item.gcDate.isAfter(dateRange.end)) {
+            continue;
+          }
+        }
+        results.add(
+          SearchResult(
+            id: item.id,
+            title: item.title,
+            subtitle: item.description,
+            type: SearchResultType.plannerItem,
+            date: item.gcDate,
+          ),
+        );
+      }
     }
 
     // Search notes
-    final notes =
-        await (_database.select(_database.notes)
-              ..where(
-                (t) => t.title.like(lowerQuery) | t.content.like(lowerQuery),
-              )
-              ..limit(20))
-            .get();
-    for (final note in notes) {
-      results.add(
-        SearchResult(
-          id: note.id,
-          title: note.title,
-          subtitle: note.content,
-          type: SearchResultType.note,
-          date: note.updatedAt,
-          category: note.category,
-        ),
-      );
+    if (types == null || types.contains(SearchResultType.note)) {
+      final notes =
+          await (_database.select(_database.notes)
+                ..where(
+                  (t) => t.title.like(lowerQuery) | t.content.like(lowerQuery),
+                )
+                ..limit(20))
+              .get();
+      for (final note in notes) {
+        if (dateRange != null) {
+          if (note.updatedAt.isBefore(dateRange.start) || note.updatedAt.isAfter(dateRange.end)) {
+            continue;
+          }
+        }
+        if (category != null && note.category != category) {
+          continue;
+        }
+        results.add(
+          SearchResult(
+            id: note.id,
+            title: note.title,
+            subtitle: note.content,
+            type: SearchResultType.note,
+            date: note.updatedAt,
+            category: note.category,
+          ),
+        );
+      }
     }
 
     // Sort by relevance (title matches first, then by date)

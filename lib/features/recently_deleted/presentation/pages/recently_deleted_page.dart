@@ -31,31 +31,43 @@ class _RecentlyDeletedPageState extends ConsumerState<RecentlyDeletedPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(recentlyDeletedControllerProvider);
+    final controller = ref.read(recentlyDeletedControllerProvider.notifier);
+    final filteredItems = controller.filteredItems;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Recently Deleted')),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : state.items.isEmpty
-          ? _EmptyState()
-          : ListView.separated(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              itemCount: state.items.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                final item = state.items[index];
-                return _DeletedItemCard(
-                  item: item,
-                  onRestore: () {
-                    ref
-                        .read(recentlyDeletedControllerProvider.notifier)
-                        .restoreItem(item);
-                  },
-                  onPermanentDelete: () {
-                    _confirmPermanentDelete(context, item);
-                  },
-                );
-              },
+          : Column(
+              children: [
+                _FilterBar(
+                  selectedType: state.filterType,
+                  onTypeSelected: controller.setFilterType,
+                ),
+                Expanded(
+                  child: filteredItems.isEmpty
+                      ? _EmptyState()
+                      : ListView.separated(
+                          padding: const EdgeInsets.all(AppSpacing.lg),
+                          itemCount: filteredItems.length,
+                          separatorBuilder: (_, _) => const SizedBox(height: 8),
+                          itemBuilder: (context, index) {
+                            final item = filteredItems[index];
+                            return _DeletedItemCard(
+                              item: item,
+                              onRestore: () {
+                                ref
+                                    .read(recentlyDeletedControllerProvider.notifier)
+                                    .restoreItem(item);
+                              },
+                              onPermanentDelete: () {
+                                _confirmPermanentDelete(context, item);
+                              },
+                            );
+                          },
+                        ),
+                ),
+              ],
             ),
     );
   }
@@ -115,6 +127,71 @@ class _EmptyState extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _FilterBar extends StatelessWidget {
+  const _FilterBar({
+    required this.selectedType,
+    required this.onTypeSelected,
+  });
+
+  final DeletedEntityType? selectedType;
+  final ValueChanged<DeletedEntityType?> onTypeSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            FilterChip(
+              label: const Text('All'),
+              selected: selectedType == null,
+              onSelected: (_) => onTypeSelected(null),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            FilterChip(
+              avatar: const Icon(Icons.event, size: 16),
+              label: const Text('Events'),
+              selected: selectedType == DeletedEntityType.event,
+              onSelected: (selected) {
+                onTypeSelected(selected ? DeletedEntityType.event : null);
+              },
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            FilterChip(
+              avatar: const Icon(Icons.notifications, size: 16),
+              label: const Text('Reminders'),
+              selected: selectedType == DeletedEntityType.reminder,
+              onSelected: (selected) {
+                onTypeSelected(selected ? DeletedEntityType.reminder : null);
+              },
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            FilterChip(
+              avatar: const Icon(Icons.check_circle, size: 16),
+              label: const Text('Planner'),
+              selected: selectedType == DeletedEntityType.plannerItem,
+              onSelected: (selected) {
+                onTypeSelected(selected ? DeletedEntityType.plannerItem : null);
+              },
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            FilterChip(
+              avatar: const Icon(Icons.note, size: 16),
+              label: const Text('Notes'),
+              selected: selectedType == DeletedEntityType.note,
+              onSelected: (selected) {
+                onTypeSelected(selected ? DeletedEntityType.note : null);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

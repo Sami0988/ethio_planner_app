@@ -21,6 +21,18 @@ class RecentlyDeletedController extends Notifier<RecentlyDeletedViewState> {
     }
   }
 
+  void setFilterType(DeletedEntityType? type) {
+    state = state.copyWith(filterType: type);
+  }
+
+  List<DeletedItem> get filteredItems {
+    final filter = state.filterType;
+    if (filter == null) {
+      return state.items;
+    }
+    return state.items.where((item) => item.entityType == filter).toList();
+  }
+
   Future<void> restoreItem(DeletedItem item) async {
     try {
       final repository = ref.read(recentlyDeletedRepositoryProvider);

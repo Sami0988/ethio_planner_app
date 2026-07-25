@@ -2,10 +2,23 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+typedef NotificationTapCallback = void Function(String? payload);
+
 class NotificationService {
   final FlutterLocalNotificationsPlugin _plugin;
+  NotificationTapCallback? _onTap;
+
+  /// Quiet hours: no notifications between [quietStartHour] and [quietEndHour].
+  /// Default: 22:00–07:00 (Sprint 0 P-17).
+  int quietStartHour = 22;
+  int quietEndHour = 7;
 
   NotificationService(this._plugin);
+
+  /// Callback when user taps a notification.
+  void onNotificationTap(NotificationTapCallback callback) {
+    _onTap = callback;
+  }
 
   Future<void> init() async {
     tz.initializeTimeZones();
@@ -16,7 +29,6 @@ class NotificationService {
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
-      requestSoundPermission: false,
     );
 
     const settings = InitializationSettings(
@@ -24,7 +36,12 @@ class NotificationService {
       iOS: iosSettings,
     );
 
-    await _plugin.initialize(settings: settings);
+    await _plugin.initialize(
+      settings: settings,
+      onDidReceiveNotificationResponse: (details) {
+        _onTap?.call(details.payload);
+      },
+    );
   }
 
   Future<bool> requestPermission() async {
@@ -53,18 +70,56 @@ class NotificationService {
     return true;
   }
 
+  /// Returns true if [dateTime] falls within quiet hours.
+  bool isQuietHours(DateTime dateTime) {
+    final hour = dateTime.hour;
+    if (quietStartHour > quietEndHour) {
+      // Overnight quiet hours (e.g., 22:00–07:00)
+      return hour >= quietStartHour || hour < quietEndHour;
+    }
+    // Same-day quiet hours (e.g., 12:00–14:00)
+    return hour >= quietStartHour && hour < quietEndHour;
+  }
+
+  /// If [scheduledTime] is within quiet hours, shift it to [quietEndHour].
+  DateTime _adjustForQuietHours(DateTime scheduledTime) {
+    if (!isQuietHours(scheduledTime)) return scheduledTime;
+
+    // Move to quiet end hour on the same day (or next day if quiet spans midnight)
+    var adjusted = DateTime(
+      scheduledTime.year,
+      scheduledTime.month,
+      scheduledTime.day,
+      quietEndHour,
+    );
+    if (adjusted.isBefore(scheduledTime) ||
+        (quietStartHour > quietEndHour &&
+            scheduledTime.hour >= quietStartHour)) {
+      adjusted = adjusted.add(const Duration(days: 1));
+    }
+    return adjusted;
+  }
+
   Future<void> scheduleNotification({
     required int id,
     required String title,
     required String body,
     required DateTime scheduledTime,
+    String? payload,
+    bool respectQuietHours = true,
   }) async {
-    final tzDateTime = tz.TZDateTime.from(scheduledTime, tz.local);
+    var finalTime = scheduledTime;
+    if (respectQuietHours) {
+      finalTime = _adjustForQuietHours(scheduledTime);
+    }
+
+    final tzDateTime = tz.TZDateTime.from(finalTime, tz.local);
 
     await _plugin.zonedSchedule(
       id: id,
       title: title,
       body: body,
+      payload: payload,
       scheduledDate: tzDateTime,
       notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(

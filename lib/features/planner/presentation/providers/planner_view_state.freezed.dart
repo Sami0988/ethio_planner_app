@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PlannerViewState {
 
- DateTime get selectedDate; PlannerViewMode get viewMode; List<PlannerItem> get items; bool get isLoading; String? get error;
+ DateTime get selectedDate; PlannerViewMode get viewMode; List<PlannerItem> get items; bool get isLoading; String? get error; List<PlannerSection> get hiddenSections;
 /// Create a copy of PlannerViewState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PlannerViewStateCopyWith<PlannerViewState> get copyWith => _$PlannerViewStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlannerViewState&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.viewMode, viewMode) || other.viewMode == viewMode)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlannerViewState&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.viewMode, viewMode) || other.viewMode == viewMode)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error)&&const DeepCollectionEquality().equals(other.hiddenSections, hiddenSections));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedDate,viewMode,const DeepCollectionEquality().hash(items),isLoading,error);
+int get hashCode => Object.hash(runtimeType,selectedDate,viewMode,const DeepCollectionEquality().hash(items),isLoading,error,const DeepCollectionEquality().hash(hiddenSections));
 
 @override
 String toString() {
-  return 'PlannerViewState(selectedDate: $selectedDate, viewMode: $viewMode, items: $items, isLoading: $isLoading, error: $error)';
+  return 'PlannerViewState(selectedDate: $selectedDate, viewMode: $viewMode, items: $items, isLoading: $isLoading, error: $error, hiddenSections: $hiddenSections)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $PlannerViewStateCopyWith<$Res>  {
   factory $PlannerViewStateCopyWith(PlannerViewState value, $Res Function(PlannerViewState) _then) = _$PlannerViewStateCopyWithImpl;
 @useResult
 $Res call({
- DateTime selectedDate, PlannerViewMode viewMode, List<PlannerItem> items, bool isLoading, String? error
+ DateTime selectedDate, PlannerViewMode viewMode, List<PlannerItem> items, bool isLoading, String? error, List<PlannerSection> hiddenSections
 });
 
 
@@ -62,14 +62,15 @@ class _$PlannerViewStateCopyWithImpl<$Res>
 
 /// Create a copy of PlannerViewState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? selectedDate = null,Object? viewMode = null,Object? items = null,Object? isLoading = null,Object? error = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? selectedDate = null,Object? viewMode = null,Object? items = null,Object? isLoading = null,Object? error = freezed,Object? hiddenSections = null,}) {
   return _then(_self.copyWith(
 selectedDate: null == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
 as DateTime,viewMode: null == viewMode ? _self.viewMode : viewMode // ignore: cast_nullable_to_non_nullable
 as PlannerViewMode,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<PlannerItem>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,hiddenSections: null == hiddenSections ? _self.hiddenSections : hiddenSections // ignore: cast_nullable_to_non_nullable
+as List<PlannerSection>,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime selectedDate,  PlannerViewMode viewMode,  List<PlannerItem> items,  bool isLoading,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime selectedDate,  PlannerViewMode viewMode,  List<PlannerItem> items,  bool isLoading,  String? error,  List<PlannerSection> hiddenSections)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PlannerViewState() when $default != null:
-return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_that.error);case _:
+return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_that.error,_that.hiddenSections);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime selectedDate,  PlannerViewMode viewMode,  List<PlannerItem> items,  bool isLoading,  String? error)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime selectedDate,  PlannerViewMode viewMode,  List<PlannerItem> items,  bool isLoading,  String? error,  List<PlannerSection> hiddenSections)  $default,) {final _that = this;
 switch (_that) {
 case _PlannerViewState():
-return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_that.error);case _:
+return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_that.error,_that.hiddenSections);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime selectedDate,  PlannerViewMode viewMode,  List<PlannerItem> items,  bool isLoading,  String? error)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime selectedDate,  PlannerViewMode viewMode,  List<PlannerItem> items,  bool isLoading,  String? error,  List<PlannerSection> hiddenSections)?  $default,) {final _that = this;
 switch (_that) {
 case _PlannerViewState() when $default != null:
-return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_that.error);case _:
+return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_that.error,_that.hiddenSections);case _:
   return null;
 
 }
@@ -210,7 +211,7 @@ return $default(_that.selectedDate,_that.viewMode,_that.items,_that.isLoading,_t
 
 
 class _PlannerViewState implements PlannerViewState {
-  const _PlannerViewState({required this.selectedDate, this.viewMode = PlannerViewMode.day, final  List<PlannerItem> items = const [], this.isLoading = false, this.error}): _items = items;
+  const _PlannerViewState({required this.selectedDate, this.viewMode = PlannerViewMode.day, final  List<PlannerItem> items = const [], this.isLoading = false, this.error, final  List<PlannerSection> hiddenSections = const []}): _items = items,_hiddenSections = hiddenSections;
   
 
 @override final  DateTime selectedDate;
@@ -224,6 +225,13 @@ class _PlannerViewState implements PlannerViewState {
 
 @override@JsonKey() final  bool isLoading;
 @override final  String? error;
+ final  List<PlannerSection> _hiddenSections;
+@override@JsonKey() List<PlannerSection> get hiddenSections {
+  if (_hiddenSections is EqualUnmodifiableListView) return _hiddenSections;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_hiddenSections);
+}
+
 
 /// Create a copy of PlannerViewState
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +243,16 @@ _$PlannerViewStateCopyWith<_PlannerViewState> get copyWith => __$PlannerViewStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlannerViewState&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.viewMode, viewMode) || other.viewMode == viewMode)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlannerViewState&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.viewMode, viewMode) || other.viewMode == viewMode)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error)&&const DeepCollectionEquality().equals(other._hiddenSections, _hiddenSections));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedDate,viewMode,const DeepCollectionEquality().hash(_items),isLoading,error);
+int get hashCode => Object.hash(runtimeType,selectedDate,viewMode,const DeepCollectionEquality().hash(_items),isLoading,error,const DeepCollectionEquality().hash(_hiddenSections));
 
 @override
 String toString() {
-  return 'PlannerViewState(selectedDate: $selectedDate, viewMode: $viewMode, items: $items, isLoading: $isLoading, error: $error)';
+  return 'PlannerViewState(selectedDate: $selectedDate, viewMode: $viewMode, items: $items, isLoading: $isLoading, error: $error, hiddenSections: $hiddenSections)';
 }
 
 
@@ -255,7 +263,7 @@ abstract mixin class _$PlannerViewStateCopyWith<$Res> implements $PlannerViewSta
   factory _$PlannerViewStateCopyWith(_PlannerViewState value, $Res Function(_PlannerViewState) _then) = __$PlannerViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- DateTime selectedDate, PlannerViewMode viewMode, List<PlannerItem> items, bool isLoading, String? error
+ DateTime selectedDate, PlannerViewMode viewMode, List<PlannerItem> items, bool isLoading, String? error, List<PlannerSection> hiddenSections
 });
 
 
@@ -272,14 +280,15 @@ class __$PlannerViewStateCopyWithImpl<$Res>
 
 /// Create a copy of PlannerViewState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? selectedDate = null,Object? viewMode = null,Object? items = null,Object? isLoading = null,Object? error = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? selectedDate = null,Object? viewMode = null,Object? items = null,Object? isLoading = null,Object? error = freezed,Object? hiddenSections = null,}) {
   return _then(_PlannerViewState(
 selectedDate: null == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
 as DateTime,viewMode: null == viewMode ? _self.viewMode : viewMode // ignore: cast_nullable_to_non_nullable
 as PlannerViewMode,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<PlannerItem>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,hiddenSections: null == hiddenSections ? _self._hiddenSections : hiddenSections // ignore: cast_nullable_to_non_nullable
+as List<PlannerSection>,
   ));
 }
 

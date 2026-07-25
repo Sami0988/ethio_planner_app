@@ -6,6 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import 'daos/calendar_events_dao.dart';
+import 'daos/note_revisions_dao.dart';
 import 'daos/notes_dao.dart';
 import 'daos/outbox_dao.dart';
 import 'daos/planner_items_dao.dart';
@@ -23,6 +24,7 @@ part 'app_database.g.dart';
     Notes,
     RecentlyDeletedItems,
     OutboxOperations,
+    NoteRevisions,
   ],
   daos: [
     CalendarEventsDao,
@@ -31,13 +33,14 @@ part 'app_database.g.dart';
     NotesDao,
     RecentlyDeletedDao,
     OutboxDao,
+    NoteRevisionsDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration {
@@ -86,6 +89,9 @@ class AppDatabase extends _$AppDatabase {
           await m.addColumn(notes, notes.syncStatus);
           await m.addColumn(notes, notes.lastOperationId);
           await m.createTable(outboxOperations);
+        }
+        if (from < 7) {
+          await m.createTable(noteRevisions);
         }
       },
       beforeOpen: (details) async {

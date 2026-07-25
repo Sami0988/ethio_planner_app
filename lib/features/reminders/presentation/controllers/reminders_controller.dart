@@ -1,6 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../core/notifications/notification_service.dart';
 import '../../domain/entities/reminder.dart';
 import '../../domain/usecases/get_reminders.dart';
 import '../providers/reminders_view_state.dart';
@@ -9,12 +10,11 @@ const _uuid = Uuid();
 
 class RemindersController extends Notifier<RemindersViewState> {
   late final GetReminders _getReminders;
-  late final GetOverdueReminders _getOverdueReminders;
-  late final GetUpcomingReminders _getUpcomingReminders;
   late final CreateReminder _createReminder;
   late final UpdateReminder _updateReminder;
   late final DeleteReminder _deleteReminder;
   late final ToggleReminderCompleted _toggleCompleted;
+  late final NotificationService _notificationService;
 
   @override
   RemindersViewState build() {
@@ -29,14 +29,14 @@ class RemindersController extends Notifier<RemindersViewState> {
     required UpdateReminder updateReminder,
     required DeleteReminder deleteReminder,
     required ToggleReminderCompleted toggleCompleted,
+    required NotificationService notificationService,
   }) {
     _getReminders = getReminders;
-    _getOverdueReminders = getOverdueReminders;
-    _getUpcomingReminders = getUpcomingReminders;
     _createReminder = createReminder;
     _updateReminder = updateReminder;
     _deleteReminder = deleteReminder;
     _toggleCompleted = toggleCompleted;
+    _notificationService = notificationService;
   }
 
   Future<void> loadReminders() async {
@@ -91,10 +91,10 @@ class RemindersController extends Notifier<RemindersViewState> {
     required DateTime gcDate,
     String? description,
     String? category,
-    int? notificationId,
     String? linkedEventId,
     String? recurrenceRule,
   }) async {
+    final notificationId = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     final reminder = Reminder(
       id: _uuid.v4(),
       title: title,
@@ -107,44 +107,96 @@ class RemindersController extends Notifier<RemindersViewState> {
       recurrenceRule: recurrenceRule,
     );
     await _createReminder(reminder);
+
+    // Schedule notification if time is in the future
+    if (gcDate.isAfter(clock.now())) {
+      await _scheduleReminderNotification(reminder);
+    }
+
     await loadReminders();
   }
 
   Future<void> updateReminder(Reminder reminder) async {
+    final oldReminder = state.allReminders.firstWhere(
+      (r) => r.id == reminder.id,
+      orElse: () => reminder,
+    );
+
     await _updateReminder(reminder);
+
+    // Cancel old notification and reschedule if time changed or recurrence changed
+    final timeChanged = oldReminder.gcDate != reminder.gcDate;
+    final recurrenceChanged =
+        oldReminder.recurrenceRule != reminder.recurrenceRule;
+
+    if (timeChanged || recurrenceChanged) {
+      // Cancel old notification
+      if (oldReminder.notificationId != null) {
+        await _notificationService.cancelNotification(
+          oldReminder.notificationId!,
+        );
+      }
+
+      // Reschedule if time is in the future
+      if (reminder.gcDate.isAfter(clock.now())) {
+        await _scheduleReminderNotification(reminder);
+      }
+    }
+
     await loadReminders();
   }
 
   Future<void> deleteReminder(String id) async {
+    final reminder = state.allReminders.firstWhere((r) => r.id == id);
+
+    // Cancel notification before deleting
+    if (reminder.notificationId != null) {
+      await _notificationService.cancelNotification(reminder.notificationId!);
+    }
+
     await _deleteReminder(id);
     await loadReminders();
   }
 
   Future<void> toggleCompleted(String id) async {
     final reminder = state.allReminders.firstWhere((r) => r.id == id);
+    final updated = reminder.copyWith(isCompleted: !reminder.isCompleted);
+
+    // Cancel notification if marking as completed
+    if (updated.isCompleted && reminder.notificationId != null) {
+      await _notificationService.cancelNotification(reminder.notificationId!);
+    }
+
     await _toggleCompleted(id, !reminder.isCompleted);
     await loadReminders();
   }
 
-  Future<void> loadOverdueReminders() async {
-    state = state.copyWith(isLoading: true, error: null);
-    try {
-      final overdue = await _getOverdueReminders();
-      state = state.copyWith(allReminders: overdue, isLoading: false);
-      _applyFilter();
-    } catch (e) {
-      state = state.copyWith(error: e.toString(), isLoading: false);
+  /// Rebuilds all pending notifications from the database.
+  /// Called on app restart to ensure notifications survive process death.
+  Future<void> rebuildNotifications() async {
+    final now = clock.now();
+    for (final reminder in state.allReminders) {
+      if (!reminder.isCompleted &&
+          reminder.gcDate.isAfter(now) &&
+          reminder.notificationId != null) {
+        await _scheduleReminderNotification(reminder);
+      }
     }
   }
 
-  Future<void> loadUpcomingReminders() async {
-    state = state.copyWith(isLoading: true, error: null);
-    try {
-      final upcoming = await _getUpcomingReminders();
-      state = state.copyWith(allReminders: upcoming, isLoading: false);
-      _applyFilter();
-    } catch (e) {
-      state = state.copyWith(error: e.toString(), isLoading: false);
-    }
+  Future<void> _scheduleReminderNotification(Reminder reminder) async {
+    if (reminder.notificationId == null) return;
+
+    await _notificationService.scheduleNotification(
+      id: reminder.notificationId!,
+      title: reminder.title,
+      body: reminder.description ?? 'Reminder',
+      scheduledTime: reminder.gcDate,
+    );
+  }
+
+  /// Returns true if notification permission is granted.
+  Future<bool> requestNotificationPermission() async {
+    return _notificationService.requestPermission();
   }
 }

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/shared_widgets.dart';
 import '../../domain/entities/note.dart';
+import '../pages/note_revisions_page.dart';
 import '../providers/notes_providers.dart';
 import 'note_form_sheet.dart';
 
@@ -81,6 +82,10 @@ class NoteCard extends ConsumerWidget {
                       value: 'archive',
                       child: Text(note.isArchived ? 'Unarchive' : 'Archive'),
                     ),
+                    const PopupMenuItem(
+                      value: 'history',
+                      child: Text('View History'),
+                    ),
                     const PopupMenuItem(value: 'delete', child: Text('Delete')),
                   ],
                   onSelected: (value) async {
@@ -91,6 +96,10 @@ class NoteCard extends ConsumerWidget {
                       await controller.togglePinned(note.id);
                     } else if (value == 'archive') {
                       await controller.toggleArchived(note.id);
+                    } else if (value == 'history') {
+                      if (context.mounted) {
+                        await NoteRevisionsPage.show(context, note: note);
+                      }
                     } else if (value == 'delete') {
                       await controller.deleteNote(note.id);
                     }
@@ -108,6 +117,22 @@ class NoteCard extends ConsumerWidget {
                   ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            if (note.linkedEventId != null ||
+                note.linkedReminderId != null ||
+                note.linkedPlannerItemId != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Row(
+                  children: [
+                    if (note.linkedEventId != null)
+                      Icon(Icons.event, size: 14, color: theme.colorScheme.primary),
+                    if (note.linkedReminderId != null)
+                      Icon(Icons.notifications, size: 14, color: theme.colorScheme.primary),
+                    if (note.linkedPlannerItemId != null)
+                      Icon(Icons.check_circle, size: 14, color: theme.colorScheme.primary),
+                  ],
                 ),
               ),
             const SizedBox(height: 4),

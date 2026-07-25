@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/notifications/notification_provider.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../providers/reminders_providers.dart';
 import '../widgets/reminder_card.dart';
@@ -32,8 +35,12 @@ class _RemindersPageState extends ConsumerState<RemindersPage> {
       updateReminder: ref.read(updateReminderProvider),
       deleteReminder: ref.read(deleteReminderProvider),
       toggleCompleted: ref.read(toggleReminderCompletedProvider),
+      notificationService: ref.read(notificationServiceProvider),
     );
-    controller.loadReminders();
+    controller.loadReminders().then((_) {
+      // Rebuild notifications on page load (survives app restart)
+      unawaited(controller.rebuildNotifications());
+    });
   }
 
   @override
@@ -47,7 +54,7 @@ class _RemindersPageState extends ConsumerState<RemindersPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () => ReminderFormSheet.show(context),
+            onPressed: () => _onAddReminder(),
           ),
         ],
       ),
@@ -104,5 +111,34 @@ class _RemindersPageState extends ConsumerState<RemindersPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _onAddReminder() async {
+    final controller = ref.read(remindersControllerProvider.notifier);
+    final hasPermission = await controller.requestNotificationPermission();
+
+    if (!hasPermission && mounted) {
+      await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Notification Permission'),
+          content: const Text(
+            'Notifications are disabled. You can still create reminders, '
+            'but you won\'t receive alerts. Enable notifications in Settings '
+            'to receive reminder alerts.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (mounted) {
+      await ReminderFormSheet.show(context);
+    }
   }
 }
