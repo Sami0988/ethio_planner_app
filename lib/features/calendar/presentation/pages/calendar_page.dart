@@ -2,6 +2,7 @@ import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/recently_deleted/soft_delete_provider.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../providers/calendar_providers.dart';
 import '../widgets/calendar_grid.dart';
@@ -32,6 +33,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       createEvent: ref.read(createCalendarEventProvider),
       updateEvent: ref.read(updateCalendarEventProvider),
       deleteEvent: ref.read(deleteCalendarEventProvider),
+      softDeleteService: ref.read(softDeleteServiceProvider),
     );
     controller.loadEvents();
   }

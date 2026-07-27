@@ -20,6 +20,9 @@ abstract class TodayViewState with _$TodayViewState {
     @Default(<ReminderPresentation>[]) List<ReminderPresentation> reminders,
     @Default(<SchedulePresentation>[]) List<SchedulePresentation> schedule,
     @Default(SyncPresentation()) SyncPresentation sync,
+    @Default(0) int planningStreak,
+    @Default(false) bool isPreviewingDay,
+    DateTime? previewDate,
   }) = _TodayViewState;
 
   const TodayViewState._();
@@ -44,9 +47,12 @@ abstract class HolidayPresentation with _$HolidayPresentation {
 abstract class UpNextPresentation with _$UpNextPresentation {
   const factory UpNextPresentation({
     required String title,
+    String? id,
+    String? type,
     String? time,
     String? timeEnd,
     String? subtitle,
+    String? location,
     @Default(false) bool isAllDay,
     @Default(false) bool isPending,
     @Default(SyncStatus.synced) SyncStatus syncStatus,
@@ -57,8 +63,10 @@ abstract class UpNextPresentation with _$UpNextPresentation {
 abstract class EventPresentation with _$EventPresentation {
   const factory EventPresentation({
     required String title,
+    String? id,
     String? time,
     String? location,
+    @Default(0) int colorIndex,
     @Default(false) bool isAllDay,
     @Default(false) bool isPending,
   }) = _EventPresentation;
@@ -82,6 +90,7 @@ abstract class SchedulePresentation with _$SchedulePresentation {
     required String time,
     required String title,
     String? subtitle,
+    @Default(0) int colorIndex,
     @Default(false) bool isCompleted,
   }) = _SchedulePresentation;
 }

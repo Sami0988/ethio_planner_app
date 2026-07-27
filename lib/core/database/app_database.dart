@@ -11,6 +11,7 @@ import 'daos/notes_dao.dart';
 import 'daos/outbox_dao.dart';
 import 'daos/planner_items_dao.dart';
 import 'daos/recently_deleted_dao.dart';
+import 'daos/recurrence_exceptions_dao.dart';
 import 'daos/reminders_dao.dart';
 import 'tables.dart';
 
@@ -25,6 +26,7 @@ part 'app_database.g.dart';
     RecentlyDeletedItems,
     OutboxOperations,
     NoteRevisions,
+    RecurrenceExceptions,
   ],
   daos: [
     CalendarEventsDao,
@@ -34,13 +36,14 @@ part 'app_database.g.dart';
     RecentlyDeletedDao,
     OutboxDao,
     NoteRevisionsDao,
+    RecurrenceExceptionsDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration {
@@ -92,6 +95,9 @@ class AppDatabase extends _$AppDatabase {
         }
         if (from < 7) {
           await m.createTable(noteRevisions);
+        }
+        if (from < 8) {
+          await m.createTable(recurrenceExceptions);
         }
       },
       beforeOpen: (details) async {

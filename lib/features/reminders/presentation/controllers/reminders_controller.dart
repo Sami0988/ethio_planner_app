@@ -1,9 +1,18 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../../core/database/app_database.dart'
+    show RecurrenceExceptionsCompanion;
+import '../../../../core/notifications/notification_provider.dart';
 import '../../../../core/notifications/notification_service.dart';
+import '../../../../core/notifications/notification_sound_provider.dart';
+import '../../../../core/providers/database_provider.dart';
+import '../../../../core/recently_deleted/soft_delete_provider.dart';
+import '../../../../core/recently_deleted/soft_delete_service.dart';
 import '../../domain/entities/reminder.dart';
 import '../../domain/usecases/get_reminders.dart';
+import '../providers/reminders_providers.dart';
 import '../providers/reminders_view_state.dart';
 
 const _uuid = Uuid();
@@ -15,9 +24,18 @@ class RemindersController extends Notifier<RemindersViewState> {
   late final DeleteReminder _deleteReminder;
   late final ToggleReminderCompleted _toggleCompleted;
   late final NotificationService _notificationService;
+  SoftDeleteService? _softDeleteService;
 
   @override
   RemindersViewState build() {
+    // Initialize dependencies eagerly to avoid LateInitializationError
+    _getReminders = ref.read(getRemindersProvider);
+    _createReminder = ref.read(createReminderProvider);
+    _updateReminder = ref.read(updateReminderProvider);
+    _deleteReminder = ref.read(deleteReminderProvider);
+    _toggleCompleted = ref.read(toggleReminderCompletedProvider);
+    _notificationService = ref.read(notificationServiceProvider);
+    _softDeleteService = ref.read(softDeleteServiceProvider);
     return const RemindersViewState();
   }
 
@@ -30,6 +48,7 @@ class RemindersController extends Notifier<RemindersViewState> {
     required DeleteReminder deleteReminder,
     required ToggleReminderCompleted toggleCompleted,
     required NotificationService notificationService,
+    SoftDeleteService? softDeleteService,
   }) {
     _getReminders = getReminders;
     _createReminder = createReminder;
@@ -37,6 +56,7 @@ class RemindersController extends Notifier<RemindersViewState> {
     _deleteReminder = deleteReminder;
     _toggleCompleted = toggleCompleted;
     _notificationService = notificationService;
+    _softDeleteService = softDeleteService;
   }
 
   Future<void> loadReminders() async {
@@ -154,7 +174,11 @@ class RemindersController extends Notifier<RemindersViewState> {
       await _notificationService.cancelNotification(reminder.notificationId!);
     }
 
-    await _deleteReminder(id);
+    if (_softDeleteService != null) {
+      await _softDeleteService!.softDeleteReminder(id);
+    } else {
+      await _deleteReminder(id);
+    }
     await loadReminders();
   }
 
@@ -187,16 +211,90 @@ class RemindersController extends Notifier<RemindersViewState> {
   Future<void> _scheduleReminderNotification(Reminder reminder) async {
     if (reminder.notificationId == null) return;
 
+    final sound = ref.read(notificationSoundProvider);
     await _notificationService.scheduleNotification(
       id: reminder.notificationId!,
       title: reminder.title,
       body: reminder.description ?? 'Reminder',
       scheduledTime: reminder.gcDate,
+      sound: sound,
     );
   }
 
   /// Returns true if notification permission is granted.
   Future<bool> requestNotificationPermission() async {
     return _notificationService.requestPermission();
+  }
+
+  /// Snoozes a reminder by rescheduling its notification for [duration] from now.
+  Future<void> snoozeReminder(String id, Duration duration) async {
+    final reminder = state.allReminders.firstWhere((r) => r.id == id);
+    final newTime = clock.now().add(duration);
+
+    // Cancel current notification
+    if (reminder.notificationId != null) {
+      await _notificationService.cancelNotification(reminder.notificationId!);
+    }
+
+    // Update the reminder's gcDate to the snoozed time
+    final updated = reminder.copyWith(gcDate: newTime);
+    await _updateReminder(updated);
+
+    // Schedule new notification at the snoozed time
+    if (reminder.notificationId != null) {
+      final sound = ref.read(notificationSoundProvider);
+      await _notificationService.scheduleNotification(
+        id: reminder.notificationId!,
+        title: reminder.title,
+        body: reminder.description ?? 'Reminder',
+        scheduledTime: newTime,
+        sound: sound,
+      );
+    }
+
+    await loadReminders();
+  }
+
+  /// Skips the next occurrence of a recurring reminder by creating an exception.
+  Future<void> skipOccurrence(String id) async {
+    final reminder = state.allReminders.firstWhere((r) => r.id == id);
+    if (reminder.recurrenceRule == null) return;
+
+    final db = ref.read(databaseProvider);
+    final exceptionKey =
+        '${reminder.id}_${reminder.gcDate.millisecondsSinceEpoch}';
+
+    // Create a skipped exception
+    await db.recurrenceExceptionsDao.upsertException(
+      RecurrenceExceptionsCompanion.insert(
+        id: const Uuid().v4(),
+        entityType: 'reminder',
+        entityId: reminder.id,
+        exceptionKey: exceptionKey,
+        exceptionType: 'skipped',
+        createdAt: DateTime.now(),
+      ),
+    );
+
+    // Cancel current notification
+    if (reminder.notificationId != null) {
+      await _notificationService.cancelNotification(reminder.notificationId!);
+    }
+
+    await loadReminders();
+  }
+
+  /// Cancels a reminder's notification and marks it as completed.
+  Future<void> cancelReminder(String id) async {
+    final reminder = state.allReminders.firstWhere((r) => r.id == id);
+
+    // Cancel notification
+    if (reminder.notificationId != null) {
+      await _notificationService.cancelNotification(reminder.notificationId!);
+    }
+
+    // Mark as completed
+    await _toggleCompleted(id, true);
+    await loadReminders();
   }
 }

@@ -1,6 +1,8 @@
 import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/route_names.dart';
 import '../../../../core/sync/sync_status.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radii.dart';
@@ -15,10 +17,29 @@ class UpNextCard extends StatelessWidget {
 
   final UpNextPresentation item;
 
+  void _navigateToItem(BuildContext context) {
+    if (item.id == null || item.type == null) return;
+
+    switch (item.type) {
+      case 'event':
+        context.push(RouteNames.calendar);
+        break;
+      case 'reminder':
+        context.push(RouteNames.reminders);
+        break;
+      case 'planner':
+        context.push(RouteNames.planner);
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final timeRange = _buildTimeRange(item, l10n);
+    final isTappable = item.id != null && item.type != null;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -27,7 +48,7 @@ class UpNextCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: isTappable ? () => _navigateToItem(context) : null,
           borderRadius: AppRadii.card as BorderRadius?,
           child: Container(
             decoration: BoxDecoration(
@@ -88,6 +109,8 @@ class UpNextCard extends StatelessWidget {
                   // Title
                   Text(
                     item.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.cardTitle.copyWith(
                       fontSize: 19,
                       fontWeight: FontWeight.w800,
@@ -103,6 +126,28 @@ class UpNextCard extends StatelessWidget {
                       style: AppTextStyles.cardSubtitle.copyWith(
                         color: context.colorTextSecondary,
                       ),
+                    ),
+                  ],
+                  // Location
+                  if (item.location != null && item.location!.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.xs),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on_rounded,
+                          size: 14,
+                          color: context.colorTextSecondary,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            item.location!,
+                            style: AppTextStyles.cardSubtitle.copyWith(
+                              color: context.colorTextSecondary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                   // Time range
@@ -135,6 +180,27 @@ class UpNextCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
+                  ],
+                  // Tap to view hint
+                  if (isTappable) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.touch_app_rounded,
+                          size: 14,
+                          color: context.colorPrimary.withValues(alpha: 0.6),
+                        ),
+                        const SizedBox(width: AppSpacing.xs),
+                        Text(
+                          l10n.tapToView,
+                          style: AppTextStyles.cardSubtitle.copyWith(
+                            color: context.colorPrimary.withValues(alpha: 0.6),
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ],

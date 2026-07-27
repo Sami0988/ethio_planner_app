@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/database/app_database.dart' hide Note;
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../notes/domain/entities/note.dart';
 import '../providers/notes_providers.dart';
 
@@ -22,9 +23,10 @@ class NoteRevisionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Revision History'),
+        title: Text(l10n.revisionHistory),
       ),
       body: _RevisionList(note: note),
     );
@@ -193,6 +195,7 @@ class _RevisionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return Card(
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
@@ -218,7 +221,7 @@ class _RevisionCard extends StatelessWidget {
                 const Spacer(),
                 TextButton(
                   onPressed: () => _restoreRevision(context),
-                  child: const Text('Restore'),
+                  child: Text(l10n.recentlyDeletedRestore),
                 ),
               ],
             ),
@@ -253,11 +256,31 @@ class _RevisionCard extends StatelessWidget {
     );
   }
 
-  void _restoreRevision(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Restore functionality coming soon'),
+  void _restoreRevision(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.restoreRevisionTitle),
+        content: Text(l10n.restoreRevisionBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.recentlyDeletedRestore),
+          ),
+        ],
       ),
     );
+
+    if (confirmed == true && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.revisionRestored)),
+      );
+      Navigator.of(context).pop();
+    }
   }
 }

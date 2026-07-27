@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/database/app_database.dart';
+import '../../../../core/database/app_database.dart' hide Note;
 import '../../../../core/database/daos/note_revisions_dao.dart';
 import '../../../../core/providers/database_provider.dart';
 import '../../data/datasources/note_local_datasource.dart';
 import '../../data/repositories/note_repository_impl.dart';
+import '../../domain/entities/note.dart';
 import '../../domain/usecases/get_notes.dart';
 import '../controllers/notes_controller.dart';
 import 'notes_view_state.dart';
@@ -59,3 +60,8 @@ final noteRevisionsProvider = FutureProvider.autoDispose.family<List<NoteRevisio
     return dao.getRevisionsForNote(noteId);
   },
 );
+
+final notesStreamProvider = StreamProvider.autoDispose<List<Note>>((ref) {
+  final repository = ref.watch(noteRepositoryProvider);
+  return repository.watchAllNotes().where((notes) => notes.isNotEmpty);
+});

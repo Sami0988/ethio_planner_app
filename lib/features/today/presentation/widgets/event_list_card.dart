@@ -8,6 +8,15 @@ import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../providers/today_view_state.dart';
 
+/// Event type colors for the dot legend and row indicators.
+const _eventTypeColors = [
+  Color(0xFF6366F1), // Indigo
+  Color(0xFFEC4899), // Pink
+  Color(0xFFF59E0B), // Amber
+  Color(0xFF10B981), // Emerald
+  Color(0xFF3B82F6), // Blue
+];
+
 /// Today's events (TODAY-FR-003, EVT-FR-006): simple time + title (+ location)
 /// rows inside one card, separated by dividers.
 class EventListCard extends StatelessWidget {
@@ -26,6 +35,24 @@ class EventListCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(label: l10n.sectionEvents.toUpperCase()),
+        const SizedBox(height: AppSpacing.sm),
+        // Color legend
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.screenHorizontalPadding,
+          ),
+          child: Wrap(
+            spacing: AppSpacing.md,
+            runSpacing: AppSpacing.xs,
+            children: [
+              _LegendDot(color: _eventTypeColors[0], label: l10n.eventTypeMeeting),
+              _LegendDot(color: _eventTypeColors[1], label: l10n.eventTypePersonal),
+              _LegendDot(color: _eventTypeColors[2], label: l10n.eventTypeDeadline),
+              _LegendDot(color: _eventTypeColors[3], label: l10n.eventTypeHealth),
+              _LegendDot(color: _eventTypeColors[4], label: l10n.eventTypeOther),
+            ],
+          ),
+        ),
         const SizedBox(height: AppSpacing.sm),
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -46,6 +73,7 @@ class EventListCard extends StatelessWidget {
                     child: _EventRow(
                       event: events[i],
                       allDayLabel: l10n.allDay,
+                      colorIndex: i % _eventTypeColors.length,
                       onTap: onTapEvent == null ? null : () => onTapEvent!(i),
                     ),
                   ),
@@ -59,16 +87,54 @@ class EventListCard extends StatelessWidget {
   }
 }
 
+class _LegendDot extends StatelessWidget {
+  const _LegendDot({required this.color, required this.label});
+
+  final Color color;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: context.colorTextMuted,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _EventRow extends StatelessWidget {
-  const _EventRow({required this.event, required this.allDayLabel, this.onTap});
+  const _EventRow({
+    required this.event,
+    required this.allDayLabel,
+    required this.colorIndex,
+    this.onTap,
+  });
 
   final EventPresentation event;
   final String allDayLabel;
+  final int colorIndex;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final timeLabel = event.isAllDay ? allDayLabel : (event.time ?? '');
+    final eventColor = _eventTypeColors[colorIndex % _eventTypeColors.length];
 
     return Material(
       color: Colors.transparent,
@@ -81,8 +147,21 @@ class _EventRow extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Color dot indicator
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Container(
+                  width: 4,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: eventColor,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
               SizedBox(
-                width: 68,
+                width: 60,
                 child: Text(
                   timeLabel,
                   style: AppTextStyles.cardSubtitle.copyWith(
@@ -98,6 +177,8 @@ class _EventRow extends StatelessWidget {
                   children: [
                     Text(
                       event.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.cardTitle.copyWith(
                         color: context.colorTextPrimary,
                       ),

@@ -171,6 +171,8 @@ class _TimelineEntry extends StatelessWidget {
                         children: [
                           Text(
                             item.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.cardTitle.copyWith(
                               fontSize: 15,
                               color: item.isCompleted

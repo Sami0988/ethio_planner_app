@@ -4,11 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/route_names.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/reduced_motion.dart';
 import '../../../../shared/widgets/sync_status_banner.dart';
 import '../controllers/today_controller.dart';
 import '../providers/today_view_state.dart';
+import '../widgets/daily_quote.dart';
 import '../widgets/event_list_card.dart';
+import '../widgets/notes_preview.dart';
 import '../widgets/quick_add_sheet.dart';
 import '../widgets/today_empty_state.dart';
 import '../widgets/today_header.dart';
@@ -29,6 +33,7 @@ class TodayPage extends ConsumerStatefulWidget {
 class _TodayPageState extends ConsumerState<TodayPage> {
   final _scrollController = ScrollController();
   bool _isScrolled = false;
+  int _planningStreak = 0;
 
   @override
   void initState() {
@@ -39,6 +44,13 @@ class _TodayPageState extends ConsumerState<TodayPage> {
         setState(() => _isScrolled = scrolled);
       }
     });
+    _loadStreak();
+  }
+
+  Future<void> _loadStreak() async {
+    final controller = ref.read(todayControllerProvider.notifier);
+    final streak = await controller.computePlanningStreak();
+    if (mounted) setState(() => _planningStreak = streak);
   }
 
   @override
@@ -54,6 +66,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(todayControllerProvider);
     final reduceMotion = MediaQuery.of(context).disableAnimations;
+    final controller = ref.read(todayControllerProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +87,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
+            duration: ReducedMotion.fastDuration(context),
             height: 1,
             color: _isScrolled
                 ? Theme.of(context).dividerColor
@@ -82,6 +95,38 @@ class _TodayPageState extends ConsumerState<TodayPage> {
           ),
         ),
         actions: [
+          if (_planningStreak > 1)
+            Padding(
+              padding: const EdgeInsets.only(right: AppSpacing.sm),
+              child: Tooltip(
+                message: l10n.planningStreakTooltip(_planningStreak),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: context.colorHoliday.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('🔥', style: TextStyle(fontSize: 12)),
+                      const SizedBox(width: 4),
+                      Text(
+                        '$_planningStreak',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: context.colorHoliday,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           IconButton(
             icon: const Icon(Icons.search_rounded),
             tooltip: l10n.searchLabel,
@@ -157,7 +202,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
                       : Column(
                           key: const ValueKey('loaded'),
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: _sections(state, reduceMotion),
+                          children: _sections(state, reduceMotion, controller),
                         ),
                 ),
                 const SizedBox(height: 96),
@@ -169,19 +214,32 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     );
   }
 
-  List<Widget> _sections(TodayViewState state, bool reduceMotion) {
+  List<Widget> _sections(
+    TodayViewState state,
+    bool reduceMotion,
+    TodayController controller,
+  ) {
     final upNext = state.upNext;
-    final controller = ref.read(todayControllerProvider.notifier);
     final sections = <Widget>[
+      // Up next card
       if (upNext != null) UpNextCard(item: upNext),
+      // Daily quote
+      const DailyQuote(),
+      // Events list
       if (state.events.isNotEmpty) EventListCard(events: state.events),
+      // Schedule timeline
       if (state.schedule.isNotEmpty)
         TodayScheduleTimeline(items: state.schedule),
+      // Reminders
       if (state.reminders.isNotEmpty)
         TodayReminders(
           items: state.reminders,
           onToggle: controller.toggleReminder,
+          onDelete: controller.deleteReminder,
+          onSnooze: controller.snoozeReminder,
         ),
+      // Notes preview
+      const NotesPreview(),
     ];
 
     return [

@@ -10,6 +10,7 @@ abstract class CalendarViewState with _$CalendarViewState {
     required DateTime? selectedDate,
     @Default([]) List<CalendarEvent> events,
     @Default([]) List<CalendarEvent> selectedDayEvents,
+    @Default(<String>{}) Set<String> eventDates,
     @Default(false) bool isLoading,
     String? error,
   }) = _CalendarViewState;

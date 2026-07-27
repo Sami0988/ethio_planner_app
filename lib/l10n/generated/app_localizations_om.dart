@@ -15,16 +15,16 @@ class AppLocalizationsOm extends AppLocalizations {
   String get todayTab => 'Har\'a';
 
   @override
-  String get calendarTab => 'Barruu';
+  String get calendarTab => 'Kaalandara';
 
   @override
-  String get plannerTab => 'Planner';
+  String get plannerTab => 'Pilaanera';
 
   @override
-  String get moreTab => 'Biiroo';
+  String get moreTab => 'Dabalata';
 
   @override
-  String get searchLabel => 'Baradhu';
+  String get searchLabel => 'Barbaadi';
 
   @override
   String get accountLabel => 'Herrega';
@@ -33,31 +33,31 @@ class AppLocalizationsOm extends AppLocalizations {
   String get sectionUpNext => 'Itti Aanu';
 
   @override
-  String get sectionEvents => 'Sadetta';
+  String get sectionEvents => 'Gochaawwan';
 
   @override
-  String get sectionReminders => 'Yaadannoowwan';
+  String get sectionReminders => 'Yaadachiiftota';
 
   @override
-  String get sectionTodaySchedule => 'Gosa Har\'a';
+  String get sectionTodaySchedule => 'Sagantaa Har\'aa';
 
   @override
-  String get seeAll => 'Hunda Dubbisi';
+  String get seeAll => 'Hunda ilaali';
 
   @override
-  String get quickAddTitle => 'Argama Dhiressaa';
+  String get quickAddTitle => 'Dafii Ida\'i';
 
   @override
-  String get quickAddEvent => 'Sadetta';
+  String get quickAddEvent => 'Gocha';
 
   @override
-  String get quickAddReminder => 'Yaadanno';
+  String get quickAddReminder => 'Yaadachiiftuu';
 
   @override
   String get quickAddNote => 'Barruu';
 
   @override
-  String get reminderOverdue => 'Itti Dhaamtan';
+  String get reminderOverdue => 'Yeroon Darbeera';
 
   @override
   String get allDay => 'Guyyaa Guutuu';
@@ -73,7 +73,7 @@ class AppLocalizationsOm extends AppLocalizations {
 
   @override
   String get emptyTodayBody =>
-      'Har\'a sadetta hin jirtu. Wanti ni dandeenye, sadetta, yaadanno ykn barruu ida\'i.';
+      'Har\'a gochi karoorfame hin jiru. Yeroo qophii taatu gocha, yaadachiiftuu ykn barruu ida\'i.';
 
   @override
   String get addSomething => 'Wanti ida\'i';
@@ -82,22 +82,22 @@ class AppLocalizationsOm extends AppLocalizations {
   String get syncOffline => 'Ala Aaggii';
 
   @override
-  String get syncSavedLocally => 'Naannoo kana irratti ka\'e';
+  String get syncSavedLocally => 'Meeshaa kana irratti ka\'e';
 
   @override
-  String get syncWaitingToSync => 'Jalqaba ta\'uu qabu eegala jira';
+  String get syncWaitingToSync => 'Walsimsiisuuf eeggachaa jira';
 
   @override
-  String get syncSyncing => 'Jalqabaa jira…';
+  String get syncSyncing => 'Walsimsiisaa jira…';
 
   @override
-  String get syncingLabel => 'Jalqabaa jira…';
+  String get syncingLabel => 'Walsimsiisaa jira…';
 
   @override
-  String get syncSynced => 'Walsimsii\'a';
+  String get syncSynced => 'Walsimsiifameera';
 
   @override
-  String get syncFailed => 'Jalqaba hin milkaa\'in';
+  String get syncFailed => 'Walsimsiisuun hin milkaa\'in';
 
   @override
   String get syncRetry => 'Irra Deebi\'i';
@@ -106,60 +106,60 @@ class AppLocalizationsOm extends AppLocalizations {
   String get syncRejected => 'Dhiifama';
 
   @override
-  String get syncConflict => 'Rakkoo uumamaa';
+  String get syncConflict => 'Walitti bu\'iinsi uumameera';
 
   @override
-  String get syncReview => 'Illee Illee';
+  String get syncReview => 'Irra deebi\'ii ilaali';
 
   @override
-  String get syncActionRequired => 'Gocha Barbaachisa';
+  String get syncActionRequired => 'Tarkaanfii barbaachisa';
 
   @override
   String syncWaiting(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count jijjiiramawwan jalqaba ta\'uu qabu',
-      one: '1 jijjiirama jalqaba ta\'uu qabu',
+      other: 'Jijjiiramawwan $count walsimsiisuuf eeggachaa jiru',
+      one: 'Jijjiirama 1 walsimsiisuuf eeggachaa jira',
     );
     return '$_temp0';
   }
 
   @override
-  String get moreReminders => 'Yaadannoowwan';
+  String get moreReminders => 'Yaadachiiftota';
 
   @override
   String get moreNotes => 'Barruuwwan';
 
   @override
-  String get moreSettings => 'Qindaa\'inaa';
+  String get moreSettings => 'Qindaa\'ina';
 
   @override
-  String get moreRecentlyDeleted => 'Haqameeraan Haqamee';
+  String get moreRecentlyDeleted => 'Dhiheenya Kan Haqame';
 
   @override
-  String get settingsTheme => 'Haallii';
+  String get settingsTheme => 'Bifa';
 
   @override
-  String get settingsThemeSystem => 'Siraa';
+  String get settingsThemeSystem => 'Sirna';
 
   @override
   String get settingsThemeLight => 'Ifaa';
 
   @override
-  String get settingsThemeDark => 'Dunkaa';
+  String get settingsThemeDark => 'Dukkana';
 
   @override
   String get settingsLanguage => 'Afaan';
 
   @override
-  String get settingsLanguageSystem => 'Siraa';
+  String get settingsLanguageSystem => 'Sirna';
 
   @override
-  String get settingsLanguageEnglish => 'Ingiliffaa';
+  String get settingsLanguageEnglish => 'English';
 
   @override
-  String get settingsLanguageAmharic => 'Amaariffaa';
+  String get settingsLanguageAmharic => 'Amharic';
 
   @override
   String get settingsLanguageOromoo => 'Afaan Oromoo';
@@ -168,7 +168,7 @@ class AppLocalizationsOm extends AppLocalizations {
   String get settingsLanguageTigrinya => 'Tigrinya';
 
   @override
-  String get settingsVersion => 'Vershin';
+  String get settingsVersion => 'Veshinii';
 
   @override
   String get authSignIn => 'Seeni';
@@ -195,64 +195,63 @@ class AppLocalizationsOm extends AppLocalizations {
   String get authNoAccount => 'Herrega hin qabdu?';
 
   @override
-  String get authHasAccount => 'Herrega qabdu?';
+  String get authHasAccount => 'Duraan herrega qabdu?';
 
   @override
   String get authVerifyEmail => 'Imeeyilii Mirkaneessi';
 
   @override
-  String get authVerificationCode => 'Lakkoofsa Mirkaneessaa';
+  String get authVerificationCode => 'Koodii Mirkaneessaa';
 
   @override
   String get authResetPassword => 'Jecha Darbii Haaromsi';
 
   @override
-  String get authSendCode => 'Lakkoofsa Ergi';
+  String get authSendCode => 'Koodii Ergi';
 
   @override
-  String get authResetCodeSent => 'Lakkoofsa haaromsii ergameera';
+  String get authResetCodeSent => 'Koodiin haaromsii ergameera';
 
   @override
-  String get recentlyDeletedTitle => 'Haqameeraan Haqamee';
+  String get recentlyDeletedTitle => 'Dhiheenya Kan Haqame';
 
   @override
   String get recentlyDeletedEmpty => 'Haqameeraan haqamee hin jiru';
 
   @override
-  String get recentlyDeletedHint =>
-      'Haqameeraan haqamee guyyaa 30 naannoo kana arifama';
+  String get recentlyDeletedHint => 'Wanti haqame guyyaa 30f asitti mul\'ata';
 
   @override
-  String get recentlyDeletedRestore => 'Haasiisi';
+  String get recentlyDeletedRestore => 'Deebisi';
 
   @override
   String get recentlyDeletedDelete => 'Haqi';
 
   @override
-  String recentlyDeletedDaysLeft(Object count) {
-    return 'Haquu gara guyyaa $count';
+  String recentlyDeletedDaysLeft(int count) {
+    return 'Haqamuuf guyyaa $count hafe';
   }
 
   @override
-  String get conflictCenterTitle => 'Kutaan Rakkoo';
+  String get conflictCenterTitle => 'Wiirtuu Walitti Bu\'iinsaa';
 
   @override
-  String get conflictCenterEmpty => 'Rakko hin jiru';
+  String get conflictCenterEmpty => 'Walitti bu\'iinsi hin jiru';
 
   @override
-  String get conflictCenterSynced => 'Otuun hunda walsimsii\'a';
+  String get conflictCenterSynced => 'Deetaan kee hundi walsimsiifameera';
 
   @override
-  String get conflictKeepLocal => 'Miseensaa naannoo haasiisi';
+  String get conflictKeepLocal => 'Kan biyya keessaa hambisi';
 
   @override
-  String get conflictKeepRemote => 'Miseensaa alaa haasiisi';
+  String get conflictKeepRemote => 'Kan alaa hambisi';
 
   @override
-  String get conflictKeepBoth => 'Lamaan haasiisi';
+  String get conflictKeepBoth => 'Lamaan hambisi';
 
   @override
-  String get conflictResolve => 'Fudhu';
+  String get conflictResolve => 'Hiiki';
 
   @override
   String get notesTitle => 'Barruuwwan';
@@ -264,24 +263,24 @@ class AppLocalizationsOm extends AppLocalizations {
   String get notesHint => 'Barruu uumuuf + cuqisi';
 
   @override
-  String get notesPinned => 'Cinisamee';
+  String get notesPinned => 'Kabsaalamee';
 
   @override
-  String get notesArchived => 'Ka\'aa\'amee';
+  String get notesArchived => 'Kuufamee';
 
   @override
-  String get searchEmpty => 'Acii hin argamne';
+  String get searchEmpty => 'Bu\'aan hin argamne';
 
   @override
-  String get searchHint => 'Barreessa gootheraa yaali';
+  String get searchHint => 'Gochaawwan, yaadachiiftota, barruuwwan barbaadi';
 
   @override
   String get searchPlaceholder =>
-      'Sadetta, yaadannoowwan, barruuwwan baradhu...';
+      'Gochaawwan, yaadachiiftota, barruuwwan barbaadi...';
 
   @override
   String searchResults(Object count) {
-    return 'Acii $count';
+    return 'Bu\'aa $count';
   }
 
   @override
@@ -303,31 +302,31 @@ class AppLocalizationsOm extends AppLocalizations {
   String get plannerNoItems => 'Wanti hin jiru';
 
   @override
-  String get calendarNoEvents => 'Guyyaa kanaaf sadetta hin jirtu';
+  String get calendarNoEvents => 'Guyyaa kanaaf gochi hin jiru';
 
   @override
-  String get calendarNewEvent => 'Sadetta Haaraa';
+  String get calendarNewEvent => 'Gocha Haaraa';
 
   @override
-  String get calendarEditEvent => 'Sadetta Fakki';
+  String get calendarEditEvent => 'Gocha Gulaali';
 
   @override
-  String get calendarNewReminder => 'Yaadanno Haaraa';
+  String get calendarNewReminder => 'Yaadachiiftuu Haaraa';
 
   @override
-  String get calendarEditReminder => 'Yaadanno Fakki';
+  String get calendarEditReminder => 'Yaadachiiftuu Gulaali';
 
   @override
   String get calendarTitle => 'Mata duree';
 
   @override
-  String get calendarLocation => 'Naannoo (ni toluu)';
+  String get calendarLocation => 'Iddoo (ni danda\'ama)';
 
   @override
-  String get calendarCategory => 'Gosa (ni toluu)';
+  String get calendarCategory => 'Ramaddii (ni danda\'ama)';
 
   @override
-  String get calendarDescription => 'Ibsa (ni toluu)';
+  String get calendarDescription => 'Ibsa (ni danda\'ama)';
 
   @override
   String get calendarAllDay => 'Guyyaa guutuu';
@@ -339,63 +338,66 @@ class AppLocalizationsOm extends AppLocalizations {
   String get calendarUpdate => 'Haaromsi';
 
   @override
-  String get calendarNoEventsForDay => 'Guyyaa kanaaf sadetta hin jirtu';
+  String get calendarNoEventsForDay => 'Guyyaa kanaaf gochi hin jiru';
 
   @override
-  String get actionEdit => 'Fakki';
+  String get actionEdit => 'Gulaali';
 
   @override
   String get actionDelete => 'Haqi';
 
   @override
-  String get actionCancel => 'Haqii';
+  String get actionCancel => 'Dhiisi';
 
   @override
-  String get deleteEventConfirmTitle => 'Sadetta Haqi';
+  String get deleteEventConfirmTitle => 'Gocha Haqi';
 
   @override
   String deleteEventConfirmBody(Object title) {
-    return '\"$title\" haquu ni mirkannaatda?';
+    return '\"$title\" haquu ni mirkaneessita?';
   }
 
   @override
-  String get eventSaveError => 'Sadetta ka\'uu hin milkaa\'in';
+  String get eventSaveError => 'Gocha olkaayuun hin milkaa\'in';
 
   @override
-  String get editEventTitle => 'Sadetta Fakki';
+  String get editEventTitle => 'Gocha Gulaali';
 
   @override
-  String get newEventTitle => 'Sadetta Haaraa';
+  String get newEventTitle => 'Gocha Haaraa';
 
   @override
   String get fieldTitle => 'Mata duree';
 
   @override
-  String get fieldTitleRequired => 'Mata duree barbaachisa';
+  String get fieldTitleRequired => 'Mata dureen barbaachisaadha';
 
   @override
-  String get fieldLocationOptional => 'Naannoo (ni toluu)';
+  String get fieldLocationOptional => 'Iddoo (ni danda\'ama)';
 
   @override
-  String get fieldCategoryOptional => 'Gosa (ni toluu)';
+  String get fieldCategoryOptional => 'Ramaddii (ni danda\'ama)';
 
   @override
-  String get fieldDescriptionOptional => 'Ibsa (ni toluu)';
+  String get fieldDescriptionOptional => 'Ibsa (ni danda\'ama)';
 
   @override
-  String get categoryNone => 'Mituu';
+  String get categoryNone => 'Homaa';
 
   @override
-  String get categoryWork => 'Dalaga';
+  String get categoryMeeting => 'Walga\'ii';
 
   @override
-  String get categoryPersonal => 'Dhuunfa';
+  String get categoryPersonal => 'Dhuunfaa';
 
   @override
-  String get categoryHoliday => 'Ayyaana';
+  String get categoryDeadline => 'Yeroo dhumaa';
 
   @override
-  String get categoryOther => 'Biyyoo';
+  String get categoryHealth => 'Fayyaa';
+
+  @override
+  String get categoryOther => 'Kan biraa';
 
   @override
   String get actionUpdate => 'Haaromsi';
@@ -414,56 +416,56 @@ class AppLocalizationsOm extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count sadetta',
-      one: '1 sadetta',
+      other: 'Gochaawwan $count',
+      one: 'Gocha 1',
     );
     return '$_temp0';
   }
 
   @override
-  String get jumpToDateTitle => 'Guyyaa keessatti boru';
+  String get jumpToDateTitle => 'Gara guyyaatti darbi';
 
   @override
   String get jumpToDateHint => 'Guyyaa filadhu';
 
   @override
-  String get actionGo => 'Bori';
+  String get actionGo => 'Deemi';
 
   @override
-  String get actionSave => 'Olkaa';
+  String get actionSave => 'Olkaa\'i';
 
   @override
   String get filterDay => 'Guyyaa';
 
   @override
-  String get filterWeek => 'Torbe';
+  String get filterWeek => 'Torban';
 
   @override
-  String get filterMonth => 'Jiicha';
+  String get filterMonth => 'Ji\'a';
 
   @override
   String get filterAll => 'Hunda';
 
   @override
-  String get calendarAllEvents => 'Sadetta Hunda';
+  String get calendarAllEvents => 'Gochaawwan Hunda';
 
   @override
-  String get settingsCalendar => 'Barruu';
+  String get settingsCalendar => 'Kaalandara';
 
   @override
-  String get settingsPrimaryCalendar => 'Barruu Dursaa';
+  String get settingsPrimaryCalendar => 'Kaalandara Dursaa';
 
   @override
   String get settingsPrimaryCalendarEthiopian => 'Itoophiyaa';
 
   @override
-  String get settingsPrimaryCalendarGregorian => 'Greegoriyaa';
+  String get settingsPrimaryCalendarGregorian => 'Greegoriyaan';
 
   @override
-  String get settingsPrimaryCalendarDual => 'Lama';
+  String get settingsPrimaryCalendarDual => 'Lamaan';
 
   @override
-  String get settingsWeekStart => 'Bu\'uun Jarri';
+  String get settingsWeekStart => 'Jalqaba Torbanii';
 
   @override
   String get settingsWeekStartSaturday => 'Sanbata';
@@ -475,76 +477,83 @@ class AppLocalizationsOm extends AppLocalizations {
   String get settingsWeekStartMonday => 'Wixata';
 
   @override
-  String get settingsNumeralStyle => 'Lakka\'oo';
+  String get settingsNumeralStyle => 'Bifa Lakkoofsaa';
 
   @override
-  String get settingsNumeralGez => 'Ge\'ez';
+  String get settingsNumeralGez => 'Gi\'izii';
 
   @override
-  String get settingsNumeralLatin => 'Laatinii';
+  String get settingsNumeralLatin => 'Laatiinii';
 
   @override
-  String get settingsTimezone => 'Yeroo Naannoo';
+  String get settingsTimezone => 'Naannoo Yeroo';
 
   @override
-  String get settingsTimezoneAddisAbaba => 'Addis Ababa';
+  String get settingsTimezoneAddisAbaba => 'Finfinnee';
 
   @override
   String get settingsTimezoneGMT => 'GMT';
 
   @override
+  String get onboardingLanguageTitle => 'Afaan kee filadhu';
+
+  @override
+  String get onboardingLanguageBody =>
+      'Afaan filadhu. Kanii booda Qindaa\'ina irraa jijjiiruu dandeessa.';
+
+  @override
   String get onboardingIntroBody =>
-      'Kan Itoophiyaa fi Gregoriyaan ta\'e, yaadannoo fi marmarkaa qabu personal planner. Deetaa kee alaa keessa qabduu dha.';
+      'Pilaanera dhuunfaa Kaalandara Itoophiyaa fi Greegoriyaan, yaadachiiftota fi barruuwwan qabu. Deetaan kee meeshaa kee irratti hafa.';
 
   @override
   String get onboardingGetStarted => 'Jalqabi';
 
   @override
-  String get onboardingAccountTitle => 'Itti fufi';
+  String get onboardingAccountTitle => 'Karoora itti fufi';
 
   @override
   String get onboardingAccountBody =>
-      'Deetaa kee cuqaasuuf account godhi, ykn guests ta\'uu tuqi.';
+      'Deetaa kee olkaayuuf herrega uumi, ykn akka keessummaatti itti fufi.';
 
   @override
-  String get onboardingContinueGuest => 'Guest ta\'uu tuqi';
+  String get onboardingContinueGuest => 'Akka keessummaatti itti fufi';
 
   @override
-  String get onboardingCreateAccount => 'Account godhi';
+  String get onboardingCreateAccount => 'Herrega Uumi';
 
   @override
-  String get onboardingSignIn => 'Account qabdaa? Seeni';
+  String get onboardingSignIn => 'Herrega qabdaa? Seeni';
 
   @override
-  String get onboardingGuestTitle => 'Deetaa kee as keessa qabduu dha';
+  String get onboardingGuestTitle => 'Deetaan kee asuma hafa';
 
   @override
   String get onboardingGuestBody =>
-      'Deetaa guest alaa keessa qabduu dha. Hin cuqafamne fi app adda baasuun hadhaa.';
+      'Deetaan keessummaa meeshaa kana irratti qofa hafa. Hin olkaayamu, kanaaf yoo appii haquun baduu danda\'a. Booda herrega uumun deetaa kee galchuu dandeessa.';
 
   @override
-  String get onboardingGotIt => 'Naannoo';
+  String get onboardingGotIt => 'Hubadheera';
 
   @override
-  String get recurrenceTitle => 'Irra deebi\'uu haala';
+  String get recurrenceTitle => 'Bifa Irra Deebii';
 
   @override
-  String get recurrenceFrequency => 'Hunda';
+  String get recurrenceFrequency => 'Irra Deebii';
 
   @override
-  String get recurrenceFreqDaily => 'Guuya guuya';
+  String get recurrenceFreqDaily => 'Guyyaa Guyyaan';
 
   @override
-  String get recurrenceFreqWeekly => 'Torban torbatti';
+  String get recurrenceFreqWeekly => 'Torban Torbaniin';
 
   @override
-  String get recurrenceFreqMonthly => 'Ji\'a ji\'atti';
+  String get recurrenceFreqMonthly => 'Ji\'a Ji\'aan';
 
   @override
-  String get recurrenceFreqYearly => 'Waggaa waggaatti';
+  String get recurrenceFreqYearly => 'Waggaa Waggaan';
 
   @override
-  String get recurrenceInterval => 'Irra deebi\'i';
+  String get recurrenceInterval => 'Hundatti irra deebi\'i';
 
   @override
   String get recurrenceDay => 'guyyaa';
@@ -556,7 +565,7 @@ class AppLocalizationsOm extends AppLocalizations {
   String get recurrenceWeek => 'torban';
 
   @override
-  String get recurrenceWeeks => 'torba';
+  String get recurrenceWeeks => 'torban';
 
   @override
   String get recurrenceMonth => 'ji\'a';
@@ -571,50 +580,491 @@ class AppLocalizationsOm extends AppLocalizations {
   String get recurrenceYears => 'waggaa';
 
   @override
-  String get recurrenceCalendarBasis => 'Guyaa haala';
+  String get recurrenceCalendarBasis => 'Bu\'uura Kaalandaraa';
 
   @override
   String get calendarBasisEthiopian => 'Itoophiyaa';
 
   @override
-  String get calendarBasisGregorian => 'Gregoriyaan';
+  String get calendarBasisGregorian => 'Greegoriyaan';
 
   @override
-  String get recurrenceEnd => 'Arfata';
+  String get recurrenceEnd => 'Dhumata';
 
   @override
-  String get recurrenceEndNever => 'Hin arfatu';
+  String get recurrenceEndNever => 'Tasuma';
 
   @override
-  String get recurrenceEndAfter => 'Waliin';
+  String get recurrenceEndAfter => 'Booda';
 
   @override
-  String get recurrenceOccurrences => 'baay\'ee';
+  String get recurrenceOccurrences => 'irra deebii';
 
   @override
-  String get recurrenceEndOnDate => 'Guyya keessa';
+  String get recurrenceEndOnDate => 'Guyyaa irratti';
 
   @override
-  String get recurrencePreview => 'Dursee arguu';
+  String get recurrencePreview => 'Dursee Arga';
 
   @override
-  String get recurrenceNone => 'Hin deebi\'u';
+  String get recurrenceNone => 'Irra deebii hin qabu';
 
   @override
-  String get recurrenceClear => 'Irra deebi\'uu haala kaa\'i';
+  String get recurrenceClear => 'Irra deebii dhiisi';
 
   @override
-  String get settingsContentPacks => 'Paakii Waa\'a';
+  String get settingsContentPacks => 'Paakkota Qabiyyee';
 
   @override
-  String get settingsEthiopianHolidays => 'Ayyaanaa Itoophiyaa';
+  String get settingsEthiopianHolidays => 'Ayyaana Itoophiyaa';
 
   @override
-  String get settingsEthiopianObservances => 'Ilaalchuu Itoophiyaa';
+  String get settingsEthiopianObservances => 'Guyyoota Yaadannoo Itoophiyaa';
 
   @override
-  String get settingsEnabled => 'Kaka\'ame';
+  String get settingsEnabled => 'Dandeessifame';
 
   @override
-  String get settingsDisabled => 'Dhabame';
+  String get settingsDisabled => 'Dhowwame';
+
+  @override
+  String get editOccurrenceTitle => 'Gocha Irra Deebii Gulaali';
+
+  @override
+  String get editOccurrenceMessage =>
+      'Kan har\'aa qofa gulaaluu barbaadda moo hunda?';
+
+  @override
+  String get editThisOccurrence => 'Kan Har\'aa Qofa';
+
+  @override
+  String get editAllOccurrences => 'Hunda';
+
+  @override
+  String get deleteOccurrenceTitle => 'Gocha Irra Deebii Haqi';
+
+  @override
+  String get deleteOccurrenceMessage =>
+      'Kan har\'aa qofa haquu barbaadda moo hunda?';
+
+  @override
+  String get deleteThisOccurrence => 'Kan Har\'aa Qofa';
+
+  @override
+  String get deleteAllOccurrences => 'Hunda';
+
+  @override
+  String get snoozeReminder => 'Yaadachiiftuu Tursiisi';
+
+  @override
+  String get snooze15Minutes => 'Daqiiqaa 15';
+
+  @override
+  String get snooze30Minutes => 'Daqiiqaa 30';
+
+  @override
+  String get snooze1Hour => 'Sa\'aa 1';
+
+  @override
+  String get snooze2Hours => 'Sa\'aa 2';
+
+  @override
+  String get snoozeTomorrow => 'Hanga boruutti tursiisi (Sa\'a 3)';
+
+  @override
+  String get skipOccurrence => 'Utali';
+
+  @override
+  String get skipConfirmation => 'Gochi kun ni utaalama. Kan biraa hin tuqamu.';
+
+  @override
+  String get linkToEvent => 'Gocha Quunamsiisi';
+
+  @override
+  String get linkToReminder => 'Yaadachiiftuu Quunamsiisi';
+
+  @override
+  String get linkToPlanner => 'Pilaanera Quunamsiisi';
+
+  @override
+  String get noItemsToLink =>
+      'Wanti quunamsiisuuf jiru hin jiru. Jalqaba uumi.';
+
+  @override
+  String get reminderSnooze => 'Tursiisi';
+
+  @override
+  String get reminderSkip => 'Utali';
+
+  @override
+  String get reminderCancel => 'Yaadachiiftuu Haqi';
+
+  @override
+  String get plannerDay => 'Guyyaa';
+
+  @override
+  String get plannerWeek => 'Torban';
+
+  @override
+  String get plannerMonth => 'Ji\'a';
+
+  @override
+  String get plannerYear => 'Waggaa';
+
+  @override
+  String get plannerSectionFocus => 'Xiyyeeffannoo';
+
+  @override
+  String get plannerSectionPriorities => 'Dursa';
+
+  @override
+  String get plannerSectionChecklist => 'Tarree Mirkaneessaa';
+
+  @override
+  String get plannerSectionNotes => 'Barruuwwan';
+
+  @override
+  String get plannerSectionReflection => 'Yaadannoo';
+
+  @override
+  String get plannerSectionFocusEmpty => 'Xiyyeeffannoo kee har\'aa maali?';
+
+  @override
+  String get plannerSectionPrioritiesEmpty => 'Dursa kee ida\'i';
+
+  @override
+  String get plannerSectionChecklistEmpty => 'Hojiiwwan raawwataman ida\'i';
+
+  @override
+  String get plannerSectionNotesEmpty => 'Barruuwwan yeroo kanaa ida\'i';
+
+  @override
+  String get plannerSectionReflectionEmpty =>
+      'Adeemsa kee irratti yaadannoo taasisi';
+
+  @override
+  String get copyFromPreviousTitle => 'Kan Duraa Irraa Garagalchi';
+
+  @override
+  String copyFromPreviousMessage(Object period) {
+    return 'Hunda $period duraa irraa garagalchuu? Kan jiran ni utaalama.';
+  }
+
+  @override
+  String get carryForwardTitle => 'Gara Fuulduraatti Darbi';
+
+  @override
+  String carryForwardMessage(Object period) {
+    return 'Hojiiwwan hin raawwatamin $period duraa irraa darbii? Kan jiran ni utaalama.';
+  }
+
+  @override
+  String copiedItems(Object count) {
+    return '$count garagalchameera';
+  }
+
+  @override
+  String carriedItems(Object count) {
+    return '$count gara fuulduraatti darbeera';
+  }
+
+  @override
+  String get nothingToCopy =>
+      'Kan duraa irraa garagalchuuf wanti jiru hin jiru';
+
+  @override
+  String get nothingToCarry => 'Hojiiwwan hin raawwatamin darban hin jiru';
+
+  @override
+  String get recentlyDeletedConfirmTitle => 'Guutummaatti haquu?';
+
+  @override
+  String recentlyDeletedConfirmBody(Object title) {
+    return '\"$title\" guutummaatti ni haqama. Kuni hin deebi\'u.';
+  }
+
+  @override
+  String get recentlyDeletedFilterAll => 'Hunda';
+
+  @override
+  String get recentlyDeletedFilterEvents => 'Gochaawwan';
+
+  @override
+  String get recentlyDeletedFilterReminders => 'Yaadachiiftota';
+
+  @override
+  String get recentlyDeletedFilterPlanner => 'Pilaanera';
+
+  @override
+  String get recentlyDeletedFilterNotes => 'Barruuwwan';
+
+  @override
+  String recentlyDeletedDeletedOn(Object date) {
+    return 'Guyyaa haqame $date';
+  }
+
+  @override
+  String get revisionHistory => 'Seenaa Fooyya\'insaa';
+
+  @override
+  String get restoreRevisionTitle => 'Veshinii kana deebisuu?';
+
+  @override
+  String get restoreRevisionBody =>
+      'Kuni qabiyyee barruu amma jiru veshinii kanaan bakka buusa.';
+
+  @override
+  String get revisionRestored => 'Veshiniin deebifameera';
+
+  @override
+  String get notificationPermissionTitle => 'Eeyyama Beeksisaa';
+
+  @override
+  String get notificationPermissionBody =>
+      'Yaadachiiftota yeroon argachuuf beeksisa eeyyami.';
+
+  @override
+  String get notificationPermissionOK => 'Tole';
+
+  @override
+  String get plannerManageSections => 'Kutaawwan bulchi';
+
+  @override
+  String get searchCategoryHint => 'Ramaddii';
+
+  @override
+  String get syncTitle => 'Deetaan Walsimsiisi';
+
+  @override
+  String get syncClose => 'Cufi';
+
+  @override
+  String get syncImportGuest => 'Deetaa Keessummaa Galchi';
+
+  @override
+  String get syncNow => 'Amma Walsimsiisi';
+
+  @override
+  String get syncReady => 'Walsimsiisuuf qophiidha';
+
+  @override
+  String get syncComplete => 'Walsimsiisuun xumurameera';
+
+  @override
+  String get syncConflicts => 'Walitti bu\'iinsi argameera';
+
+  @override
+  String get delete => 'Haqi';
+
+  @override
+  String get deleteNoteConfirmTitle => 'Barruu haquu?';
+
+  @override
+  String deleteNoteConfirmBody(Object title) {
+    return '\"$title\" guutummaatti ni haqama.';
+  }
+
+  @override
+  String get deleteNoteConfirmDelete => 'Haqi';
+
+  @override
+  String get searchAcrossData => 'Deetaa kee hunda barbaadi';
+
+  @override
+  String get searchNoResults => 'Bu\'aan hin argamne';
+
+  @override
+  String get searchTryDifferent => 'Jecha biraa yaali';
+
+  @override
+  String searchResultsCount(Object count) {
+    return 'Bu\'aa $count';
+  }
+
+  @override
+  String get searchFilterTypes => 'Gosaan fili';
+
+  @override
+  String get searchFilterDateRange => 'Yeroo guyyaa';
+
+  @override
+  String get searchFilterCategory => 'Ramaddii';
+
+  @override
+  String get searchClearFilters => 'Hunda dhiisi';
+
+  @override
+  String get searchAll => 'Hunda';
+
+  @override
+  String get searchCategoryWork => 'Hojii';
+
+  @override
+  String get searchCategoryPersonal => 'Dhuunfaa';
+
+  @override
+  String get searchCategoryOther => 'Kan biraa';
+
+  @override
+  String get searchTypeEvents => 'Gochaawwan';
+
+  @override
+  String get searchTypeReminders => 'Yaadachiiftota';
+
+  @override
+  String get searchTypePlanner => 'Pilaanera';
+
+  @override
+  String get searchTypeNotes => 'Barruuwwan';
+
+  @override
+  String get recentlyDeletedTab => 'Dhiheenya Kan Haqame';
+
+  @override
+  String get pin => 'Kabsaali';
+
+  @override
+  String get unpin => 'Hiiki';
+
+  @override
+  String get archive => 'Kuusi';
+
+  @override
+  String get unarchive => 'Baasi';
+
+  @override
+  String get viewHistory => 'Seenaa Ilaali';
+
+  @override
+  String get plannerItem => 'Qabiyyee Pilaaneraa';
+
+  @override
+  String get plannerGoToToday => 'Har\'a Argi';
+
+  @override
+  String get healthCategory => 'Fayyaa';
+
+  @override
+  String get onboardingSystemLanguage => 'Sirna';
+
+  @override
+  String get navigationPrevious => 'Duraa';
+
+  @override
+  String get navigationNext => 'Itti Aanu';
+
+  @override
+  String get currentPeriod => 'Amma';
+
+  @override
+  String get add => 'Ida\'i';
+
+  @override
+  String get clearSearch => 'Barbaacha dhiisi';
+
+  @override
+  String get expandFilters => 'Bal\'isi';
+
+  @override
+  String get collapseFilters => 'Qunqii';
+
+  @override
+  String get dateConverterTitle => 'Guyyaa Jijjiiruu';
+
+  @override
+  String get dateConverterSwap => 'Kallattii jijjiiri';
+
+  @override
+  String get dateConverterEthiopianDate => 'Guyyaa Itoophiyaa';
+
+  @override
+  String get dateConverterGregorianDate => 'Guyyaa Greegoriyaan';
+
+  @override
+  String get dateConverterYear => 'Waggaa';
+
+  @override
+  String get dateConverterMonth => 'Ji\'a';
+
+  @override
+  String get dateConverterDay => 'Guyyaa';
+
+  @override
+  String get dateConverterConvert => 'Jijjiiri';
+
+  @override
+  String get dateConverterResult => 'Bu\'aa';
+
+  @override
+  String get moreDateConverter => 'Guyyaa Jijjiiruu';
+
+  @override
+  String get dailyQuoteTitle => 'Kaka\'umsa Har\'aa';
+
+  @override
+  String get sectionNotes => 'Barruuwwan';
+
+  @override
+  String notesMoreCount(int count) {
+    return 'Barruuwwan dabalataa +$count';
+  }
+
+  @override
+  String get complete => 'Xumurame';
+
+  @override
+  String get snoozeOneHour => 'Sa\'a 1f tursiisi';
+
+  @override
+  String get tapToView => 'Bal\'inaan ilaaluuf tuqi';
+
+  @override
+  String planningStreakTooltip(int count) {
+    return 'Guyyaa $count karoora walitti fufinsaan';
+  }
+
+  @override
+  String quickAddLastUsed(String type) {
+    return 'Dhumarratti kan fayyadame: $type';
+  }
+
+  @override
+  String get eventTypeMeeting => 'Walga\'ii';
+
+  @override
+  String get eventTypePersonal => 'Dhuunfaa';
+
+  @override
+  String get eventTypeDeadline => 'Yeroo dhumaa';
+
+  @override
+  String get eventTypeHealth => 'Fayyaa';
+
+  @override
+  String get eventTypeOther => 'Kan biraa';
+
+  @override
+  String get settingsNotificationSound => 'Sagalee Beeksisaa';
+
+  @override
+  String get notificationSoundSystem => 'Sirna';
+
+  @override
+  String get notificationSoundSystemDesc =>
+      'Sagalee beeksisaa meeshaa kee fayyadami';
+
+  @override
+  String get notificationSoundEthiopianBell => 'Bilbila Itoophiyaa';
+
+  @override
+  String get notificationSoundGentleChime => 'Sagalee Lallaafaa';
+
+  @override
+  String get notificationSoundSoftPing => 'Ping Lallaafaa';
+
+  @override
+  String get notificationSoundWarmTone => 'Toonii Ho\'aa';
+
+  @override
+  String get notificationSoundCustomDesc => 'Sagalee beeksisaa dhuunfaa';
 }

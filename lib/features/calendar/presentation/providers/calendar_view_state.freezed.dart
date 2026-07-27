@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CalendarViewState {
 
- DateTime get currentMonth; DateTime? get selectedDate; List<CalendarEvent> get events; List<CalendarEvent> get selectedDayEvents; bool get isLoading; String? get error;
+ DateTime get currentMonth; DateTime? get selectedDate; List<CalendarEvent> get events; List<CalendarEvent> get selectedDayEvents; Set<String> get eventDates; bool get isLoading; String? get error;
 /// Create a copy of CalendarViewState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CalendarViewStateCopyWith<CalendarViewState> get copyWith => _$CalendarViewStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CalendarViewState&&(identical(other.currentMonth, currentMonth) || other.currentMonth == currentMonth)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&const DeepCollectionEquality().equals(other.events, events)&&const DeepCollectionEquality().equals(other.selectedDayEvents, selectedDayEvents)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CalendarViewState&&(identical(other.currentMonth, currentMonth) || other.currentMonth == currentMonth)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&const DeepCollectionEquality().equals(other.events, events)&&const DeepCollectionEquality().equals(other.selectedDayEvents, selectedDayEvents)&&const DeepCollectionEquality().equals(other.eventDates, eventDates)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentMonth,selectedDate,const DeepCollectionEquality().hash(events),const DeepCollectionEquality().hash(selectedDayEvents),isLoading,error);
+int get hashCode => Object.hash(runtimeType,currentMonth,selectedDate,const DeepCollectionEquality().hash(events),const DeepCollectionEquality().hash(selectedDayEvents),const DeepCollectionEquality().hash(eventDates),isLoading,error);
 
 @override
 String toString() {
-  return 'CalendarViewState(currentMonth: $currentMonth, selectedDate: $selectedDate, events: $events, selectedDayEvents: $selectedDayEvents, isLoading: $isLoading, error: $error)';
+  return 'CalendarViewState(currentMonth: $currentMonth, selectedDate: $selectedDate, events: $events, selectedDayEvents: $selectedDayEvents, eventDates: $eventDates, isLoading: $isLoading, error: $error)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CalendarViewStateCopyWith<$Res>  {
   factory $CalendarViewStateCopyWith(CalendarViewState value, $Res Function(CalendarViewState) _then) = _$CalendarViewStateCopyWithImpl;
 @useResult
 $Res call({
- DateTime currentMonth, DateTime? selectedDate, List<CalendarEvent> events, List<CalendarEvent> selectedDayEvents, bool isLoading, String? error
+ DateTime currentMonth, DateTime? selectedDate, List<CalendarEvent> events, List<CalendarEvent> selectedDayEvents, Set<String> eventDates, bool isLoading, String? error
 });
 
 
@@ -62,13 +62,14 @@ class _$CalendarViewStateCopyWithImpl<$Res>
 
 /// Create a copy of CalendarViewState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentMonth = null,Object? selectedDate = freezed,Object? events = null,Object? selectedDayEvents = null,Object? isLoading = null,Object? error = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currentMonth = null,Object? selectedDate = freezed,Object? events = null,Object? selectedDayEvents = null,Object? eventDates = null,Object? isLoading = null,Object? error = freezed,}) {
   return _then(_self.copyWith(
 currentMonth: null == currentMonth ? _self.currentMonth : currentMonth // ignore: cast_nullable_to_non_nullable
 as DateTime,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,events: null == events ? _self.events : events // ignore: cast_nullable_to_non_nullable
 as List<CalendarEvent>,selectedDayEvents: null == selectedDayEvents ? _self.selectedDayEvents : selectedDayEvents // ignore: cast_nullable_to_non_nullable
-as List<CalendarEvent>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as List<CalendarEvent>,eventDates: null == eventDates ? _self.eventDates : eventDates // ignore: cast_nullable_to_non_nullable
+as Set<String>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime currentMonth,  DateTime? selectedDate,  List<CalendarEvent> events,  List<CalendarEvent> selectedDayEvents,  bool isLoading,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime currentMonth,  DateTime? selectedDate,  List<CalendarEvent> events,  List<CalendarEvent> selectedDayEvents,  Set<String> eventDates,  bool isLoading,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CalendarViewState() when $default != null:
-return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selectedDayEvents,_that.isLoading,_that.error);case _:
+return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selectedDayEvents,_that.eventDates,_that.isLoading,_that.error);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selecte
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime currentMonth,  DateTime? selectedDate,  List<CalendarEvent> events,  List<CalendarEvent> selectedDayEvents,  bool isLoading,  String? error)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime currentMonth,  DateTime? selectedDate,  List<CalendarEvent> events,  List<CalendarEvent> selectedDayEvents,  Set<String> eventDates,  bool isLoading,  String? error)  $default,) {final _that = this;
 switch (_that) {
 case _CalendarViewState():
-return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selectedDayEvents,_that.isLoading,_that.error);case _:
+return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selectedDayEvents,_that.eventDates,_that.isLoading,_that.error);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selecte
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime currentMonth,  DateTime? selectedDate,  List<CalendarEvent> events,  List<CalendarEvent> selectedDayEvents,  bool isLoading,  String? error)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime currentMonth,  DateTime? selectedDate,  List<CalendarEvent> events,  List<CalendarEvent> selectedDayEvents,  Set<String> eventDates,  bool isLoading,  String? error)?  $default,) {final _that = this;
 switch (_that) {
 case _CalendarViewState() when $default != null:
-return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selectedDayEvents,_that.isLoading,_that.error);case _:
+return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selectedDayEvents,_that.eventDates,_that.isLoading,_that.error);case _:
   return null;
 
 }
@@ -211,7 +212,7 @@ return $default(_that.currentMonth,_that.selectedDate,_that.events,_that.selecte
 
 
 class _CalendarViewState implements CalendarViewState {
-  const _CalendarViewState({required this.currentMonth, required this.selectedDate, final  List<CalendarEvent> events = const [], final  List<CalendarEvent> selectedDayEvents = const [], this.isLoading = false, this.error}): _events = events,_selectedDayEvents = selectedDayEvents;
+  const _CalendarViewState({required this.currentMonth, required this.selectedDate, final  List<CalendarEvent> events = const [], final  List<CalendarEvent> selectedDayEvents = const [], final  Set<String> eventDates = const <String>{}, this.isLoading = false, this.error}): _events = events,_selectedDayEvents = selectedDayEvents,_eventDates = eventDates;
   
 
 @override final  DateTime currentMonth;
@@ -230,6 +231,13 @@ class _CalendarViewState implements CalendarViewState {
   return EqualUnmodifiableListView(_selectedDayEvents);
 }
 
+ final  Set<String> _eventDates;
+@override@JsonKey() Set<String> get eventDates {
+  if (_eventDates is EqualUnmodifiableSetView) return _eventDates;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableSetView(_eventDates);
+}
+
 @override@JsonKey() final  bool isLoading;
 @override final  String? error;
 
@@ -243,16 +251,16 @@ _$CalendarViewStateCopyWith<_CalendarViewState> get copyWith => __$CalendarViewS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CalendarViewState&&(identical(other.currentMonth, currentMonth) || other.currentMonth == currentMonth)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&const DeepCollectionEquality().equals(other._events, _events)&&const DeepCollectionEquality().equals(other._selectedDayEvents, _selectedDayEvents)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CalendarViewState&&(identical(other.currentMonth, currentMonth) || other.currentMonth == currentMonth)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&const DeepCollectionEquality().equals(other._events, _events)&&const DeepCollectionEquality().equals(other._selectedDayEvents, _selectedDayEvents)&&const DeepCollectionEquality().equals(other._eventDates, _eventDates)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentMonth,selectedDate,const DeepCollectionEquality().hash(_events),const DeepCollectionEquality().hash(_selectedDayEvents),isLoading,error);
+int get hashCode => Object.hash(runtimeType,currentMonth,selectedDate,const DeepCollectionEquality().hash(_events),const DeepCollectionEquality().hash(_selectedDayEvents),const DeepCollectionEquality().hash(_eventDates),isLoading,error);
 
 @override
 String toString() {
-  return 'CalendarViewState(currentMonth: $currentMonth, selectedDate: $selectedDate, events: $events, selectedDayEvents: $selectedDayEvents, isLoading: $isLoading, error: $error)';
+  return 'CalendarViewState(currentMonth: $currentMonth, selectedDate: $selectedDate, events: $events, selectedDayEvents: $selectedDayEvents, eventDates: $eventDates, isLoading: $isLoading, error: $error)';
 }
 
 
@@ -263,7 +271,7 @@ abstract mixin class _$CalendarViewStateCopyWith<$Res> implements $CalendarViewS
   factory _$CalendarViewStateCopyWith(_CalendarViewState value, $Res Function(_CalendarViewState) _then) = __$CalendarViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- DateTime currentMonth, DateTime? selectedDate, List<CalendarEvent> events, List<CalendarEvent> selectedDayEvents, bool isLoading, String? error
+ DateTime currentMonth, DateTime? selectedDate, List<CalendarEvent> events, List<CalendarEvent> selectedDayEvents, Set<String> eventDates, bool isLoading, String? error
 });
 
 
@@ -280,13 +288,14 @@ class __$CalendarViewStateCopyWithImpl<$Res>
 
 /// Create a copy of CalendarViewState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentMonth = null,Object? selectedDate = freezed,Object? events = null,Object? selectedDayEvents = null,Object? isLoading = null,Object? error = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currentMonth = null,Object? selectedDate = freezed,Object? events = null,Object? selectedDayEvents = null,Object? eventDates = null,Object? isLoading = null,Object? error = freezed,}) {
   return _then(_CalendarViewState(
 currentMonth: null == currentMonth ? _self.currentMonth : currentMonth // ignore: cast_nullable_to_non_nullable
 as DateTime,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,events: null == events ? _self._events : events // ignore: cast_nullable_to_non_nullable
 as List<CalendarEvent>,selectedDayEvents: null == selectedDayEvents ? _self._selectedDayEvents : selectedDayEvents // ignore: cast_nullable_to_non_nullable
-as List<CalendarEvent>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as List<CalendarEvent>,eventDates: null == eventDates ? _self._eventDates : eventDates // ignore: cast_nullable_to_non_nullable
+as Set<String>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

@@ -1,8 +1,11 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/providers/calendar_settings_provider.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/planner_item.dart';
+import '../controllers/planner_controller.dart';
 import '../providers/planner_providers.dart';
 import '../providers/planner_view_state.dart';
 import '../widgets/planner_item_form_sheet.dart';
@@ -27,13 +30,16 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(plannerControllerProvider);
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Planner'),
+        title: Text(l10n.plannerTab),
         actions: [
           PopupMenuButton<PlannerViewMode>(
             icon: const Icon(Icons.view_module),
-            onSelected: ref.read(plannerControllerProvider.notifier).setViewMode,
+            onSelected: ref
+                .read(plannerControllerProvider.notifier)
+                .setViewMode,
             itemBuilder: (context) => [
               PopupMenuItem(
                 value: PlannerViewMode.day,
@@ -44,7 +50,7 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                     if (state.viewMode != PlannerViewMode.day)
                       const SizedBox(width: 18),
                     const SizedBox(width: 8),
-                    const Text('Day'),
+                    Text(l10n.plannerDay),
                   ],
                 ),
               ),
@@ -57,7 +63,7 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                     if (state.viewMode != PlannerViewMode.week)
                       const SizedBox(width: 18),
                     const SizedBox(width: 8),
-                    const Text('Week'),
+                    Text(l10n.plannerWeek),
                   ],
                 ),
               ),
@@ -70,7 +76,7 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                     if (state.viewMode != PlannerViewMode.month)
                       const SizedBox(width: 18),
                     const SizedBox(width: 8),
-                    const Text('Month'),
+                    Text(l10n.plannerMonth),
                   ],
                 ),
               ),
@@ -83,7 +89,7 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                     if (state.viewMode != PlannerViewMode.year)
                       const SizedBox(width: 18),
                     const SizedBox(width: 8),
-                    const Text('Year'),
+                    Text(l10n.plannerYear),
                   ],
                 ),
               ),
@@ -91,20 +97,23 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
           ),
           PopupMenuButton<String>(
             onSelected: (value) => _handleMenuAction(value, ref),
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'copy',
-                child: Text('Copy from previous'),
-              ),
-              const PopupMenuItem(
-                value: 'carry',
-                child: Text('Carry forward incomplete'),
-              ),
-              const PopupMenuItem(
-                value: 'sections',
-                child: Text('Manage sections'),
-              ),
-            ],
+            itemBuilder: (context) {
+              final l10n = AppLocalizations.of(context);
+              return [
+                PopupMenuItem(
+                  value: 'copy',
+                  child: Text(l10n.copyFromPreviousTitle),
+                ),
+                PopupMenuItem(
+                  value: 'carry',
+                  child: Text(l10n.carryForwardTitle),
+                ),
+                PopupMenuItem(
+                  value: 'sections',
+                  child: Text(l10n.plannerManageSections),
+                ),
+              ];
+            },
           ),
           IconButton(
             icon: const Icon(Icons.add),
@@ -117,12 +126,23 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
           _PeriodHeader(
             viewMode: state.viewMode,
             selectedDate: state.selectedDate,
-            periodLabel: ref.read(plannerControllerProvider.notifier).getPeriodLabel(),
-            onPrevious: ref.read(plannerControllerProvider.notifier).goToPreviousDay,
+            periodLabel: ref
+                .read(plannerControllerProvider.notifier)
+                .getPeriodLabel(),
+            weekStartDay: ref.read(calendarSettingsProvider).weekStartDay,
+            onPrevious: ref
+                .read(plannerControllerProvider.notifier)
+                .goToPreviousDay,
             onNext: ref.read(plannerControllerProvider.notifier).goToNextDay,
-            onToday: () => ref.read(plannerControllerProvider.notifier).selectDate(
-              DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-            ),
+            onToday: () => ref
+                .read(plannerControllerProvider.notifier)
+                .selectDate(
+                  DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                  ),
+                ),
           ),
           const Divider(height: 1),
           Expanded(
@@ -161,7 +181,11 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
   }
 
   Widget _buildWeekView(PlannerViewState state, WidgetRef ref) {
-    final startOfWeek = state.selectedDate.subtract(Duration(days: state.selectedDate.weekday - 1));
+    final calSettings = ref.watch(calendarSettingsProvider);
+    final weekStartDay = calSettings.weekStartDay;
+    final startOfWeek = state.selectedDate.subtract(
+      Duration(days: (state.selectedDate.weekday - weekStartDay) % 7),
+    );
     final days = List.generate(7, (i) => startOfWeek.add(Duration(days: i)));
     final now = DateTime.now();
 
@@ -172,12 +196,19 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
           child: Row(
             children: days.map((day) {
-              final isToday = day.year == now.year && day.month == now.month && day.day == now.day;
+              final isToday =
+                  day.year == now.year &&
+                  day.month == now.month &&
+                  day.day == now.day;
               return Expanded(
-                  child: GestureDetector(
-                    onTap: () => ref.read(plannerControllerProvider.notifier).selectDate(day),
-                    child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                child: GestureDetector(
+                  onTap: () => ref
+                      .read(plannerControllerProvider.notifier)
+                      .selectDate(day),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.sm,
+                    ),
                     decoration: BoxDecoration(
                       color: isToday
                           ? Theme.of(context).colorScheme.primaryContainer
@@ -192,9 +223,12 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                         ),
                         Text(
                           '${day.day}',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: isToday
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
+                              ),
                         ),
                       ],
                     ),
@@ -212,18 +246,18 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
             itemBuilder: (context, index) {
               final day = days[index];
               final dayItems = state.items
-                  .where((i) =>
-                      i.gcDate.year == day.year &&
-                      i.gcDate.month == day.month &&
-                      i.gcDate.day == day.day)
+                  .where(
+                    (i) =>
+                        i.gcDate.year == day.year &&
+                        i.gcDate.month == day.month &&
+                        i.gcDate.day == day.day,
+                  )
                   .toList();
               return _DaySection(
                 date: day,
                 items: dayItems,
-                onAdd: () => PlannerItemFormSheet.show(
-                  context,
-                  initialDate: day,
-                ),
+                onAdd: () =>
+                    PlannerItemFormSheet.show(context, initialDate: day),
               );
             },
           ),
@@ -237,8 +271,16 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
     final month = state.selectedDate.month;
     final daysInMonth = DateTime(year, month + 1, 0).day;
     final firstDay = DateTime(year, month);
-    final startWeekday = firstDay.weekday;
+    final calSettings = ref.watch(calendarSettingsProvider);
+    final weekStartDay = calSettings.weekStartDay;
+    final startWeekday = (firstDay.weekday - weekStartDay + 7) % 7;
     final now = DateTime.now();
+
+    const weekdayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final orderedLabels = List.generate(
+      7,
+      (i) => weekdayLabels[(weekStartDay - 1 + i) % 7],
+    );
 
     return Column(
       children: [
@@ -249,20 +291,24 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
             children: [
               // Weekday headers
               Row(
-                children: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                    .map((day) => Expanded(
-                          child: Center(
-                            child: Text(
-                              day,
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
+                children: orderedLabels
+                    .map(
+                      (day) => Expanded(
+                        child: Center(
+                          child: Text(
+                            day,
+                            style: Theme.of(context).textTheme.labelSmall,
                           ),
-                        ))
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
               const SizedBox(height: AppSpacing.xs),
               // Calendar grid
-              ...List.generate((daysInMonth + startWeekday - 1) ~/ 7 + 1, (week) {
+              ...List.generate((daysInMonth + startWeekday - 1) ~/ 7 + 1, (
+                week,
+              ) {
                 return Row(
                   children: List.generate(7, (dayOfWeek) {
                     final dayIndex = week * 7 + dayOfWeek - startWeekday + 2;
@@ -270,16 +316,21 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                       return const Expanded(child: SizedBox());
                     }
                     final date = DateTime(year, month, dayIndex);
-                    final isToday = date.year == now.year &&
+                    final isToday =
+                        date.year == now.year &&
                         date.month == now.month &&
                         date.day == now.day;
-                    final hasItems = state.items.any((i) =>
-                        i.gcDate.year == year &&
-                        i.gcDate.month == month &&
-                        i.gcDate.day == dayIndex);
+                    final hasItems = state.items.any(
+                      (i) =>
+                          i.gcDate.year == year &&
+                          i.gcDate.month == month &&
+                          i.gcDate.day == dayIndex,
+                    );
                     return Expanded(
                       child: GestureDetector(
-                        onTap: () => ref.read(plannerControllerProvider.notifier).selectDate(date),
+                        onTap: () => ref
+                            .read(plannerControllerProvider.notifier)
+                            .selectDate(date),
                         child: Container(
                           margin: const EdgeInsets.all(2),
                           padding: const EdgeInsets.all(4),
@@ -293,9 +344,12 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                             children: [
                               Text(
                                 '$dayIndex',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  fontWeight: isToday ? FontWeight.w700 : null,
-                                ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      fontWeight: isToday
+                                          ? FontWeight.w700
+                                          : null,
+                                    ),
                               ),
                               if (hasItems)
                                 Container(
@@ -303,7 +357,9 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                                   height: 4,
                                   margin: const EdgeInsets.only(top: 2),
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                     shape: BoxShape.circle,
                                   ),
                                 ),
@@ -321,12 +377,15 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
         const Divider(),
         // Items for selected date
         Expanded(
-          child: state.items
-              .where((i) =>
-                  i.gcDate.year == state.selectedDate.year &&
-                  i.gcDate.month == state.selectedDate.month &&
-                  i.gcDate.day == state.selectedDate.day)
-              .isEmpty
+          child:
+              state.items
+                  .where(
+                    (i) =>
+                        i.gcDate.year == state.selectedDate.year &&
+                        i.gcDate.month == state.selectedDate.month &&
+                        i.gcDate.day == state.selectedDate.day,
+                  )
+                  .isEmpty
               ? Center(
                   child: Text(
                     'No items for ${DateFormat('MMM d').format(state.selectedDate)}',
@@ -337,10 +396,12 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                 )
               : ListView(
                   children: state.items
-                      .where((i) =>
-                          i.gcDate.year == state.selectedDate.year &&
-                          i.gcDate.month == state.selectedDate.month &&
-                          i.gcDate.day == state.selectedDate.day)
+                      .where(
+                        (i) =>
+                            i.gcDate.year == state.selectedDate.year &&
+                            i.gcDate.month == state.selectedDate.month &&
+                            i.gcDate.day == state.selectedDate.day,
+                      )
                       .map((item) => _CompactItemTile(item: item))
                       .toList(),
                 ),
@@ -368,15 +429,22 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
 
         return GestureDetector(
           onTap: () {
-            ref.read(plannerControllerProvider.notifier).setViewMode(PlannerViewMode.month);
-            ref.read(plannerControllerProvider.notifier).selectDate(DateTime(year, month));
+            ref
+                .read(plannerControllerProvider.notifier)
+                .setViewMode(PlannerViewMode.month);
+            ref
+                .read(plannerControllerProvider.notifier)
+                .selectDate(DateTime(year, month));
           },
           child: Container(
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(
               color: isCurrentMonth
-                  ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
-                  : Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                  ? Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer.withValues(alpha: 0.3)
+                  : Theme.of(context).colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(8),
               border: isCurrentMonth
                   ? Border.all(color: Theme.of(context).colorScheme.primary)
@@ -387,9 +455,9 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
               children: [
                 Text(
                   DateFormat('MMM').format(DateTime(year, month)),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -404,12 +472,16 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
                 ),
                 if (monthItems.isNotEmpty) ...[
                   const SizedBox(height: 4),
-                  ...monthItems.take(3).map((item) => Text(
-                    '• ${item.title}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  )),
+                  ...monthItems
+                      .take(3)
+                      .map(
+                        (item) => Text(
+                          '• ${item.title}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                   if (monthItems.length > 3)
                     Text(
                       '+${monthItems.length - 3} more',
@@ -428,17 +500,97 @@ class _PlannerPageState extends ConsumerState<PlannerPage> {
 
   void _handleMenuAction(String action, WidgetRef ref) {
     final controller = ref.read(plannerControllerProvider.notifier);
+    final l10n = AppLocalizations.of(context);
+    final periodName = ref.read(plannerControllerProvider).viewMode.name;
     switch (action) {
       case 'copy':
-        controller.copyFromPreviousPeriod();
+        _showCopyConfirmDialog(l10n, controller, periodName);
         break;
       case 'carry':
-        controller.carryForwardIncomplete();
+        _showCarryForwardConfirmDialog(l10n, controller, periodName);
         break;
       case 'sections':
         _showSectionManager(ref);
         break;
     }
+  }
+
+  void _showCopyConfirmDialog(
+    AppLocalizations? l10n,
+    PlannerController controller,
+    String periodName,
+  ) {
+    if (l10n == null) return;
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.copyFromPreviousTitle),
+        content: Text(l10n.copyFromPreviousMessage(periodName)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(MaterialLocalizations.of(dialogContext).cancelButtonLabel),
+          ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+              final count = await controller.copyFromPreviousPeriod();
+              if (!mounted) return;
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    count > 0
+                        ? l10n.copiedItems(count)
+                        : l10n.nothingToCopy,
+                  ),
+                ),
+              );
+            },
+            child: Text(MaterialLocalizations.of(dialogContext).okButtonLabel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCarryForwardConfirmDialog(
+    AppLocalizations? l10n,
+    PlannerController controller,
+    String periodName,
+  ) {
+    if (l10n == null) return;
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.carryForwardTitle),
+        content: Text(l10n.carryForwardMessage(periodName)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(MaterialLocalizations.of(dialogContext).cancelButtonLabel),
+          ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+              final count = await controller.carryForwardIncomplete();
+              if (!mounted) return;
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    count > 0
+                        ? l10n.carriedItems(count)
+                        : l10n.nothingToCarry,
+                  ),
+                ),
+              );
+            },
+            child: Text(MaterialLocalizations.of(dialogContext).okButtonLabel),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showSectionManager(WidgetRef ref) {
@@ -460,6 +612,7 @@ class _PeriodHeader extends StatelessWidget {
     required this.viewMode,
     required this.selectedDate,
     required this.periodLabel,
+    required this.weekStartDay,
     required this.onPrevious,
     required this.onNext,
     required this.onToday,
@@ -468,6 +621,7 @@ class _PeriodHeader extends StatelessWidget {
   final PlannerViewMode viewMode;
   final DateTime selectedDate;
   final String periodLabel;
+  final int weekStartDay;
   final VoidCallback onPrevious;
   final VoidCallback onNext;
   final VoidCallback onToday;
@@ -475,6 +629,7 @@ class _PeriodHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final isCurrentPeriod = _isCurrentPeriod(selectedDate, viewMode, now);
 
@@ -489,12 +644,16 @@ class _PeriodHeader extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.chevron_left_rounded),
             onPressed: onPrevious,
+            tooltip: l10n.navigationPrevious,
           ),
           Expanded(
             child: Column(
               children: [
                 Text(
                   periodLabel,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -502,13 +661,16 @@ class _PeriodHeader extends StatelessWidget {
                 if (isCurrentPeriod)
                   Container(
                     margin: const EdgeInsets.only(top: 4),
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primaryContainer,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      'Current',
+                      l10n.currentPeriod,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.onPrimaryContainer,
                       ),
@@ -520,11 +682,12 @@ class _PeriodHeader extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.today),
             onPressed: onToday,
-            tooltip: 'Go to today',
+            tooltip: l10n.plannerGoToToday,
           ),
           IconButton(
             icon: const Icon(Icons.chevron_right_rounded),
             onPressed: onNext,
+            tooltip: l10n.navigationNext,
           ),
         ],
       ),
@@ -534,9 +697,13 @@ class _PeriodHeader extends StatelessWidget {
   bool _isCurrentPeriod(DateTime date, PlannerViewMode mode, DateTime now) {
     switch (mode) {
       case PlannerViewMode.day:
-        return date.year == now.year && date.month == now.month && date.day == now.day;
+        return date.year == now.year &&
+            date.month == now.month &&
+            date.day == now.day;
       case PlannerViewMode.week:
-        final start = date.subtract(Duration(days: date.weekday - 1));
+        final start = date.subtract(
+          Duration(days: (date.weekday - weekStartDay) % 7),
+        );
         final end = start.add(const Duration(days: 6));
         return !now.isBefore(start) && !now.isAfter(end);
       case PlannerViewMode.month:
@@ -560,27 +727,37 @@ class _DaySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
-    final isToday = date.year == now.year && date.month == now.month && date.day == now.day;
+    final isToday =
+        date.year == now.year && date.month == now.month && date.day == now.day;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.sm,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                DateFormat('EEEE, MMM d').format(date),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: isToday ? Theme.of(context).colorScheme.primary : null,
+              Expanded(
+                child: Text(
+                  DateFormat('EEEE, MMM d').format(date),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: isToday ? Theme.of(context).colorScheme.primary : null,
+                  ),
                 ),
               ),
               IconButton(
                 icon: const Icon(Icons.add_circle_outline, size: 18),
                 onPressed: onAdd,
+                tooltip: l10n.add,
               ),
             ],
           ),
@@ -628,11 +805,15 @@ class _CompactItemTile extends ConsumerWidget {
         leading: Checkbox(
           value: item.isCompleted,
           onChanged: (_) {
-            ref.read(plannerControllerProvider.notifier).toggleCompleted(item.id);
+            ref
+                .read(plannerControllerProvider.notifier)
+                .toggleCompleted(item.id);
           },
         ),
         title: Text(
           item.title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             decoration: item.isCompleted ? TextDecoration.lineThrough : null,
             color: item.isCompleted ? theme.colorScheme.onSurfaceVariant : null,

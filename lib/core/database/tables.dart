@@ -94,6 +94,57 @@ class Notes extends Table {
 }
 
 // ---------------------------------------------------------------------------
+// Recurrence exceptions table (Sprint 5 / CAL-FR recurrence exceptions)
+// ---------------------------------------------------------------------------
+
+/// Tracks individual occurrence exceptions for recurring events and reminders.
+///
+/// Each row represents one skipped or modified occurrence. The [exceptionKey]
+/// format is `{entityId}_{occurrenceTimestamp}` which uniquely identifies
+/// a single occurrence within a recurrence series.
+class RecurrenceExceptions extends Table {
+  /// Unique exception ID (UUID).
+  TextColumn get id => text()();
+
+  /// The entity type: 'event' or 'reminder'.
+  TextColumn get entityType => text()();
+
+  /// The entity ID of the recurring event/reminder.
+  TextColumn get entityId => text()();
+
+  /// Composite key: `{entityId}_{occurrenceTimestamp}` for fast lookup.
+  TextColumn get exceptionKey => text()();
+
+  /// Exception type: 'skipped' or 'modified'.
+  TextColumn get exceptionType => text()();
+
+  /// For 'modified' exceptions: the new GC date for this occurrence.
+  /// Null for 'skipped' exceptions.
+  DateTimeColumn get modifiedGcDate => dateTime().nullable()();
+
+  /// For 'modified' exceptions: the new EC date for this occurrence.
+  DateTimeColumn get modifiedEcDate => dateTime().nullable()();
+
+  /// When this exception was created.
+  DateTimeColumn get createdAt => dateTime()();
+
+  /// Sync metadata.
+  TextColumn get accountId => text().nullable()();
+  IntColumn get serverVersion => integer().withDefault(const Constant(0))();
+  TextColumn get syncStatus => text().withDefault(const Constant('local'))();
+  TextColumn get lastOperationId => text().nullable()();
+  DateTimeColumn get deletedAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+
+  @override
+  List<Set<Column>> get uniqueKeys => [
+    {exceptionKey},
+  ];
+}
+
+// ---------------------------------------------------------------------------
 // Non-business tables (no sync metadata needed)
 // ---------------------------------------------------------------------------
 

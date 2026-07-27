@@ -1,6 +1,9 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../core/providers/calendar_settings_provider.dart';
+import '../../../../core/recently_deleted/soft_delete_provider.dart';
+import '../../../../core/recently_deleted/soft_delete_service.dart';
 import '../../domain/entities/planner_item.dart';
 import '../../domain/usecases/get_planner_items.dart';
 import '../providers/planner_providers.dart';
@@ -21,7 +24,8 @@ class PlannerController extends Notifier<PlannerViewState> {
       ref.read(getPlannerItemsByDateProvider);
   CreatePlannerItem get _createItem => ref.read(createPlannerItemProvider);
   UpdatePlannerItem get _updateItem => ref.read(updatePlannerItemProvider);
-  DeletePlannerItem get _deleteItem => ref.read(deletePlannerItemProvider);
+  SoftDeleteService get _softDeleteService =>
+      ref.read(softDeleteServiceProvider);
 
   Future<void> loadItems() async {
     state = state.copyWith(isLoading: true, error: null);
@@ -47,7 +51,9 @@ class PlannerController extends Notifier<PlannerViewState> {
   }
 
   Future<List<PlannerItem>> _getItemsForWeek(DateTime date) async {
-    final startOfWeek = date.subtract(Duration(days: date.weekday - 1));
+    final weekStartDay = ref.read(calendarSettingsProvider).weekStartDay;
+    final daysToSubtract = (date.weekday - weekStartDay) % 7;
+    final startOfWeek = date.subtract(Duration(days: daysToSubtract));
     final allItems = <PlannerItem>[];
     for (var i = 0; i <= 6; i++) {
       final day = startOfWeek.add(Duration(days: i));
@@ -140,7 +146,7 @@ class PlannerController extends Notifier<PlannerViewState> {
   }
 
   Future<void> deleteItem(String id) async {
-    await _deleteItem(id);
+    await _softDeleteService.softDeletePlannerItem(id);
     await loadItems();
   }
 
@@ -172,12 +178,18 @@ class PlannerController extends Notifier<PlannerViewState> {
     await loadItems();
   }
 
-  Future<void> copyFromPreviousPeriod() async {
+  Future<int> copyFromPreviousPeriod() async {
     final previousDate = _navigate(state.viewMode, state.selectedDate, false);
     final previousItems = await _getItemsForDate(previousDate);
+    if (previousItems.isEmpty) return 0;
+
+    final currentItems = await _getItemsForCurrentRange();
+    final currentTitles = currentItems.map((i) => i.title.toLowerCase()).toSet();
     final now = clock.now();
+    var copied = 0;
 
     for (final item in previousItems) {
+      if (currentTitles.contains(item.title.toLowerCase())) continue;
       final newItem = PlannerItem(
         id: _uuid.v4(),
         title: item.title,
@@ -188,17 +200,25 @@ class PlannerController extends Notifier<PlannerViewState> {
         sortOrder: item.sortOrder,
       );
       await _createItem(newItem);
+      copied++;
     }
     await loadItems();
+    return copied;
   }
 
-  Future<void> carryForwardIncomplete() async {
+  Future<int> carryForwardIncomplete() async {
     final previousDate = _navigate(state.viewMode, state.selectedDate, false);
     final previousItems = await _getItemsForDate(previousDate);
     final incompleteItems = previousItems.where((i) => !i.isCompleted).toList();
+    if (incompleteItems.isEmpty) return 0;
+
+    final currentItems = await _getItemsForCurrentRange();
+    final currentTitles = currentItems.map((i) => i.title.toLowerCase()).toSet();
     final now = clock.now();
+    var carried = 0;
 
     for (final item in incompleteItems) {
+      if (currentTitles.contains(item.title.toLowerCase())) continue;
       final newItem = PlannerItem(
         id: _uuid.v4(),
         title: item.title,
@@ -209,8 +229,10 @@ class PlannerController extends Notifier<PlannerViewState> {
         sortOrder: item.sortOrder,
       );
       await _createItem(newItem);
+      carried++;
     }
     await loadItems();
+    return carried;
   }
 
   Future<List<PlannerItem>> _getItemsForDate(DateTime date) async {

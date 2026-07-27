@@ -1,6 +1,11 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../core/providers/database_provider.dart';
+import '../../../../core/recently_deleted/soft_delete_provider.dart';
+import '../../../../core/recently_deleted/soft_delete_service.dart';
+import '../../data/datasources/note_local_datasource.dart';
+import '../../data/repositories/note_repository_impl.dart';
 import '../../domain/entities/note.dart';
 import '../../domain/usecases/get_notes.dart';
 import '../providers/notes_view_state.dart';
@@ -8,35 +13,28 @@ import '../providers/notes_view_state.dart';
 const _uuid = Uuid();
 
 class NotesController extends Notifier<NotesViewState> {
-  late final GetAllNotes _getAllNotes;
-  late final SearchNotes _searchNotes;
-  late final CreateNote _createNote;
-  late final UpdateNote _updateNote;
-  late final DeleteNote _deleteNote;
-  late final ToggleNotePinned _togglePinned;
-  late final ToggleNoteArchived _toggleArchived;
+  late GetAllNotes _getAllNotes;
+  late SearchNotes _searchNotes;
+  late CreateNote _createNote;
+  late UpdateNote _updateNote;
+  late ToggleNotePinned _togglePinned;
+  late ToggleNoteArchived _toggleArchived;
+  late SoftDeleteService _softDeleteService;
 
   @override
   NotesViewState build() {
+    final db = ref.read(databaseProvider);
+    final repo = NoteRepositoryImpl(
+      localDatasource: NoteLocalDatasource(db),
+    );
+    _getAllNotes = GetAllNotes(repo);
+    _searchNotes = SearchNotes(repo);
+    _createNote = CreateNote(repo);
+    _updateNote = UpdateNote(repo);
+    _togglePinned = ToggleNotePinned(repo);
+    _toggleArchived = ToggleNoteArchived(repo);
+    _softDeleteService = ref.read(softDeleteServiceProvider);
     return const NotesViewState();
-  }
-
-  void setDependencies({
-    required GetAllNotes getAllNotes,
-    required SearchNotes searchNotes,
-    required CreateNote createNote,
-    required UpdateNote updateNote,
-    required DeleteNote deleteNote,
-    required ToggleNotePinned togglePinned,
-    required ToggleNoteArchived toggleArchived,
-  }) {
-    _getAllNotes = getAllNotes;
-    _searchNotes = searchNotes;
-    _createNote = createNote;
-    _updateNote = updateNote;
-    _deleteNote = deleteNote;
-    _togglePinned = togglePinned;
-    _toggleArchived = toggleArchived;
   }
 
   Future<void> loadNotes() async {
@@ -72,6 +70,9 @@ class NotesController extends Notifier<NotesViewState> {
     required String title,
     String? content,
     String? category,
+    String? linkedEventId,
+    String? linkedReminderId,
+    String? linkedPlannerItemId,
   }) async {
     final now = clock.now();
     final note = Note(
@@ -81,6 +82,9 @@ class NotesController extends Notifier<NotesViewState> {
       createdAt: now,
       updatedAt: now,
       category: category,
+      linkedEventId: linkedEventId,
+      linkedReminderId: linkedReminderId,
+      linkedPlannerItemId: linkedPlannerItemId,
     );
     await _createNote(note);
     await loadNotes();
@@ -92,7 +96,7 @@ class NotesController extends Notifier<NotesViewState> {
   }
 
   Future<void> deleteNote(String id) async {
-    await _deleteNote(id);
+    await _softDeleteService.softDeleteNote(id);
     await loadNotes();
   }
 

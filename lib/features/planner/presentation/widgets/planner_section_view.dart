@@ -1,3 +1,4 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -16,6 +17,7 @@ class PlannerSectionView extends ConsumerWidget {
     final state = ref.watch(plannerControllerProvider);
     final controller = ref.read(plannerControllerProvider.notifier);
     final items = controller.getItemsForSection(section);
+    final l10n = AppLocalizations.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,19 +28,23 @@ class PlannerSectionView extends ConsumerWidget {
             vertical: AppSpacing.sm,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                _sectionTitle(section),
-                style: Theme.of(
-                  context,
-                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+              Icon(_sectionIcon(section), size: 18, color: Theme.of(context).colorScheme.primary),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  _sectionTitle(section, l10n),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
               IconButton(
                 icon: const Icon(Icons.add_circle_outline, size: 20),
                 onPressed: () => PlannerItemFormSheet.show(
                   context,
                   initialDate: state.selectedDate,
+                  initialSection: section,
                 ),
               ),
             ],
@@ -50,11 +56,24 @@ class PlannerSectionView extends ConsumerWidget {
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.sm,
             ),
-            child: Text(
-              'No items',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+            child: Row(
+              children: [
+                Icon(
+                  _sectionEmptyIcon(section),
+                  size: 16,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Text(
+                    _emptyStateText(section, l10n),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
             ),
           )
         else
@@ -63,18 +82,65 @@ class PlannerSectionView extends ConsumerWidget {
     );
   }
 
-  String _sectionTitle(PlannerSection section) {
+  IconData _sectionIcon(PlannerSection section) {
     switch (section) {
       case PlannerSection.focus:
-        return 'Focus';
+        return Icons.center_focus_strong;
       case PlannerSection.priorities:
-        return 'Priorities';
+        return Icons.flag_outlined;
       case PlannerSection.checklist:
-        return 'Checklist';
+        return Icons.check_circle_outline;
       case PlannerSection.notes:
-        return 'Notes';
+        return Icons.note_outlined;
       case PlannerSection.reflection:
-        return 'Reflection';
+        return Icons.auto_awesome_outlined;
+    }
+  }
+
+  IconData _sectionEmptyIcon(PlannerSection section) {
+    switch (section) {
+      case PlannerSection.focus:
+        return Icons.center_focus_strong;
+      case PlannerSection.priorities:
+        return Icons.flag_outlined;
+      case PlannerSection.checklist:
+        return Icons.check_circle_outline;
+      case PlannerSection.notes:
+        return Icons.note_outlined;
+      case PlannerSection.reflection:
+        return Icons.auto_awesome_outlined;
+    }
+  }
+
+  String _sectionTitle(PlannerSection section, AppLocalizations? l10n) {
+    if (l10n == null) return section.name;
+    switch (section) {
+      case PlannerSection.focus:
+        return l10n.plannerSectionFocus;
+      case PlannerSection.priorities:
+        return l10n.plannerSectionPriorities;
+      case PlannerSection.checklist:
+        return l10n.plannerSectionChecklist;
+      case PlannerSection.notes:
+        return l10n.plannerSectionNotes;
+      case PlannerSection.reflection:
+        return l10n.plannerSectionReflection;
+    }
+  }
+
+  String _emptyStateText(PlannerSection section, AppLocalizations? l10n) {
+    if (l10n == null) return 'No items';
+    switch (section) {
+      case PlannerSection.focus:
+        return l10n.plannerSectionFocusEmpty;
+      case PlannerSection.priorities:
+        return l10n.plannerSectionPrioritiesEmpty;
+      case PlannerSection.checklist:
+        return l10n.plannerSectionChecklistEmpty;
+      case PlannerSection.notes:
+        return l10n.plannerSectionNotesEmpty;
+      case PlannerSection.reflection:
+        return l10n.plannerSectionReflectionEmpty;
     }
   }
 }
@@ -119,6 +185,8 @@ class _PlannerItemTile extends ConsumerWidget {
                 children: [
                   Text(
                     item.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                       decoration: item.isCompleted

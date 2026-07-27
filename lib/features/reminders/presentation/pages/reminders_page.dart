@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/notifications/notification_provider.dart';
+import '../../../../core/recently_deleted/soft_delete_provider.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../providers/reminders_providers.dart';
 import '../widgets/reminder_card.dart';
@@ -36,6 +37,7 @@ class _RemindersPageState extends ConsumerState<RemindersPage> {
       deleteReminder: ref.read(deleteReminderProvider),
       toggleCompleted: ref.read(toggleReminderCompletedProvider),
       notificationService: ref.read(notificationServiceProvider),
+      softDeleteService: ref.read(softDeleteServiceProvider),
     );
     controller.loadReminders().then((_) {
       // Rebuild notifications on page load (survives app restart)
@@ -55,6 +57,7 @@ class _RemindersPageState extends ConsumerState<RemindersPage> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => _onAddReminder(),
+            tooltip: l10n.add,
           ),
         ],
       ),
@@ -118,19 +121,16 @@ class _RemindersPageState extends ConsumerState<RemindersPage> {
     final hasPermission = await controller.requestNotificationPermission();
 
     if (!hasPermission && mounted) {
+      final l10n = AppLocalizations.of(context);
       await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Notification Permission'),
-          content: const Text(
-            'Notifications are disabled. You can still create reminders, '
-            'but you won\'t receive alerts. Enable notifications in Settings '
-            'to receive reminder alerts.',
-          ),
+          title: Text(l10n.notificationPermissionTitle),
+          content: Text(l10n.notificationPermissionBody),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+              child: Text(l10n.notificationPermissionOK),
             ),
           ],
         ),

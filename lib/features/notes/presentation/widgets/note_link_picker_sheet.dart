@@ -1,7 +1,10 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_spacing.dart';
+import '../providers/link_picker_providers.dart';
 
 enum LinkPickerType { event, reminder, planner }
 
@@ -59,6 +62,7 @@ class _NoteLinkPickerSheetState extends ConsumerState<NoteLinkPickerSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return DraggableScrollableSheet(
       initialChildSize: 0.7,
@@ -73,23 +77,22 @@ class _NoteLinkPickerSheetState extends ConsumerState<NoteLinkPickerSheet> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                color: theme.colorScheme.onSurfaceVariant.withValues(
+                  alpha: 0.3,
+                ),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(AppSpacing.md),
-              child: Text(
-                _getTitle(),
-                style: theme.textTheme.titleMedium,
-              ),
+              child: Text(_getTitle(l10n), style: theme.textTheme.titleMedium),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search ${_getTypeName()}...',
+                  hintText: _getHint(l10n),
                   prefixIcon: const Icon(Icons.search),
                   isDense: true,
                 ),
@@ -111,25 +114,25 @@ class _NoteLinkPickerSheetState extends ConsumerState<NoteLinkPickerSheet> {
     );
   }
 
-  String _getTitle() {
+  String _getTitle(AppLocalizations l10n) {
     switch (widget.type) {
       case LinkPickerType.event:
-        return 'Link Event';
+        return l10n.linkToEvent;
       case LinkPickerType.reminder:
-        return 'Link Reminder';
+        return l10n.linkToReminder;
       case LinkPickerType.planner:
-        return 'Link Planner Item';
+        return l10n.linkToPlanner;
     }
   }
 
-  String _getTypeName() {
+  String _getHint(AppLocalizations l10n) {
     switch (widget.type) {
       case LinkPickerType.event:
-        return 'events';
+        return '${l10n.searchLabel}...';
       case LinkPickerType.reminder:
-        return 'reminders';
+        return '${l10n.searchLabel} ${l10n.sectionReminders.toLowerCase()}...';
       case LinkPickerType.planner:
-        return 'planner items';
+        return '${l10n.searchLabel} ${l10n.plannerTab.toLowerCase()}...';
     }
   }
 }
@@ -149,20 +152,146 @@ class _LinkItemList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView(
-      controller: scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-      children: [
-        _EmptyPickerState(type: type),
-      ],
-    );
+    final l10n = AppLocalizations.of(context);
+
+    switch (type) {
+      case LinkPickerType.event:
+        final eventsAsync = ref.watch(allEventsForLinkProvider);
+        return eventsAsync.when(
+          data: (events) {
+            final filtered = query.isEmpty
+                ? events
+                : events
+                      .where(
+                        (e) =>
+                            e.title.toLowerCase().contains(query.toLowerCase()),
+                      )
+                      .toList();
+            if (filtered.isEmpty) {
+              return _EmptyPickerState(type: type, l10n: l10n);
+            }
+            return ListView.builder(
+              controller: scrollController,
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              itemCount: filtered.length,
+              itemBuilder: (context, index) {
+                final event = filtered[index];
+                return ListTile(
+                  leading: const Icon(Icons.event),
+                  title: Text(event.title),
+                  subtitle: Text(DateFormat('MMM d, y').format(event.gcDate)),
+                  onTap: () => onSelect(
+                    NoteLinkPickerResult(
+                      id: event.id,
+                      title: event.title,
+                      date: event.gcDate,
+                      type: LinkPickerType.event,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (_, _) => _EmptyPickerState(type: type, l10n: l10n),
+        );
+
+      case LinkPickerType.reminder:
+        final remindersAsync = ref.watch(allRemindersForLinkProvider);
+        return remindersAsync.when(
+          data: (reminders) {
+            final filtered = query.isEmpty
+                ? reminders
+                : reminders
+                      .where(
+                        (r) =>
+                            r.title.toLowerCase().contains(query.toLowerCase()),
+                      )
+                      .toList();
+            if (filtered.isEmpty) {
+              return _EmptyPickerState(type: type, l10n: l10n);
+            }
+            return ListView.builder(
+              controller: scrollController,
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              itemCount: filtered.length,
+              itemBuilder: (context, index) {
+                final reminder = filtered[index];
+                return ListTile(
+                  leading: const Icon(Icons.notifications),
+                  title: Text(reminder.title),
+                  subtitle: Text(
+                    DateFormat('MMM d, y').format(reminder.gcDate),
+                  ),
+                  onTap: () => onSelect(
+                    NoteLinkPickerResult(
+                      id: reminder.id,
+                      title: reminder.title,
+                      date: reminder.gcDate,
+                      type: LinkPickerType.reminder,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (_, _) => _EmptyPickerState(type: type, l10n: l10n),
+        );
+
+      case LinkPickerType.planner:
+        final plannerAsync = ref.watch(allPlannerItemsForLinkProvider);
+        return plannerAsync.when(
+          data: (items) {
+            final filtered = query.isEmpty
+                ? items
+                : items
+                      .where(
+                        (p) =>
+                            p.title.toLowerCase().contains(query.toLowerCase()),
+                      )
+                      .toList();
+            if (filtered.isEmpty) {
+              return _EmptyPickerState(type: type, l10n: l10n);
+            }
+            return ListView.builder(
+              controller: scrollController,
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              itemCount: filtered.length,
+              itemBuilder: (context, index) {
+                final item = filtered[index];
+                return ListTile(
+                  leading: Icon(
+                    item.isCompleted
+                        ? Icons.check_circle
+                        : Icons.circle_outlined,
+                  ),
+                  title: Text(item.title),
+                  subtitle: Text(DateFormat('MMM d, y').format(item.gcDate)),
+                  onTap: () => onSelect(
+                    NoteLinkPickerResult(
+                      id: item.id,
+                      title: item.title,
+                      date: item.gcDate,
+                      type: LinkPickerType.planner,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (_, _) => _EmptyPickerState(type: type, l10n: l10n),
+        );
+    }
   }
 }
 
 class _EmptyPickerState extends StatelessWidget {
-  const _EmptyPickerState({required this.type});
+  const _EmptyPickerState({required this.type, required this.l10n});
 
   final LinkPickerType type;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +310,7 @@ class _EmptyPickerState extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
-              _getMessage(),
+              l10n.noItemsToLink,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -201,17 +330,6 @@ class _EmptyPickerState extends StatelessWidget {
         return Icons.notifications;
       case LinkPickerType.planner:
         return Icons.check_circle;
-    }
-  }
-
-  String _getMessage() {
-    switch (type) {
-      case LinkPickerType.event:
-        return 'No events found.\nCreate some events first to link them to notes.';
-      case LinkPickerType.reminder:
-        return 'No reminders found.\nCreate some reminders first to link them to notes.';
-      case LinkPickerType.planner:
-        return 'No planner items found.\nCreate some planner items first to link them to notes.';
     }
   }
 }

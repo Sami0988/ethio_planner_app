@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/localization/locale_provider.dart';
+import '../../../../core/notifications/notification_sound_provider.dart';
 import '../../../../core/providers/calendar_settings_provider.dart';
 import '../../../../core/providers/theme_mode_provider.dart';
 import '../widgets/calendar_settings_sheet.dart';
 import '../widgets/language_selector.dart';
+import '../widgets/notification_sound_selector.dart';
 import '../widgets/theme_selector.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -65,12 +67,29 @@ class SettingsPage extends ConsumerWidget {
     }
   }
 
+  String _notificationSoundLabel(BuildContext context, NotificationSound sound) {
+    final l10n = AppLocalizations.of(context);
+    switch (sound) {
+      case NotificationSound.systemDefault:
+        return l10n.notificationSoundSystem;
+      case NotificationSound.ethiopianBell:
+        return l10n.notificationSoundEthiopianBell;
+      case NotificationSound.gentleChime:
+        return l10n.notificationSoundGentleChime;
+      case NotificationSound.softPing:
+        return l10n.notificationSoundSoftPing;
+      case NotificationSound.warmTone:
+        return l10n.notificationSoundWarmTone;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(localeProvider);
     final calendarSettings = ref.watch(calendarSettingsProvider);
+    final notificationSound = ref.watch(notificationSoundProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.moreSettings)),
@@ -100,6 +119,13 @@ class SettingsPage extends ConsumerWidget {
             ),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => CalendarSettingsSheet.show(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.notifications_outlined),
+            title: Text(l10n.settingsNotificationSound),
+            subtitle: Text(_notificationSoundLabel(context, notificationSound)),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => NotificationSoundSelector.show(context),
           ),
           const Divider(height: 32),
           ListTile(

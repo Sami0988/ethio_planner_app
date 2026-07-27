@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radii.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/theme/reduced_motion.dart';
 
 /// Subtle, always-honest synchronization indicator (SYNC-FR-004).
 ///
@@ -35,42 +36,60 @@ class SyncStatusBanner extends StatelessWidget {
     final label = _label(l10n);
     final tone = _tone(context);
     final action = _action(context, l10n);
+    final reduceMotion = ReducedMotion.isEnabled(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.screenHorizontalPadding,
-        vertical: AppSpacing.xs,
+    return AnimatedSwitcher(
+      duration: reduceMotion ? Duration.zero : const Duration(milliseconds: 300),
+      transitionBuilder: (child, animation) => SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, -0.5),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+        )),
+        child: FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
       ),
-      child: Semantics(
-        container: true,
-        label: action == null ? label : '$label. ${action.label}',
-        button: action != null,
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm,
-          ),
-          decoration: BoxDecoration(
-            color: tone.withValues(alpha: 0.12),
-            borderRadius: AppRadii.card,
-          ),
-          child: Row(
-            children: [
-              Icon(_icon, size: 16, color: tone),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: Text(
-                  label,
-                  style: AppTextStyles.cardSubtitle.copyWith(color: tone),
+      child: Padding(
+        key: ValueKey(status),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.screenHorizontalPadding,
+          vertical: AppSpacing.xs,
+        ),
+        child: Semantics(
+          container: true,
+          label: action == null ? label : '$label. ${action.label}',
+          button: action != null,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.sm,
+            ),
+            decoration: BoxDecoration(
+              color: tone.withValues(alpha: 0.12),
+              borderRadius: AppRadii.card,
+            ),
+            child: Row(
+              children: [
+                Icon(_icon, size: 16, color: tone),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: AppTextStyles.cardSubtitle.copyWith(color: tone),
+                  ),
                 ),
-              ),
-              if (action != null)
-                TextButton(
-                  onPressed: action.onPressed,
-                  child: Text(action.label),
-                ),
-            ],
+                if (action != null)
+                  TextButton(
+                    onPressed: action.onPressed,
+                    child: Text(action.label),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

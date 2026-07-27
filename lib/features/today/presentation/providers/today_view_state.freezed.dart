@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TodayViewState {
 
- EthiopianDate get ethiopianDate; GregorianDate get gregorianDate; HolidayPresentation? get holiday; UpNextPresentation? get upNext; List<EventPresentation> get events; List<ReminderPresentation> get reminders; List<SchedulePresentation> get schedule; SyncPresentation get sync;
+ EthiopianDate get ethiopianDate; GregorianDate get gregorianDate; HolidayPresentation? get holiday; UpNextPresentation? get upNext; List<EventPresentation> get events; List<ReminderPresentation> get reminders; List<SchedulePresentation> get schedule; SyncPresentation get sync; int get planningStreak; bool get isPreviewingDay; DateTime? get previewDate;
 /// Create a copy of TodayViewState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TodayViewStateCopyWith<TodayViewState> get copyWith => _$TodayViewStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TodayViewState&&(identical(other.ethiopianDate, ethiopianDate) || other.ethiopianDate == ethiopianDate)&&(identical(other.gregorianDate, gregorianDate) || other.gregorianDate == gregorianDate)&&(identical(other.holiday, holiday) || other.holiday == holiday)&&(identical(other.upNext, upNext) || other.upNext == upNext)&&const DeepCollectionEquality().equals(other.events, events)&&const DeepCollectionEquality().equals(other.reminders, reminders)&&const DeepCollectionEquality().equals(other.schedule, schedule)&&(identical(other.sync, sync) || other.sync == sync));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TodayViewState&&(identical(other.ethiopianDate, ethiopianDate) || other.ethiopianDate == ethiopianDate)&&(identical(other.gregorianDate, gregorianDate) || other.gregorianDate == gregorianDate)&&(identical(other.holiday, holiday) || other.holiday == holiday)&&(identical(other.upNext, upNext) || other.upNext == upNext)&&const DeepCollectionEquality().equals(other.events, events)&&const DeepCollectionEquality().equals(other.reminders, reminders)&&const DeepCollectionEquality().equals(other.schedule, schedule)&&(identical(other.sync, sync) || other.sync == sync)&&(identical(other.planningStreak, planningStreak) || other.planningStreak == planningStreak)&&(identical(other.isPreviewingDay, isPreviewingDay) || other.isPreviewingDay == isPreviewingDay)&&(identical(other.previewDate, previewDate) || other.previewDate == previewDate));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,ethiopianDate,gregorianDate,holiday,upNext,const DeepCollectionEquality().hash(events),const DeepCollectionEquality().hash(reminders),const DeepCollectionEquality().hash(schedule),sync);
+int get hashCode => Object.hash(runtimeType,ethiopianDate,gregorianDate,holiday,upNext,const DeepCollectionEquality().hash(events),const DeepCollectionEquality().hash(reminders),const DeepCollectionEquality().hash(schedule),sync,planningStreak,isPreviewingDay,previewDate);
 
 @override
 String toString() {
-  return 'TodayViewState(ethiopianDate: $ethiopianDate, gregorianDate: $gregorianDate, holiday: $holiday, upNext: $upNext, events: $events, reminders: $reminders, schedule: $schedule, sync: $sync)';
+  return 'TodayViewState(ethiopianDate: $ethiopianDate, gregorianDate: $gregorianDate, holiday: $holiday, upNext: $upNext, events: $events, reminders: $reminders, schedule: $schedule, sync: $sync, planningStreak: $planningStreak, isPreviewingDay: $isPreviewingDay, previewDate: $previewDate)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TodayViewStateCopyWith<$Res>  {
   factory $TodayViewStateCopyWith(TodayViewState value, $Res Function(TodayViewState) _then) = _$TodayViewStateCopyWithImpl;
 @useResult
 $Res call({
- EthiopianDate ethiopianDate, GregorianDate gregorianDate, HolidayPresentation? holiday, UpNextPresentation? upNext, List<EventPresentation> events, List<ReminderPresentation> reminders, List<SchedulePresentation> schedule, SyncPresentation sync
+ EthiopianDate ethiopianDate, GregorianDate gregorianDate, HolidayPresentation? holiday, UpNextPresentation? upNext, List<EventPresentation> events, List<ReminderPresentation> reminders, List<SchedulePresentation> schedule, SyncPresentation sync, int planningStreak, bool isPreviewingDay, DateTime? previewDate
 });
 
 
@@ -62,7 +62,7 @@ class _$TodayViewStateCopyWithImpl<$Res>
 
 /// Create a copy of TodayViewState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? ethiopianDate = null,Object? gregorianDate = null,Object? holiday = freezed,Object? upNext = freezed,Object? events = null,Object? reminders = null,Object? schedule = null,Object? sync = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? ethiopianDate = null,Object? gregorianDate = null,Object? holiday = freezed,Object? upNext = freezed,Object? events = null,Object? reminders = null,Object? schedule = null,Object? sync = null,Object? planningStreak = null,Object? isPreviewingDay = null,Object? previewDate = freezed,}) {
   return _then(_self.copyWith(
 ethiopianDate: null == ethiopianDate ? _self.ethiopianDate : ethiopianDate // ignore: cast_nullable_to_non_nullable
 as EthiopianDate,gregorianDate: null == gregorianDate ? _self.gregorianDate : gregorianDate // ignore: cast_nullable_to_non_nullable
@@ -72,7 +72,10 @@ as UpNextPresentation?,events: null == events ? _self.events : events // ignore:
 as List<EventPresentation>,reminders: null == reminders ? _self.reminders : reminders // ignore: cast_nullable_to_non_nullable
 as List<ReminderPresentation>,schedule: null == schedule ? _self.schedule : schedule // ignore: cast_nullable_to_non_nullable
 as List<SchedulePresentation>,sync: null == sync ? _self.sync : sync // ignore: cast_nullable_to_non_nullable
-as SyncPresentation,
+as SyncPresentation,planningStreak: null == planningStreak ? _self.planningStreak : planningStreak // ignore: cast_nullable_to_non_nullable
+as int,isPreviewingDay: null == isPreviewingDay ? _self.isPreviewingDay : isPreviewingDay // ignore: cast_nullable_to_non_nullable
+as bool,previewDate: freezed == previewDate ? _self.previewDate : previewDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 /// Create a copy of TodayViewState
@@ -190,10 +193,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( EthiopianDate ethiopianDate,  GregorianDate gregorianDate,  HolidayPresentation? holiday,  UpNextPresentation? upNext,  List<EventPresentation> events,  List<ReminderPresentation> reminders,  List<SchedulePresentation> schedule,  SyncPresentation sync)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( EthiopianDate ethiopianDate,  GregorianDate gregorianDate,  HolidayPresentation? holiday,  UpNextPresentation? upNext,  List<EventPresentation> events,  List<ReminderPresentation> reminders,  List<SchedulePresentation> schedule,  SyncPresentation sync,  int planningStreak,  bool isPreviewingDay,  DateTime? previewDate)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TodayViewState() when $default != null:
-return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNext,_that.events,_that.reminders,_that.schedule,_that.sync);case _:
+return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNext,_that.events,_that.reminders,_that.schedule,_that.sync,_that.planningStreak,_that.isPreviewingDay,_that.previewDate);case _:
   return orElse();
 
 }
@@ -211,10 +214,10 @@ return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( EthiopianDate ethiopianDate,  GregorianDate gregorianDate,  HolidayPresentation? holiday,  UpNextPresentation? upNext,  List<EventPresentation> events,  List<ReminderPresentation> reminders,  List<SchedulePresentation> schedule,  SyncPresentation sync)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( EthiopianDate ethiopianDate,  GregorianDate gregorianDate,  HolidayPresentation? holiday,  UpNextPresentation? upNext,  List<EventPresentation> events,  List<ReminderPresentation> reminders,  List<SchedulePresentation> schedule,  SyncPresentation sync,  int planningStreak,  bool isPreviewingDay,  DateTime? previewDate)  $default,) {final _that = this;
 switch (_that) {
 case _TodayViewState():
-return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNext,_that.events,_that.reminders,_that.schedule,_that.sync);case _:
+return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNext,_that.events,_that.reminders,_that.schedule,_that.sync,_that.planningStreak,_that.isPreviewingDay,_that.previewDate);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -231,10 +234,10 @@ return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( EthiopianDate ethiopianDate,  GregorianDate gregorianDate,  HolidayPresentation? holiday,  UpNextPresentation? upNext,  List<EventPresentation> events,  List<ReminderPresentation> reminders,  List<SchedulePresentation> schedule,  SyncPresentation sync)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( EthiopianDate ethiopianDate,  GregorianDate gregorianDate,  HolidayPresentation? holiday,  UpNextPresentation? upNext,  List<EventPresentation> events,  List<ReminderPresentation> reminders,  List<SchedulePresentation> schedule,  SyncPresentation sync,  int planningStreak,  bool isPreviewingDay,  DateTime? previewDate)?  $default,) {final _that = this;
 switch (_that) {
 case _TodayViewState() when $default != null:
-return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNext,_that.events,_that.reminders,_that.schedule,_that.sync);case _:
+return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNext,_that.events,_that.reminders,_that.schedule,_that.sync,_that.planningStreak,_that.isPreviewingDay,_that.previewDate);case _:
   return null;
 
 }
@@ -246,7 +249,7 @@ return $default(_that.ethiopianDate,_that.gregorianDate,_that.holiday,_that.upNe
 
 
 class _TodayViewState extends TodayViewState {
-  const _TodayViewState({required this.ethiopianDate, required this.gregorianDate, this.holiday, this.upNext, final  List<EventPresentation> events = const <EventPresentation>[], final  List<ReminderPresentation> reminders = const <ReminderPresentation>[], final  List<SchedulePresentation> schedule = const <SchedulePresentation>[], this.sync = const SyncPresentation()}): _events = events,_reminders = reminders,_schedule = schedule,super._();
+  const _TodayViewState({required this.ethiopianDate, required this.gregorianDate, this.holiday, this.upNext, final  List<EventPresentation> events = const <EventPresentation>[], final  List<ReminderPresentation> reminders = const <ReminderPresentation>[], final  List<SchedulePresentation> schedule = const <SchedulePresentation>[], this.sync = const SyncPresentation(), this.planningStreak = 0, this.isPreviewingDay = false, this.previewDate}): _events = events,_reminders = reminders,_schedule = schedule,super._();
   
 
 @override final  EthiopianDate ethiopianDate;
@@ -275,6 +278,9 @@ class _TodayViewState extends TodayViewState {
 }
 
 @override@JsonKey() final  SyncPresentation sync;
+@override@JsonKey() final  int planningStreak;
+@override@JsonKey() final  bool isPreviewingDay;
+@override final  DateTime? previewDate;
 
 /// Create a copy of TodayViewState
 /// with the given fields replaced by the non-null parameter values.
@@ -286,16 +292,16 @@ _$TodayViewStateCopyWith<_TodayViewState> get copyWith => __$TodayViewStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TodayViewState&&(identical(other.ethiopianDate, ethiopianDate) || other.ethiopianDate == ethiopianDate)&&(identical(other.gregorianDate, gregorianDate) || other.gregorianDate == gregorianDate)&&(identical(other.holiday, holiday) || other.holiday == holiday)&&(identical(other.upNext, upNext) || other.upNext == upNext)&&const DeepCollectionEquality().equals(other._events, _events)&&const DeepCollectionEquality().equals(other._reminders, _reminders)&&const DeepCollectionEquality().equals(other._schedule, _schedule)&&(identical(other.sync, sync) || other.sync == sync));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TodayViewState&&(identical(other.ethiopianDate, ethiopianDate) || other.ethiopianDate == ethiopianDate)&&(identical(other.gregorianDate, gregorianDate) || other.gregorianDate == gregorianDate)&&(identical(other.holiday, holiday) || other.holiday == holiday)&&(identical(other.upNext, upNext) || other.upNext == upNext)&&const DeepCollectionEquality().equals(other._events, _events)&&const DeepCollectionEquality().equals(other._reminders, _reminders)&&const DeepCollectionEquality().equals(other._schedule, _schedule)&&(identical(other.sync, sync) || other.sync == sync)&&(identical(other.planningStreak, planningStreak) || other.planningStreak == planningStreak)&&(identical(other.isPreviewingDay, isPreviewingDay) || other.isPreviewingDay == isPreviewingDay)&&(identical(other.previewDate, previewDate) || other.previewDate == previewDate));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,ethiopianDate,gregorianDate,holiday,upNext,const DeepCollectionEquality().hash(_events),const DeepCollectionEquality().hash(_reminders),const DeepCollectionEquality().hash(_schedule),sync);
+int get hashCode => Object.hash(runtimeType,ethiopianDate,gregorianDate,holiday,upNext,const DeepCollectionEquality().hash(_events),const DeepCollectionEquality().hash(_reminders),const DeepCollectionEquality().hash(_schedule),sync,planningStreak,isPreviewingDay,previewDate);
 
 @override
 String toString() {
-  return 'TodayViewState(ethiopianDate: $ethiopianDate, gregorianDate: $gregorianDate, holiday: $holiday, upNext: $upNext, events: $events, reminders: $reminders, schedule: $schedule, sync: $sync)';
+  return 'TodayViewState(ethiopianDate: $ethiopianDate, gregorianDate: $gregorianDate, holiday: $holiday, upNext: $upNext, events: $events, reminders: $reminders, schedule: $schedule, sync: $sync, planningStreak: $planningStreak, isPreviewingDay: $isPreviewingDay, previewDate: $previewDate)';
 }
 
 
@@ -306,7 +312,7 @@ abstract mixin class _$TodayViewStateCopyWith<$Res> implements $TodayViewStateCo
   factory _$TodayViewStateCopyWith(_TodayViewState value, $Res Function(_TodayViewState) _then) = __$TodayViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- EthiopianDate ethiopianDate, GregorianDate gregorianDate, HolidayPresentation? holiday, UpNextPresentation? upNext, List<EventPresentation> events, List<ReminderPresentation> reminders, List<SchedulePresentation> schedule, SyncPresentation sync
+ EthiopianDate ethiopianDate, GregorianDate gregorianDate, HolidayPresentation? holiday, UpNextPresentation? upNext, List<EventPresentation> events, List<ReminderPresentation> reminders, List<SchedulePresentation> schedule, SyncPresentation sync, int planningStreak, bool isPreviewingDay, DateTime? previewDate
 });
 
 
@@ -323,7 +329,7 @@ class __$TodayViewStateCopyWithImpl<$Res>
 
 /// Create a copy of TodayViewState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? ethiopianDate = null,Object? gregorianDate = null,Object? holiday = freezed,Object? upNext = freezed,Object? events = null,Object? reminders = null,Object? schedule = null,Object? sync = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? ethiopianDate = null,Object? gregorianDate = null,Object? holiday = freezed,Object? upNext = freezed,Object? events = null,Object? reminders = null,Object? schedule = null,Object? sync = null,Object? planningStreak = null,Object? isPreviewingDay = null,Object? previewDate = freezed,}) {
   return _then(_TodayViewState(
 ethiopianDate: null == ethiopianDate ? _self.ethiopianDate : ethiopianDate // ignore: cast_nullable_to_non_nullable
 as EthiopianDate,gregorianDate: null == gregorianDate ? _self.gregorianDate : gregorianDate // ignore: cast_nullable_to_non_nullable
@@ -333,7 +339,10 @@ as UpNextPresentation?,events: null == events ? _self._events : events // ignore
 as List<EventPresentation>,reminders: null == reminders ? _self._reminders : reminders // ignore: cast_nullable_to_non_nullable
 as List<ReminderPresentation>,schedule: null == schedule ? _self._schedule : schedule // ignore: cast_nullable_to_non_nullable
 as List<SchedulePresentation>,sync: null == sync ? _self.sync : sync // ignore: cast_nullable_to_non_nullable
-as SyncPresentation,
+as SyncPresentation,planningStreak: null == planningStreak ? _self.planningStreak : planningStreak // ignore: cast_nullable_to_non_nullable
+as int,isPreviewingDay: null == isPreviewingDay ? _self.isPreviewingDay : isPreviewingDay // ignore: cast_nullable_to_non_nullable
+as bool,previewDate: freezed == previewDate ? _self.previewDate : previewDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -639,7 +648,7 @@ as bool,
 /// @nodoc
 mixin _$UpNextPresentation {
 
- String get title; String? get time; String? get timeEnd; String? get subtitle; bool get isAllDay; bool get isPending; SyncStatus get syncStatus;
+ String get title; String? get id; String? get type; String? get time; String? get timeEnd; String? get subtitle; String? get location; bool get isAllDay; bool get isPending; SyncStatus get syncStatus;
 /// Create a copy of UpNextPresentation
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -650,16 +659,16 @@ $UpNextPresentationCopyWith<UpNextPresentation> get copyWith => _$UpNextPresenta
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpNextPresentation&&(identical(other.title, title) || other.title == title)&&(identical(other.time, time) || other.time == time)&&(identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.isPending, isPending) || other.isPending == isPending)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpNextPresentation&&(identical(other.title, title) || other.title == title)&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.time, time) || other.time == time)&&(identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.location, location) || other.location == location)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.isPending, isPending) || other.isPending == isPending)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,time,timeEnd,subtitle,isAllDay,isPending,syncStatus);
+int get hashCode => Object.hash(runtimeType,title,id,type,time,timeEnd,subtitle,location,isAllDay,isPending,syncStatus);
 
 @override
 String toString() {
-  return 'UpNextPresentation(title: $title, time: $time, timeEnd: $timeEnd, subtitle: $subtitle, isAllDay: $isAllDay, isPending: $isPending, syncStatus: $syncStatus)';
+  return 'UpNextPresentation(title: $title, id: $id, type: $type, time: $time, timeEnd: $timeEnd, subtitle: $subtitle, location: $location, isAllDay: $isAllDay, isPending: $isPending, syncStatus: $syncStatus)';
 }
 
 
@@ -670,7 +679,7 @@ abstract mixin class $UpNextPresentationCopyWith<$Res>  {
   factory $UpNextPresentationCopyWith(UpNextPresentation value, $Res Function(UpNextPresentation) _then) = _$UpNextPresentationCopyWithImpl;
 @useResult
 $Res call({
- String title, String? time, String? timeEnd, String? subtitle, bool isAllDay, bool isPending, SyncStatus syncStatus
+ String title, String? id, String? type, String? time, String? timeEnd, String? subtitle, String? location, bool isAllDay, bool isPending, SyncStatus syncStatus
 });
 
 
@@ -687,12 +696,15 @@ class _$UpNextPresentationCopyWithImpl<$Res>
 
 /// Create a copy of UpNextPresentation
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? time = freezed,Object? timeEnd = freezed,Object? subtitle = freezed,Object? isAllDay = null,Object? isPending = null,Object? syncStatus = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? id = freezed,Object? type = freezed,Object? time = freezed,Object? timeEnd = freezed,Object? subtitle = freezed,Object? location = freezed,Object? isAllDay = null,Object? isPending = null,Object? syncStatus = null,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,time: freezed == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+as String,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,time: freezed == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String?,timeEnd: freezed == timeEnd ? _self.timeEnd : timeEnd // ignore: cast_nullable_to_non_nullable
 as String?,subtitle: freezed == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
+as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String?,isAllDay: null == isAllDay ? _self.isAllDay : isAllDay // ignore: cast_nullable_to_non_nullable
 as bool,isPending: null == isPending ? _self.isPending : isPending // ignore: cast_nullable_to_non_nullable
 as bool,syncStatus: null == syncStatus ? _self.syncStatus : syncStatus // ignore: cast_nullable_to_non_nullable
@@ -781,10 +793,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String? time,  String? timeEnd,  String? subtitle,  bool isAllDay,  bool isPending,  SyncStatus syncStatus)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String? id,  String? type,  String? time,  String? timeEnd,  String? subtitle,  String? location,  bool isAllDay,  bool isPending,  SyncStatus syncStatus)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UpNextPresentation() when $default != null:
-return $default(_that.title,_that.time,_that.timeEnd,_that.subtitle,_that.isAllDay,_that.isPending,_that.syncStatus);case _:
+return $default(_that.title,_that.id,_that.type,_that.time,_that.timeEnd,_that.subtitle,_that.location,_that.isAllDay,_that.isPending,_that.syncStatus);case _:
   return orElse();
 
 }
@@ -802,10 +814,10 @@ return $default(_that.title,_that.time,_that.timeEnd,_that.subtitle,_that.isAllD
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String? time,  String? timeEnd,  String? subtitle,  bool isAllDay,  bool isPending,  SyncStatus syncStatus)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String? id,  String? type,  String? time,  String? timeEnd,  String? subtitle,  String? location,  bool isAllDay,  bool isPending,  SyncStatus syncStatus)  $default,) {final _that = this;
 switch (_that) {
 case _UpNextPresentation():
-return $default(_that.title,_that.time,_that.timeEnd,_that.subtitle,_that.isAllDay,_that.isPending,_that.syncStatus);case _:
+return $default(_that.title,_that.id,_that.type,_that.time,_that.timeEnd,_that.subtitle,_that.location,_that.isAllDay,_that.isPending,_that.syncStatus);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -822,10 +834,10 @@ return $default(_that.title,_that.time,_that.timeEnd,_that.subtitle,_that.isAllD
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String? time,  String? timeEnd,  String? subtitle,  bool isAllDay,  bool isPending,  SyncStatus syncStatus)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String? id,  String? type,  String? time,  String? timeEnd,  String? subtitle,  String? location,  bool isAllDay,  bool isPending,  SyncStatus syncStatus)?  $default,) {final _that = this;
 switch (_that) {
 case _UpNextPresentation() when $default != null:
-return $default(_that.title,_that.time,_that.timeEnd,_that.subtitle,_that.isAllDay,_that.isPending,_that.syncStatus);case _:
+return $default(_that.title,_that.id,_that.type,_that.time,_that.timeEnd,_that.subtitle,_that.location,_that.isAllDay,_that.isPending,_that.syncStatus);case _:
   return null;
 
 }
@@ -837,13 +849,16 @@ return $default(_that.title,_that.time,_that.timeEnd,_that.subtitle,_that.isAllD
 
 
 class _UpNextPresentation implements UpNextPresentation {
-  const _UpNextPresentation({required this.title, this.time, this.timeEnd, this.subtitle, this.isAllDay = false, this.isPending = false, this.syncStatus = SyncStatus.synced});
+  const _UpNextPresentation({required this.title, this.id, this.type, this.time, this.timeEnd, this.subtitle, this.location, this.isAllDay = false, this.isPending = false, this.syncStatus = SyncStatus.synced});
   
 
 @override final  String title;
+@override final  String? id;
+@override final  String? type;
 @override final  String? time;
 @override final  String? timeEnd;
 @override final  String? subtitle;
+@override final  String? location;
 @override@JsonKey() final  bool isAllDay;
 @override@JsonKey() final  bool isPending;
 @override@JsonKey() final  SyncStatus syncStatus;
@@ -858,16 +873,16 @@ _$UpNextPresentationCopyWith<_UpNextPresentation> get copyWith => __$UpNextPrese
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpNextPresentation&&(identical(other.title, title) || other.title == title)&&(identical(other.time, time) || other.time == time)&&(identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.isPending, isPending) || other.isPending == isPending)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpNextPresentation&&(identical(other.title, title) || other.title == title)&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.time, time) || other.time == time)&&(identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.location, location) || other.location == location)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.isPending, isPending) || other.isPending == isPending)&&(identical(other.syncStatus, syncStatus) || other.syncStatus == syncStatus));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,time,timeEnd,subtitle,isAllDay,isPending,syncStatus);
+int get hashCode => Object.hash(runtimeType,title,id,type,time,timeEnd,subtitle,location,isAllDay,isPending,syncStatus);
 
 @override
 String toString() {
-  return 'UpNextPresentation(title: $title, time: $time, timeEnd: $timeEnd, subtitle: $subtitle, isAllDay: $isAllDay, isPending: $isPending, syncStatus: $syncStatus)';
+  return 'UpNextPresentation(title: $title, id: $id, type: $type, time: $time, timeEnd: $timeEnd, subtitle: $subtitle, location: $location, isAllDay: $isAllDay, isPending: $isPending, syncStatus: $syncStatus)';
 }
 
 
@@ -878,7 +893,7 @@ abstract mixin class _$UpNextPresentationCopyWith<$Res> implements $UpNextPresen
   factory _$UpNextPresentationCopyWith(_UpNextPresentation value, $Res Function(_UpNextPresentation) _then) = __$UpNextPresentationCopyWithImpl;
 @override @useResult
 $Res call({
- String title, String? time, String? timeEnd, String? subtitle, bool isAllDay, bool isPending, SyncStatus syncStatus
+ String title, String? id, String? type, String? time, String? timeEnd, String? subtitle, String? location, bool isAllDay, bool isPending, SyncStatus syncStatus
 });
 
 
@@ -895,12 +910,15 @@ class __$UpNextPresentationCopyWithImpl<$Res>
 
 /// Create a copy of UpNextPresentation
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? time = freezed,Object? timeEnd = freezed,Object? subtitle = freezed,Object? isAllDay = null,Object? isPending = null,Object? syncStatus = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? id = freezed,Object? type = freezed,Object? time = freezed,Object? timeEnd = freezed,Object? subtitle = freezed,Object? location = freezed,Object? isAllDay = null,Object? isPending = null,Object? syncStatus = null,}) {
   return _then(_UpNextPresentation(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,time: freezed == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+as String,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,time: freezed == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String?,timeEnd: freezed == timeEnd ? _self.timeEnd : timeEnd // ignore: cast_nullable_to_non_nullable
 as String?,subtitle: freezed == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
+as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String?,isAllDay: null == isAllDay ? _self.isAllDay : isAllDay // ignore: cast_nullable_to_non_nullable
 as bool,isPending: null == isPending ? _self.isPending : isPending // ignore: cast_nullable_to_non_nullable
 as bool,syncStatus: null == syncStatus ? _self.syncStatus : syncStatus // ignore: cast_nullable_to_non_nullable
@@ -914,7 +932,7 @@ as SyncStatus,
 /// @nodoc
 mixin _$EventPresentation {
 
- String get title; String? get time; String? get location; bool get isAllDay; bool get isPending;
+ String get title; String? get id; String? get time; String? get location; int get colorIndex; bool get isAllDay; bool get isPending;
 /// Create a copy of EventPresentation
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -925,16 +943,16 @@ $EventPresentationCopyWith<EventPresentation> get copyWith => _$EventPresentatio
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EventPresentation&&(identical(other.title, title) || other.title == title)&&(identical(other.time, time) || other.time == time)&&(identical(other.location, location) || other.location == location)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.isPending, isPending) || other.isPending == isPending));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EventPresentation&&(identical(other.title, title) || other.title == title)&&(identical(other.id, id) || other.id == id)&&(identical(other.time, time) || other.time == time)&&(identical(other.location, location) || other.location == location)&&(identical(other.colorIndex, colorIndex) || other.colorIndex == colorIndex)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.isPending, isPending) || other.isPending == isPending));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,time,location,isAllDay,isPending);
+int get hashCode => Object.hash(runtimeType,title,id,time,location,colorIndex,isAllDay,isPending);
 
 @override
 String toString() {
-  return 'EventPresentation(title: $title, time: $time, location: $location, isAllDay: $isAllDay, isPending: $isPending)';
+  return 'EventPresentation(title: $title, id: $id, time: $time, location: $location, colorIndex: $colorIndex, isAllDay: $isAllDay, isPending: $isPending)';
 }
 
 
@@ -945,7 +963,7 @@ abstract mixin class $EventPresentationCopyWith<$Res>  {
   factory $EventPresentationCopyWith(EventPresentation value, $Res Function(EventPresentation) _then) = _$EventPresentationCopyWithImpl;
 @useResult
 $Res call({
- String title, String? time, String? location, bool isAllDay, bool isPending
+ String title, String? id, String? time, String? location, int colorIndex, bool isAllDay, bool isPending
 });
 
 
@@ -962,12 +980,14 @@ class _$EventPresentationCopyWithImpl<$Res>
 
 /// Create a copy of EventPresentation
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? time = freezed,Object? location = freezed,Object? isAllDay = null,Object? isPending = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? id = freezed,Object? time = freezed,Object? location = freezed,Object? colorIndex = null,Object? isAllDay = null,Object? isPending = null,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,time: freezed == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+as String,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,time: freezed == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as String?,isAllDay: null == isAllDay ? _self.isAllDay : isAllDay // ignore: cast_nullable_to_non_nullable
+as String?,colorIndex: null == colorIndex ? _self.colorIndex : colorIndex // ignore: cast_nullable_to_non_nullable
+as int,isAllDay: null == isAllDay ? _self.isAllDay : isAllDay // ignore: cast_nullable_to_non_nullable
 as bool,isPending: null == isPending ? _self.isPending : isPending // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -1054,10 +1074,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String? time,  String? location,  bool isAllDay,  bool isPending)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String? id,  String? time,  String? location,  int colorIndex,  bool isAllDay,  bool isPending)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EventPresentation() when $default != null:
-return $default(_that.title,_that.time,_that.location,_that.isAllDay,_that.isPending);case _:
+return $default(_that.title,_that.id,_that.time,_that.location,_that.colorIndex,_that.isAllDay,_that.isPending);case _:
   return orElse();
 
 }
@@ -1075,10 +1095,10 @@ return $default(_that.title,_that.time,_that.location,_that.isAllDay,_that.isPen
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String? time,  String? location,  bool isAllDay,  bool isPending)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String? id,  String? time,  String? location,  int colorIndex,  bool isAllDay,  bool isPending)  $default,) {final _that = this;
 switch (_that) {
 case _EventPresentation():
-return $default(_that.title,_that.time,_that.location,_that.isAllDay,_that.isPending);case _:
+return $default(_that.title,_that.id,_that.time,_that.location,_that.colorIndex,_that.isAllDay,_that.isPending);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1095,10 +1115,10 @@ return $default(_that.title,_that.time,_that.location,_that.isAllDay,_that.isPen
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String? time,  String? location,  bool isAllDay,  bool isPending)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String? id,  String? time,  String? location,  int colorIndex,  bool isAllDay,  bool isPending)?  $default,) {final _that = this;
 switch (_that) {
 case _EventPresentation() when $default != null:
-return $default(_that.title,_that.time,_that.location,_that.isAllDay,_that.isPending);case _:
+return $default(_that.title,_that.id,_that.time,_that.location,_that.colorIndex,_that.isAllDay,_that.isPending);case _:
   return null;
 
 }
@@ -1110,12 +1130,14 @@ return $default(_that.title,_that.time,_that.location,_that.isAllDay,_that.isPen
 
 
 class _EventPresentation implements EventPresentation {
-  const _EventPresentation({required this.title, this.time, this.location, this.isAllDay = false, this.isPending = false});
+  const _EventPresentation({required this.title, this.id, this.time, this.location, this.colorIndex = 0, this.isAllDay = false, this.isPending = false});
   
 
 @override final  String title;
+@override final  String? id;
 @override final  String? time;
 @override final  String? location;
+@override@JsonKey() final  int colorIndex;
 @override@JsonKey() final  bool isAllDay;
 @override@JsonKey() final  bool isPending;
 
@@ -1129,16 +1151,16 @@ _$EventPresentationCopyWith<_EventPresentation> get copyWith => __$EventPresenta
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventPresentation&&(identical(other.title, title) || other.title == title)&&(identical(other.time, time) || other.time == time)&&(identical(other.location, location) || other.location == location)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.isPending, isPending) || other.isPending == isPending));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventPresentation&&(identical(other.title, title) || other.title == title)&&(identical(other.id, id) || other.id == id)&&(identical(other.time, time) || other.time == time)&&(identical(other.location, location) || other.location == location)&&(identical(other.colorIndex, colorIndex) || other.colorIndex == colorIndex)&&(identical(other.isAllDay, isAllDay) || other.isAllDay == isAllDay)&&(identical(other.isPending, isPending) || other.isPending == isPending));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,time,location,isAllDay,isPending);
+int get hashCode => Object.hash(runtimeType,title,id,time,location,colorIndex,isAllDay,isPending);
 
 @override
 String toString() {
-  return 'EventPresentation(title: $title, time: $time, location: $location, isAllDay: $isAllDay, isPending: $isPending)';
+  return 'EventPresentation(title: $title, id: $id, time: $time, location: $location, colorIndex: $colorIndex, isAllDay: $isAllDay, isPending: $isPending)';
 }
 
 
@@ -1149,7 +1171,7 @@ abstract mixin class _$EventPresentationCopyWith<$Res> implements $EventPresenta
   factory _$EventPresentationCopyWith(_EventPresentation value, $Res Function(_EventPresentation) _then) = __$EventPresentationCopyWithImpl;
 @override @useResult
 $Res call({
- String title, String? time, String? location, bool isAllDay, bool isPending
+ String title, String? id, String? time, String? location, int colorIndex, bool isAllDay, bool isPending
 });
 
 
@@ -1166,12 +1188,14 @@ class __$EventPresentationCopyWithImpl<$Res>
 
 /// Create a copy of EventPresentation
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? time = freezed,Object? location = freezed,Object? isAllDay = null,Object? isPending = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? id = freezed,Object? time = freezed,Object? location = freezed,Object? colorIndex = null,Object? isAllDay = null,Object? isPending = null,}) {
   return _then(_EventPresentation(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,time: freezed == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+as String,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,time: freezed == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as String?,isAllDay: null == isAllDay ? _self.isAllDay : isAllDay // ignore: cast_nullable_to_non_nullable
+as String?,colorIndex: null == colorIndex ? _self.colorIndex : colorIndex // ignore: cast_nullable_to_non_nullable
+as int,isAllDay: null == isAllDay ? _self.isAllDay : isAllDay // ignore: cast_nullable_to_non_nullable
 as bool,isPending: null == isPending ? _self.isPending : isPending // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -1455,7 +1479,7 @@ as bool,
 /// @nodoc
 mixin _$SchedulePresentation {
 
- String get time; String get title; String? get subtitle; bool get isCompleted;
+ String get time; String get title; String? get subtitle; int get colorIndex; bool get isCompleted;
 /// Create a copy of SchedulePresentation
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1466,16 +1490,16 @@ $SchedulePresentationCopyWith<SchedulePresentation> get copyWith => _$SchedulePr
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SchedulePresentation&&(identical(other.time, time) || other.time == time)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SchedulePresentation&&(identical(other.time, time) || other.time == time)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.colorIndex, colorIndex) || other.colorIndex == colorIndex)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,time,title,subtitle,isCompleted);
+int get hashCode => Object.hash(runtimeType,time,title,subtitle,colorIndex,isCompleted);
 
 @override
 String toString() {
-  return 'SchedulePresentation(time: $time, title: $title, subtitle: $subtitle, isCompleted: $isCompleted)';
+  return 'SchedulePresentation(time: $time, title: $title, subtitle: $subtitle, colorIndex: $colorIndex, isCompleted: $isCompleted)';
 }
 
 
@@ -1486,7 +1510,7 @@ abstract mixin class $SchedulePresentationCopyWith<$Res>  {
   factory $SchedulePresentationCopyWith(SchedulePresentation value, $Res Function(SchedulePresentation) _then) = _$SchedulePresentationCopyWithImpl;
 @useResult
 $Res call({
- String time, String title, String? subtitle, bool isCompleted
+ String time, String title, String? subtitle, int colorIndex, bool isCompleted
 });
 
 
@@ -1503,12 +1527,13 @@ class _$SchedulePresentationCopyWithImpl<$Res>
 
 /// Create a copy of SchedulePresentation
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? title = null,Object? subtitle = freezed,Object? isCompleted = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? title = null,Object? subtitle = freezed,Object? colorIndex = null,Object? isCompleted = null,}) {
   return _then(_self.copyWith(
 time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,subtitle: freezed == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
-as String?,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
+as String?,colorIndex: null == colorIndex ? _self.colorIndex : colorIndex // ignore: cast_nullable_to_non_nullable
+as int,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -1594,10 +1619,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String time,  String title,  String? subtitle,  bool isCompleted)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String time,  String title,  String? subtitle,  int colorIndex,  bool isCompleted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SchedulePresentation() when $default != null:
-return $default(_that.time,_that.title,_that.subtitle,_that.isCompleted);case _:
+return $default(_that.time,_that.title,_that.subtitle,_that.colorIndex,_that.isCompleted);case _:
   return orElse();
 
 }
@@ -1615,10 +1640,10 @@ return $default(_that.time,_that.title,_that.subtitle,_that.isCompleted);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String time,  String title,  String? subtitle,  bool isCompleted)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String time,  String title,  String? subtitle,  int colorIndex,  bool isCompleted)  $default,) {final _that = this;
 switch (_that) {
 case _SchedulePresentation():
-return $default(_that.time,_that.title,_that.subtitle,_that.isCompleted);case _:
+return $default(_that.time,_that.title,_that.subtitle,_that.colorIndex,_that.isCompleted);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1635,10 +1660,10 @@ return $default(_that.time,_that.title,_that.subtitle,_that.isCompleted);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String time,  String title,  String? subtitle,  bool isCompleted)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String time,  String title,  String? subtitle,  int colorIndex,  bool isCompleted)?  $default,) {final _that = this;
 switch (_that) {
 case _SchedulePresentation() when $default != null:
-return $default(_that.time,_that.title,_that.subtitle,_that.isCompleted);case _:
+return $default(_that.time,_that.title,_that.subtitle,_that.colorIndex,_that.isCompleted);case _:
   return null;
 
 }
@@ -1650,12 +1675,13 @@ return $default(_that.time,_that.title,_that.subtitle,_that.isCompleted);case _:
 
 
 class _SchedulePresentation implements SchedulePresentation {
-  const _SchedulePresentation({required this.time, required this.title, this.subtitle, this.isCompleted = false});
+  const _SchedulePresentation({required this.time, required this.title, this.subtitle, this.colorIndex = 0, this.isCompleted = false});
   
 
 @override final  String time;
 @override final  String title;
 @override final  String? subtitle;
+@override@JsonKey() final  int colorIndex;
 @override@JsonKey() final  bool isCompleted;
 
 /// Create a copy of SchedulePresentation
@@ -1668,16 +1694,16 @@ _$SchedulePresentationCopyWith<_SchedulePresentation> get copyWith => __$Schedul
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SchedulePresentation&&(identical(other.time, time) || other.time == time)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SchedulePresentation&&(identical(other.time, time) || other.time == time)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.colorIndex, colorIndex) || other.colorIndex == colorIndex)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,time,title,subtitle,isCompleted);
+int get hashCode => Object.hash(runtimeType,time,title,subtitle,colorIndex,isCompleted);
 
 @override
 String toString() {
-  return 'SchedulePresentation(time: $time, title: $title, subtitle: $subtitle, isCompleted: $isCompleted)';
+  return 'SchedulePresentation(time: $time, title: $title, subtitle: $subtitle, colorIndex: $colorIndex, isCompleted: $isCompleted)';
 }
 
 
@@ -1688,7 +1714,7 @@ abstract mixin class _$SchedulePresentationCopyWith<$Res> implements $SchedulePr
   factory _$SchedulePresentationCopyWith(_SchedulePresentation value, $Res Function(_SchedulePresentation) _then) = __$SchedulePresentationCopyWithImpl;
 @override @useResult
 $Res call({
- String time, String title, String? subtitle, bool isCompleted
+ String time, String title, String? subtitle, int colorIndex, bool isCompleted
 });
 
 
@@ -1705,12 +1731,13 @@ class __$SchedulePresentationCopyWithImpl<$Res>
 
 /// Create a copy of SchedulePresentation
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? title = null,Object? subtitle = freezed,Object? isCompleted = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? title = null,Object? subtitle = freezed,Object? colorIndex = null,Object? isCompleted = null,}) {
   return _then(_SchedulePresentation(
 time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,subtitle: freezed == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
-as String?,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
+as String?,colorIndex: null == colorIndex ? _self.colorIndex : colorIndex // ignore: cast_nullable_to_non_nullable
+as int,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

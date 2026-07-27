@@ -9,6 +9,7 @@ import '../../../../core/recurrence/recurrence_rule.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/calendar_event.dart';
 import '../providers/calendar_providers.dart';
+import 'edit_occurrence_dialog.dart';
 import 'recurrence_pattern_sheet.dart';
 
 class EventFormSheet extends ConsumerStatefulWidget {
@@ -119,6 +120,34 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
 
     try {
       if (_isEditing) {
+        final isRecurring = widget.event!.recurrenceRule != null;
+
+        if (isRecurring) {
+          // Show dialog to ask: this occurrence or entire series?
+          final choice = await EditOccurrenceDialog.show(
+            context,
+            entityTitle: widget.event!.title,
+          );
+          if (choice == null) {
+            // User dismissed dialog
+            setState(() => _isSaving = false);
+            return;
+          }
+
+          if (choice == EditOccurrenceChoice.thisOccurrence) {
+            // Create a RecurrenceException for this occurrence
+            await controller.createOccurrenceException(
+              eventId: widget.event!.id,
+              originalGcDate: widget.event!.gcDate,
+              modifiedGcDate: gcDate,
+              modifiedEcDate: ecDate,
+            );
+            if (mounted) Navigator.of(context).pop();
+            return;
+          }
+          // Edit entire series — fall through to updateEvent below
+        }
+
         final updated = widget.event!.copyWith(
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim().isEmpty
@@ -198,9 +227,10 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
 
     final categories = <String?, (String, IconData)>{
       null: (l10n.categoryNone, Icons.circle_outlined),
-      'work': (l10n.categoryWork, Icons.work_outline_rounded),
+      'meeting': (l10n.categoryMeeting, Icons.groups_outlined),
       'personal': (l10n.categoryPersonal, Icons.person_outline_rounded),
-      'holiday': (l10n.categoryHoliday, Icons.celebration_outlined),
+      'deadline': (l10n.categoryDeadline, Icons.timer_outlined),
+      'health': (l10n.categoryHealth, Icons.favorite_outline_rounded),
       'other': (l10n.categoryOther, Icons.label_outline_rounded),
     };
 
@@ -370,6 +400,7 @@ class _EventFormSheetState extends ConsumerState<EventFormSheet> {
               ),
               const SizedBox(height: AppSpacing.md),
               TextFormField(
+                controller: _descriptionController,
                 decoration: _fieldDecoration(
                   context,
                   label: l10n.fieldDescriptionOptional,

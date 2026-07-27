@@ -81,4 +81,15 @@ class CalendarEventsDao extends DatabaseAccessor<AppDatabase>
     }
     return query.watch();
   }
+
+  /// Get all events that have a recurrence rule (for expansion).
+  Future<List<CalendarEvent>> getRecurringEvents({String? accountId}) {
+    final query = select(calendarEvents)
+      ..where((t) => t.recurrenceRule.isNotNull());
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    query.orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
+    return query.get();
+  }
 }

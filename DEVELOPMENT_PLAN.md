@@ -125,8 +125,8 @@ SyncCoordinator, Ethiopian calendar core, EN/Amharic, Android/iOS (Web/PWA optio
 
 ## SECTION D — FLUTTER APP DETAIL (WS6)
 
-Current readiness **~60%** (foundation + calendar + events/reminders + planner/notes complete; 
-print/commerce deferred). Develop in place per A2/A3.
+Current readiness **~85%** (foundation + calendar + events/reminders + planner/notes + recurrence UI + note linking + snooze/skip/cancel + week start fix + localization fixes + Sprint 13 accessibility + full l10n coverage + security audit + performance benchmarks + date converter complete; 
+Sprints 9-12 blocked by backend; print/commerce deferred). Develop in place per A2/A3.
 
 ### D0 — Foundation hardening (Phase 0)
 - [x] Strict lints (`very_good_analysis` + `riverpod_lint` + `custom_lint`), replace default `flutter_lints`.

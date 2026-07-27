@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../providers/notes_providers.dart';
 import '../providers/notes_view_state.dart';
 import '../widgets/note_card.dart';
@@ -23,29 +24,22 @@ class _NotesPageState extends ConsumerState<NotesPage> {
 
   void _initAndLoad() {
     final controller = ref.read(notesControllerProvider.notifier);
-    controller.setDependencies(
-      getAllNotes: ref.read(getAllNotesProvider),
-      searchNotes: ref.read(searchNotesProvider),
-      createNote: ref.read(createNoteProvider),
-      updateNote: ref.read(updateNoteProvider),
-      deleteNote: ref.read(deleteNoteProvider),
-      togglePinned: ref.read(toggleNotePinnedProvider),
-      toggleArchived: ref.read(toggleNoteArchivedProvider),
-    );
     controller.loadNotes();
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(notesControllerProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notes'),
+        title: Text(l10n.notesTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => NoteFormSheet.show(context),
+            tooltip: l10n.add,
           ),
         ],
       ),

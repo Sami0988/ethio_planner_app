@@ -1,6 +1,7 @@
 import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radii.dart';
@@ -10,14 +11,11 @@ import '../../../calendar/presentation/widgets/event_form_sheet.dart';
 import '../../../notes/presentation/widgets/note_form_sheet.dart';
 import '../../../reminders/presentation/widgets/reminder_form_sheet.dart';
 
-/// Quick Add action sheet (APP-FR-002): lets the user pick an item type and
-/// opens the matching editor directly, so "Add Reminder" lands on the reminder
-/// editor rather than a list screen.
-class QuickAddSheet extends StatelessWidget {
+const _lastUsedKey = 'quick_add_last_type';
+
+class QuickAddSheet extends StatefulWidget {
   const QuickAddSheet({super.key, required this.parentContext});
 
-  /// The page context used to open the editor after this sheet is dismissed
-  /// (this sheet's own context is gone once it pops).
   final BuildContext parentContext;
 
   static Future<void> show(BuildContext context) {
@@ -30,6 +28,29 @@ class QuickAddSheet extends StatelessWidget {
       ),
       builder: (_) => QuickAddSheet(parentContext: context),
     );
+  }
+
+  @override
+  State<QuickAddSheet> createState() => _QuickAddSheetState();
+}
+
+class _QuickAddSheetState extends State<QuickAddSheet> {
+  String? _lastUsedType;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLastUsed();
+  }
+
+  Future<void> _loadLastUsed() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() => _lastUsedType = prefs.getString(_lastUsedKey));
+  }
+
+  Future<void> _saveLastUsed(String type) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_lastUsedKey, type);
   }
 
   @override
@@ -55,27 +76,39 @@ class QuickAddSheet extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
+            if (_lastUsedType != null) ...[
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                l10n.quickAddLastUsed(_lastUsedLabel(_lastUsedType!, l10n)),
+                style: AppTextStyles.cardSubtitle.copyWith(
+                  color: context.colorPrimary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
             const SizedBox(height: AppSpacing.lg),
             _QuickAddOption(
               icon: Icons.event_rounded,
               label: l10n.quickAddEvent,
               color: context.colorPrimary,
-              onTap: () => _open(context, () => EventFormSheet.show(parentContext)),
+              isLastUsed: _lastUsedType == 'event',
+              onTap: () => _open('event', () => EventFormSheet.show(widget.parentContext)),
             ),
             const SizedBox(height: AppSpacing.sm),
             _QuickAddOption(
               icon: Icons.notifications_rounded,
               label: l10n.quickAddReminder,
               color: context.colorHoliday,
-              onTap: () =>
-                  _open(context, () => ReminderFormSheet.show(parentContext)),
+              isLastUsed: _lastUsedType == 'reminder',
+              onTap: () => _open('reminder', () => ReminderFormSheet.show(widget.parentContext)),
             ),
             const SizedBox(height: AppSpacing.sm),
             _QuickAddOption(
               icon: Icons.sticky_note_2_rounded,
               label: l10n.quickAddNote,
               color: context.colorSuccess,
-              onTap: () => _open(context, () => NoteFormSheet.show(parentContext)),
+              isLastUsed: _lastUsedType == 'note',
+              onTap: () => _open('note', () => NoteFormSheet.show(widget.parentContext)),
             ),
           ],
         ),
@@ -83,10 +116,23 @@ class QuickAddSheet extends StatelessWidget {
     );
   }
 
-  /// Dismisses this sheet, then opens the chosen editor on the page context.
-  void _open(BuildContext sheetContext, VoidCallback openEditor) {
+  String _lastUsedLabel(String type, AppLocalizations l10n) {
+    switch (type) {
+      case 'event':
+        return l10n.quickAddEvent;
+      case 'reminder':
+        return l10n.quickAddReminder;
+      case 'note':
+        return l10n.quickAddNote;
+      default:
+        return type;
+    }
+  }
+
+  void _open(String type, VoidCallback openEditor) {
     HapticFeedback.selectionClick();
-    Navigator.of(sheetContext).pop();
+    _saveLastUsed(type);
+    Navigator.of(context).pop();
     openEditor();
   }
 }
@@ -97,12 +143,14 @@ class _QuickAddOption extends StatefulWidget {
     required this.label,
     required this.color,
     required this.onTap,
+    this.isLastUsed = false,
   });
 
   final IconData icon;
   final String label;
   final Color color;
   final VoidCallback onTap;
+  final bool isLastUsed;
 
   @override
   State<_QuickAddOption> createState() => _QuickAddOptionState();
@@ -130,8 +178,15 @@ class _QuickAddOptionState extends State<_QuickAddOption> {
               vertical: AppSpacing.md,
             ),
             decoration: BoxDecoration(
-              color: context.colorSurfaceMuted,
+              color: widget.isLastUsed
+                  ? context.colorPrimary.withValues(alpha: 0.08)
+                  : context.colorSurfaceMuted,
               borderRadius: AppRadii.card,
+              border: widget.isLastUsed
+                  ? Border.all(
+                      color: context.colorPrimary.withValues(alpha: 0.3),
+                    )
+                  : null,
             ),
             child: Row(
               children: [
@@ -152,10 +207,30 @@ class _QuickAddOptionState extends State<_QuickAddOption> {
                     ),
                   ),
                 ),
-                Icon(
-                  Icons.chevron_right_rounded,
-                  color: context.colorTextMuted,
-                ),
+                if (widget.isLastUsed)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: context.colorPrimary.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      'Last',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: context.colorPrimary,
+                      ),
+                    ),
+                  )
+                else
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: context.colorTextMuted,
+                  ),
               ],
             ),
           ),

@@ -64,7 +64,7 @@ class _RecurrencePatternSheetState extends State<RecurrencePatternSheet> {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.onSurfaceVariant.withAlpha(100),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.39),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -101,6 +101,7 @@ class _RecurrencePatternSheetState extends State<RecurrencePatternSheet> {
                       ? () => setState(() => _interval--)
                       : null,
                   icon: const Icon(Icons.remove_circle_outline),
+                  tooltip: l10n.navigationPrevious,
                 ),
                 const SizedBox(width: 8),
                 Text('$_interval', style: theme.textTheme.titleMedium),
@@ -110,6 +111,7 @@ class _RecurrencePatternSheetState extends State<RecurrencePatternSheet> {
                       ? () => setState(() => _interval++)
                       : null,
                   icon: const Icon(Icons.add_circle_outline),
+                  tooltip: l10n.add,
                 ),
                 const SizedBox(width: 8),
                 Text(

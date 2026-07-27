@@ -56,6 +56,8 @@ class CheckboxTile extends StatelessWidget {
                 children: [
                   Text(
                     title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.cardTitle.copyWith(
                       color: context.colorTextPrimary,
                     ),
@@ -64,6 +66,8 @@ class CheckboxTile extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       subtitle!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.cardSubtitle.copyWith(
                         color: context.colorTextSecondary,
                       ),

@@ -75,6 +75,9 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
             ? null
             : _contentController.text.trim(),
         category: _selectedCategory,
+        linkedEventId: _linkedEventId,
+        linkedReminderId: _linkedReminderId,
+        linkedPlannerItemId: _linkedPlannerItemId,
       );
       await controller.updateNote(updated);
     } else {
@@ -84,6 +87,9 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
             ? null
             : _contentController.text.trim(),
         category: _selectedCategory,
+        linkedEventId: _linkedEventId,
+        linkedReminderId: _linkedReminderId,
+        linkedPlannerItemId: _linkedPlannerItemId,
       );
     }
 
@@ -103,7 +109,8 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
         AppSpacing.lg,
         AppSpacing.lg + bottomPadding,
       ),
-      child: Column(
+      child: SingleChildScrollView(
+        child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -116,7 +123,9 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
               ),
               if (_isEditing)
                 Text(
-                  DateFormat('MMM d, y • h:mm a').format(widget.note!.updatedAt),
+                  DateFormat(
+                    'MMM d, y • h:mm a',
+                  ).format(widget.note!.updatedAt),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -137,19 +146,24 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
             },
           ),
           const SizedBox(height: AppSpacing.md),
-          DropdownButtonFormField<String>(
-            initialValue: _selectedCategory,
-            decoration: InputDecoration(labelText: l10n.fieldCategoryOptional),
-            items: [
-              DropdownMenuItem(child: Text(l10n.categoryNone)),
-              DropdownMenuItem(value: 'work', child: Text(l10n.categoryWork)),
-              DropdownMenuItem(
-                value: 'personal',
-                child: Text(l10n.categoryPersonal),
-              ),
-              DropdownMenuItem(value: 'other', child: Text(l10n.categoryOther)),
-            ],
-            onChanged: (value) => setState(() => _selectedCategory = value),
+          Material(
+            color: Colors.transparent,
+            child: DropdownButtonFormField<String>(
+              initialValue: _selectedCategory,
+              decoration: InputDecoration(labelText: l10n.fieldCategoryOptional),
+              items: [
+                DropdownMenuItem(child: Text(l10n.categoryNone)),
+                DropdownMenuItem(value: 'meeting', child: Text(l10n.categoryMeeting)),
+                DropdownMenuItem(
+                  value: 'personal',
+                  child: Text(l10n.categoryPersonal),
+                ),
+                DropdownMenuItem(value: 'deadline', child: Text(l10n.categoryDeadline)),
+                DropdownMenuItem(value: 'health', child: Text(l10n.categoryHealth)),
+                DropdownMenuItem(value: 'other', child: Text(l10n.categoryOther)),
+              ],
+              onChanged: (value) => setState(() => _selectedCategory = value),
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           TextField(
@@ -215,6 +229,7 @@ class _NoteFormSheetState extends ConsumerState<NoteFormSheet> {
             ],
           ),
         ],
+      ),
       ),
     );
   }

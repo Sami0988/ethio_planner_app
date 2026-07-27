@@ -10,21 +10,31 @@ import '../../domain/entities/planner_item.dart';
 import '../providers/planner_providers.dart';
 
 class PlannerItemFormSheet extends ConsumerStatefulWidget {
-  const PlannerItemFormSheet({super.key, this.item, this.initialDate});
+  const PlannerItemFormSheet({
+    super.key,
+    this.item,
+    this.initialDate,
+    this.initialSection,
+  });
 
   final PlannerItem? item;
   final DateTime? initialDate;
+  final PlannerSection? initialSection;
 
   static Future<void> show(
     BuildContext context, {
     PlannerItem? item,
     DateTime? initialDate,
+    PlannerSection? initialSection,
   }) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) =>
-          PlannerItemFormSheet(item: item, initialDate: initialDate),
+      builder: (_) => PlannerItemFormSheet(
+        item: item,
+        initialDate: initialDate,
+        initialSection: initialSection,
+      ),
     );
   }
 
@@ -51,7 +61,7 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
       text: item?.description ?? '',
     );
     _selectedDate = item?.gcDate ?? widget.initialDate ?? DateTime.now();
-    _selectedSection = item?.section ?? PlannerSection.focus;
+    _selectedSection = item?.section ?? widget.initialSection ?? PlannerSection.focus;
   }
 
   @override
@@ -162,19 +172,22 @@ class _PlannerItemFormSheetState extends ConsumerState<PlannerItemFormSheet> {
             label: Text(DateFormat('MMM d, y').format(_selectedDate)),
           ),
           const SizedBox(height: AppSpacing.md),
-          DropdownButtonFormField<PlannerSection>(
-            initialValue: _selectedSection,
-            decoration: const InputDecoration(),
-            items: [
-              for (final section in PlannerSection.values)
-                DropdownMenuItem(
-                  value: section,
-                  child: Text(_sectionLabel(l10n, section)),
-                ),
-            ],
-            onChanged: (value) {
-              if (value != null) setState(() => _selectedSection = value);
-            },
+          Material(
+            color: Colors.transparent,
+            child: DropdownButtonFormField<PlannerSection>(
+              initialValue: _selectedSection,
+              decoration: const InputDecoration(),
+              items: [
+                for (final section in PlannerSection.values)
+                  DropdownMenuItem(
+                    value: section,
+                    child: Text(_sectionLabel(l10n, section)),
+                  ),
+              ],
+              onChanged: (value) {
+                if (value != null) setState(() => _selectedSection = value);
+              },
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           TextField(

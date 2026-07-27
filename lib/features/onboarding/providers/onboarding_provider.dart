@@ -1,14 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum OnboardingStep { intro, guestOrAuth, guestExplanation, complete }
+import '../../../../core/localization/locale_provider.dart';
+
+enum OnboardingStep { language, intro, guestOrAuth, guestExplanation, complete }
 
 class OnboardingState {
   final OnboardingStep step;
   final bool hasCompletedOnboarding;
 
   const OnboardingState({
-    this.step = OnboardingStep.intro,
+    this.step = OnboardingStep.language,
     this.hasCompletedOnboarding = false,
   });
 
@@ -45,6 +48,10 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     state = state.copyWith(hasCompletedOnboarding: true);
   }
 
+  void goToIntro() {
+    state = state.copyWith(step: OnboardingStep.intro);
+  }
+
   void goToGuestOrAuth() {
     state = state.copyWith(step: OnboardingStep.guestOrAuth);
   }
@@ -55,6 +62,11 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
 
   void dismissOnboarding() {
     completeOnboarding();
+  }
+
+  Future<void> setLanguage(Locale? locale) async {
+    await ref.read(localeProvider.notifier).setLocale(locale);
+    goToIntro();
   }
 }
 

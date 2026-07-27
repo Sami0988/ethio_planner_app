@@ -1,3 +1,4 @@
+import 'package:ethio_planner/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -46,14 +47,15 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(searchControllerProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: TextField(
           controller: _searchController,
           focusNode: _focusNode,
-          decoration: const InputDecoration(
-            hintText: 'Search events, reminders, notes...',
+          decoration: InputDecoration(
+            hintText: l10n.searchHint,
             border: InputBorder.none,
           ),
           onChanged: (query) {
@@ -68,6 +70,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 _searchController.clear();
                 ref.read(searchControllerProvider.notifier).clearSearch();
               },
+              tooltip: l10n.clearSearch,
             ),
         ],
       ),
@@ -87,14 +90,14 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No results found',
+                    l10n.searchNoResults,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Try a different search term',
+                    l10n.searchTryDifferent,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
@@ -120,7 +123,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     AppSpacing.sm,
                   ),
                   child: Text(
-                    '${state.results.length} results',
+                    l10n.searchResultsCount(state.results.length),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
@@ -146,6 +149,7 @@ class _SearchHints extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return Center(
       child: Column(
@@ -158,14 +162,14 @@ class _SearchHints extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Search across your data',
+            l10n.searchAcrossData,
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Find events, reminders, planner items, and notes',
+            l10n.searchHint,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -201,6 +205,7 @@ class _FilterBarState extends State<_FilterBar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final hasFilters = widget.filters.types != null ||
         widget.filters.dateRange != null ||
         widget.filters.category != null;
@@ -221,7 +226,7 @@ class _FilterBarState extends State<_FilterBar> {
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
-                'Filters',
+                l10n.searchFilterTypes,
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: hasFilters
                       ? theme.colorScheme.primary
@@ -233,7 +238,7 @@ class _FilterBarState extends State<_FilterBar> {
                 GestureDetector(
                   onTap: widget.onClearFilters,
                   child: Text(
-                    'Clear',
+                    l10n.searchClearFilters,
                     style: theme.textTheme.labelMedium?.copyWith(
                       color: theme.colorScheme.error,
                     ),
@@ -247,6 +252,7 @@ class _FilterBarState extends State<_FilterBar> {
                   size: 20,
                 ),
                 onPressed: () => setState(() => _expanded = !_expanded),
+                tooltip: _expanded ? l10n.collapseFilters : l10n.expandFilters,
               ),
             ],
           ),
@@ -258,7 +264,7 @@ class _FilterBarState extends State<_FilterBar> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Content Type',
+                  l10n.searchFilterTypes,
                   style: theme.textTheme.labelSmall,
                 ),
                 const SizedBox(height: AppSpacing.xs),
@@ -268,7 +274,7 @@ class _FilterBarState extends State<_FilterBar> {
                   children: SearchResultType.values.map((type) {
                     final isSelected = widget.filters.types?.contains(type) ?? false;
                     return FilterChip(
-                      label: Text(_typeName(type)),
+                      label: Text(_typeName(type, l10n)),
                       selected: isSelected,
                       onSelected: (selected) {
                         final current = widget.filters.types ?? {};
@@ -294,30 +300,33 @@ class _FilterBarState extends State<_FilterBar> {
                         label: Text(
                           widget.filters.dateRange != null
                               ? '${widget.filters.dateRange!.start.month}/${widget.filters.dateRange!.start.day} – ${widget.filters.dateRange!.end.month}/${widget.filters.dateRange!.end.day}'
-                              : 'Date Range',
+                              : l10n.searchFilterDateRange,
                         ),
                         onPressed: _selectDateRange,
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     Expanded(
-                      child: DropdownButtonFormField<String>(
-                        initialValue: widget.filters.category,
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: DropdownButtonFormField<String>(
+                          initialValue: widget.filters.category,
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
                           ),
+                          hint: Text(l10n.searchFilterCategory),
+                          items: [
+                            DropdownMenuItem(child: Text(l10n.searchAll)),
+                            const DropdownMenuItem(value: 'work', child: Text('Work')),
+                            const DropdownMenuItem(value: 'personal', child: Text('Personal')),
+                            const DropdownMenuItem(value: 'other', child: Text('Other')),
+                          ],
+                          onChanged: widget.onCategoryChanged,
                         ),
-                        hint: const Text('Category'),
-                        items: const [
-                          DropdownMenuItem(child: Text('All')),
-                          DropdownMenuItem(value: 'work', child: Text('Work')),
-                          DropdownMenuItem(value: 'personal', child: Text('Personal')),
-                          DropdownMenuItem(value: 'other', child: Text('Other')),
-                        ],
-                        onChanged: widget.onCategoryChanged,
                       ),
                     ),
                   ],
@@ -332,16 +341,16 @@ class _FilterBarState extends State<_FilterBar> {
     );
   }
 
-  String _typeName(SearchResultType type) {
+  String _typeName(SearchResultType type, AppLocalizations l10n) {
     switch (type) {
       case SearchResultType.event:
-        return 'Events';
+        return l10n.searchTypeEvents;
       case SearchResultType.reminder:
-        return 'Reminders';
+        return l10n.searchTypeReminders;
       case SearchResultType.plannerItem:
-        return 'Planner';
+        return l10n.searchTypePlanner;
       case SearchResultType.note:
-        return 'Notes';
+        return l10n.searchTypeNotes;
     }
   }
 

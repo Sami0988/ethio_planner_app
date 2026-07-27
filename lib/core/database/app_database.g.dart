@@ -5073,6 +5073,825 @@ class NoteRevisionsCompanion extends UpdateCompanion<NoteRevision> {
   }
 }
 
+class $RecurrenceExceptionsTable extends RecurrenceExceptions
+    with TableInfo<$RecurrenceExceptionsTable, RecurrenceException> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecurrenceExceptionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _entityTypeMeta = const VerificationMeta(
+    'entityType',
+  );
+  @override
+  late final GeneratedColumn<String> entityType = GeneratedColumn<String>(
+    'entity_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _entityIdMeta = const VerificationMeta(
+    'entityId',
+  );
+  @override
+  late final GeneratedColumn<String> entityId = GeneratedColumn<String>(
+    'entity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _exceptionKeyMeta = const VerificationMeta(
+    'exceptionKey',
+  );
+  @override
+  late final GeneratedColumn<String> exceptionKey = GeneratedColumn<String>(
+    'exception_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _exceptionTypeMeta = const VerificationMeta(
+    'exceptionType',
+  );
+  @override
+  late final GeneratedColumn<String> exceptionType = GeneratedColumn<String>(
+    'exception_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _modifiedGcDateMeta = const VerificationMeta(
+    'modifiedGcDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> modifiedGcDate =
+      GeneratedColumn<DateTime>(
+        'modified_gc_date',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _modifiedEcDateMeta = const VerificationMeta(
+    'modifiedEcDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> modifiedEcDate =
+      GeneratedColumn<DateTime>(
+        'modified_ec_date',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta(
+    'accountId',
+  );
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverVersionMeta = const VerificationMeta(
+    'serverVersion',
+  );
+  @override
+  late final GeneratedColumn<int> serverVersion = GeneratedColumn<int>(
+    'server_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('local'),
+  );
+  static const VerificationMeta _lastOperationIdMeta = const VerificationMeta(
+    'lastOperationId',
+  );
+  @override
+  late final GeneratedColumn<String> lastOperationId = GeneratedColumn<String>(
+    'last_operation_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    entityType,
+    entityId,
+    exceptionKey,
+    exceptionType,
+    modifiedGcDate,
+    modifiedEcDate,
+    createdAt,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
+    deletedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recurrence_exceptions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RecurrenceException> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('entity_type')) {
+      context.handle(
+        _entityTypeMeta,
+        entityType.isAcceptableOrUnknown(data['entity_type']!, _entityTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entityTypeMeta);
+    }
+    if (data.containsKey('entity_id')) {
+      context.handle(
+        _entityIdMeta,
+        entityId.isAcceptableOrUnknown(data['entity_id']!, _entityIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entityIdMeta);
+    }
+    if (data.containsKey('exception_key')) {
+      context.handle(
+        _exceptionKeyMeta,
+        exceptionKey.isAcceptableOrUnknown(
+          data['exception_key']!,
+          _exceptionKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_exceptionKeyMeta);
+    }
+    if (data.containsKey('exception_type')) {
+      context.handle(
+        _exceptionTypeMeta,
+        exceptionType.isAcceptableOrUnknown(
+          data['exception_type']!,
+          _exceptionTypeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_exceptionTypeMeta);
+    }
+    if (data.containsKey('modified_gc_date')) {
+      context.handle(
+        _modifiedGcDateMeta,
+        modifiedGcDate.isAcceptableOrUnknown(
+          data['modified_gc_date']!,
+          _modifiedGcDateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('modified_ec_date')) {
+      context.handle(
+        _modifiedEcDateMeta,
+        modifiedEcDate.isAcceptableOrUnknown(
+          data['modified_ec_date']!,
+          _modifiedEcDateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('account_id')) {
+      context.handle(
+        _accountIdMeta,
+        accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta),
+      );
+    }
+    if (data.containsKey('server_version')) {
+      context.handle(
+        _serverVersionMeta,
+        serverVersion.isAcceptableOrUnknown(
+          data['server_version']!,
+          _serverVersionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    }
+    if (data.containsKey('last_operation_id')) {
+      context.handle(
+        _lastOperationIdMeta,
+        lastOperationId.isAcceptableOrUnknown(
+          data['last_operation_id']!,
+          _lastOperationIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {exceptionKey},
+  ];
+  @override
+  RecurrenceException map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RecurrenceException(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      entityType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entity_type'],
+      )!,
+      entityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entity_id'],
+      )!,
+      exceptionKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exception_key'],
+      )!,
+      exceptionType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exception_type'],
+      )!,
+      modifiedGcDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}modified_gc_date'],
+      ),
+      modifiedEcDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}modified_ec_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      ),
+      serverVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_version'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      lastOperationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_operation_id'],
+      ),
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+    );
+  }
+
+  @override
+  $RecurrenceExceptionsTable createAlias(String alias) {
+    return $RecurrenceExceptionsTable(attachedDatabase, alias);
+  }
+}
+
+class RecurrenceException extends DataClass
+    implements Insertable<RecurrenceException> {
+  /// Unique exception ID (UUID).
+  final String id;
+
+  /// The entity type: 'event' or 'reminder'.
+  final String entityType;
+
+  /// The entity ID of the recurring event/reminder.
+  final String entityId;
+
+  /// Composite key: `{entityId}_{occurrenceTimestamp}` for fast lookup.
+  final String exceptionKey;
+
+  /// Exception type: 'skipped' or 'modified'.
+  final String exceptionType;
+
+  /// For 'modified' exceptions: the new GC date for this occurrence.
+  /// Null for 'skipped' exceptions.
+  final DateTime? modifiedGcDate;
+
+  /// For 'modified' exceptions: the new EC date for this occurrence.
+  final DateTime? modifiedEcDate;
+
+  /// When this exception was created.
+  final DateTime createdAt;
+
+  /// Sync metadata.
+  final String? accountId;
+  final int serverVersion;
+  final String syncStatus;
+  final String? lastOperationId;
+  final DateTime? deletedAt;
+  const RecurrenceException({
+    required this.id,
+    required this.entityType,
+    required this.entityId,
+    required this.exceptionKey,
+    required this.exceptionType,
+    this.modifiedGcDate,
+    this.modifiedEcDate,
+    required this.createdAt,
+    this.accountId,
+    required this.serverVersion,
+    required this.syncStatus,
+    this.lastOperationId,
+    this.deletedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['entity_type'] = Variable<String>(entityType);
+    map['entity_id'] = Variable<String>(entityId);
+    map['exception_key'] = Variable<String>(exceptionKey);
+    map['exception_type'] = Variable<String>(exceptionType);
+    if (!nullToAbsent || modifiedGcDate != null) {
+      map['modified_gc_date'] = Variable<DateTime>(modifiedGcDate);
+    }
+    if (!nullToAbsent || modifiedEcDate != null) {
+      map['modified_ec_date'] = Variable<DateTime>(modifiedEcDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || accountId != null) {
+      map['account_id'] = Variable<String>(accountId);
+    }
+    map['server_version'] = Variable<int>(serverVersion);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || lastOperationId != null) {
+      map['last_operation_id'] = Variable<String>(lastOperationId);
+    }
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    return map;
+  }
+
+  RecurrenceExceptionsCompanion toCompanion(bool nullToAbsent) {
+    return RecurrenceExceptionsCompanion(
+      id: Value(id),
+      entityType: Value(entityType),
+      entityId: Value(entityId),
+      exceptionKey: Value(exceptionKey),
+      exceptionType: Value(exceptionType),
+      modifiedGcDate: modifiedGcDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(modifiedGcDate),
+      modifiedEcDate: modifiedEcDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(modifiedEcDate),
+      createdAt: Value(createdAt),
+      accountId: accountId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountId),
+      serverVersion: Value(serverVersion),
+      syncStatus: Value(syncStatus),
+      lastOperationId: lastOperationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastOperationId),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+    );
+  }
+
+  factory RecurrenceException.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RecurrenceException(
+      id: serializer.fromJson<String>(json['id']),
+      entityType: serializer.fromJson<String>(json['entityType']),
+      entityId: serializer.fromJson<String>(json['entityId']),
+      exceptionKey: serializer.fromJson<String>(json['exceptionKey']),
+      exceptionType: serializer.fromJson<String>(json['exceptionType']),
+      modifiedGcDate: serializer.fromJson<DateTime?>(json['modifiedGcDate']),
+      modifiedEcDate: serializer.fromJson<DateTime?>(json['modifiedEcDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      accountId: serializer.fromJson<String?>(json['accountId']),
+      serverVersion: serializer.fromJson<int>(json['serverVersion']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      lastOperationId: serializer.fromJson<String?>(json['lastOperationId']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'entityType': serializer.toJson<String>(entityType),
+      'entityId': serializer.toJson<String>(entityId),
+      'exceptionKey': serializer.toJson<String>(exceptionKey),
+      'exceptionType': serializer.toJson<String>(exceptionType),
+      'modifiedGcDate': serializer.toJson<DateTime?>(modifiedGcDate),
+      'modifiedEcDate': serializer.toJson<DateTime?>(modifiedEcDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'accountId': serializer.toJson<String?>(accountId),
+      'serverVersion': serializer.toJson<int>(serverVersion),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'lastOperationId': serializer.toJson<String?>(lastOperationId),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+    };
+  }
+
+  RecurrenceException copyWith({
+    String? id,
+    String? entityType,
+    String? entityId,
+    String? exceptionKey,
+    String? exceptionType,
+    Value<DateTime?> modifiedGcDate = const Value.absent(),
+    Value<DateTime?> modifiedEcDate = const Value.absent(),
+    DateTime? createdAt,
+    Value<String?> accountId = const Value.absent(),
+    int? serverVersion,
+    String? syncStatus,
+    Value<String?> lastOperationId = const Value.absent(),
+    Value<DateTime?> deletedAt = const Value.absent(),
+  }) => RecurrenceException(
+    id: id ?? this.id,
+    entityType: entityType ?? this.entityType,
+    entityId: entityId ?? this.entityId,
+    exceptionKey: exceptionKey ?? this.exceptionKey,
+    exceptionType: exceptionType ?? this.exceptionType,
+    modifiedGcDate: modifiedGcDate.present
+        ? modifiedGcDate.value
+        : this.modifiedGcDate,
+    modifiedEcDate: modifiedEcDate.present
+        ? modifiedEcDate.value
+        : this.modifiedEcDate,
+    createdAt: createdAt ?? this.createdAt,
+    accountId: accountId.present ? accountId.value : this.accountId,
+    serverVersion: serverVersion ?? this.serverVersion,
+    syncStatus: syncStatus ?? this.syncStatus,
+    lastOperationId: lastOperationId.present
+        ? lastOperationId.value
+        : this.lastOperationId,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+  );
+  RecurrenceException copyWithCompanion(RecurrenceExceptionsCompanion data) {
+    return RecurrenceException(
+      id: data.id.present ? data.id.value : this.id,
+      entityType: data.entityType.present
+          ? data.entityType.value
+          : this.entityType,
+      entityId: data.entityId.present ? data.entityId.value : this.entityId,
+      exceptionKey: data.exceptionKey.present
+          ? data.exceptionKey.value
+          : this.exceptionKey,
+      exceptionType: data.exceptionType.present
+          ? data.exceptionType.value
+          : this.exceptionType,
+      modifiedGcDate: data.modifiedGcDate.present
+          ? data.modifiedGcDate.value
+          : this.modifiedGcDate,
+      modifiedEcDate: data.modifiedEcDate.present
+          ? data.modifiedEcDate.value
+          : this.modifiedEcDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      serverVersion: data.serverVersion.present
+          ? data.serverVersion.value
+          : this.serverVersion,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      lastOperationId: data.lastOperationId.present
+          ? data.lastOperationId.value
+          : this.lastOperationId,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecurrenceException(')
+          ..write('id: $id, ')
+          ..write('entityType: $entityType, ')
+          ..write('entityId: $entityId, ')
+          ..write('exceptionKey: $exceptionKey, ')
+          ..write('exceptionType: $exceptionType, ')
+          ..write('modifiedGcDate: $modifiedGcDate, ')
+          ..write('modifiedEcDate: $modifiedEcDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
+          ..write('deletedAt: $deletedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    entityType,
+    entityId,
+    exceptionKey,
+    exceptionType,
+    modifiedGcDate,
+    modifiedEcDate,
+    createdAt,
+    accountId,
+    serverVersion,
+    syncStatus,
+    lastOperationId,
+    deletedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RecurrenceException &&
+          other.id == this.id &&
+          other.entityType == this.entityType &&
+          other.entityId == this.entityId &&
+          other.exceptionKey == this.exceptionKey &&
+          other.exceptionType == this.exceptionType &&
+          other.modifiedGcDate == this.modifiedGcDate &&
+          other.modifiedEcDate == this.modifiedEcDate &&
+          other.createdAt == this.createdAt &&
+          other.accountId == this.accountId &&
+          other.serverVersion == this.serverVersion &&
+          other.syncStatus == this.syncStatus &&
+          other.lastOperationId == this.lastOperationId &&
+          other.deletedAt == this.deletedAt);
+}
+
+class RecurrenceExceptionsCompanion
+    extends UpdateCompanion<RecurrenceException> {
+  final Value<String> id;
+  final Value<String> entityType;
+  final Value<String> entityId;
+  final Value<String> exceptionKey;
+  final Value<String> exceptionType;
+  final Value<DateTime?> modifiedGcDate;
+  final Value<DateTime?> modifiedEcDate;
+  final Value<DateTime> createdAt;
+  final Value<String?> accountId;
+  final Value<int> serverVersion;
+  final Value<String> syncStatus;
+  final Value<String?> lastOperationId;
+  final Value<DateTime?> deletedAt;
+  final Value<int> rowid;
+  const RecurrenceExceptionsCompanion({
+    this.id = const Value.absent(),
+    this.entityType = const Value.absent(),
+    this.entityId = const Value.absent(),
+    this.exceptionKey = const Value.absent(),
+    this.exceptionType = const Value.absent(),
+    this.modifiedGcDate = const Value.absent(),
+    this.modifiedEcDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RecurrenceExceptionsCompanion.insert({
+    required String id,
+    required String entityType,
+    required String entityId,
+    required String exceptionKey,
+    required String exceptionType,
+    this.modifiedGcDate = const Value.absent(),
+    this.modifiedEcDate = const Value.absent(),
+    required DateTime createdAt,
+    this.accountId = const Value.absent(),
+    this.serverVersion = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.lastOperationId = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       entityType = Value(entityType),
+       entityId = Value(entityId),
+       exceptionKey = Value(exceptionKey),
+       exceptionType = Value(exceptionType),
+       createdAt = Value(createdAt);
+  static Insertable<RecurrenceException> custom({
+    Expression<String>? id,
+    Expression<String>? entityType,
+    Expression<String>? entityId,
+    Expression<String>? exceptionKey,
+    Expression<String>? exceptionType,
+    Expression<DateTime>? modifiedGcDate,
+    Expression<DateTime>? modifiedEcDate,
+    Expression<DateTime>? createdAt,
+    Expression<String>? accountId,
+    Expression<int>? serverVersion,
+    Expression<String>? syncStatus,
+    Expression<String>? lastOperationId,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (entityType != null) 'entity_type': entityType,
+      if (entityId != null) 'entity_id': entityId,
+      if (exceptionKey != null) 'exception_key': exceptionKey,
+      if (exceptionType != null) 'exception_type': exceptionType,
+      if (modifiedGcDate != null) 'modified_gc_date': modifiedGcDate,
+      if (modifiedEcDate != null) 'modified_ec_date': modifiedEcDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (accountId != null) 'account_id': accountId,
+      if (serverVersion != null) 'server_version': serverVersion,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (lastOperationId != null) 'last_operation_id': lastOperationId,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RecurrenceExceptionsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? entityType,
+    Value<String>? entityId,
+    Value<String>? exceptionKey,
+    Value<String>? exceptionType,
+    Value<DateTime?>? modifiedGcDate,
+    Value<DateTime?>? modifiedEcDate,
+    Value<DateTime>? createdAt,
+    Value<String?>? accountId,
+    Value<int>? serverVersion,
+    Value<String>? syncStatus,
+    Value<String?>? lastOperationId,
+    Value<DateTime?>? deletedAt,
+    Value<int>? rowid,
+  }) {
+    return RecurrenceExceptionsCompanion(
+      id: id ?? this.id,
+      entityType: entityType ?? this.entityType,
+      entityId: entityId ?? this.entityId,
+      exceptionKey: exceptionKey ?? this.exceptionKey,
+      exceptionType: exceptionType ?? this.exceptionType,
+      modifiedGcDate: modifiedGcDate ?? this.modifiedGcDate,
+      modifiedEcDate: modifiedEcDate ?? this.modifiedEcDate,
+      createdAt: createdAt ?? this.createdAt,
+      accountId: accountId ?? this.accountId,
+      serverVersion: serverVersion ?? this.serverVersion,
+      syncStatus: syncStatus ?? this.syncStatus,
+      lastOperationId: lastOperationId ?? this.lastOperationId,
+      deletedAt: deletedAt ?? this.deletedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (entityType.present) {
+      map['entity_type'] = Variable<String>(entityType.value);
+    }
+    if (entityId.present) {
+      map['entity_id'] = Variable<String>(entityId.value);
+    }
+    if (exceptionKey.present) {
+      map['exception_key'] = Variable<String>(exceptionKey.value);
+    }
+    if (exceptionType.present) {
+      map['exception_type'] = Variable<String>(exceptionType.value);
+    }
+    if (modifiedGcDate.present) {
+      map['modified_gc_date'] = Variable<DateTime>(modifiedGcDate.value);
+    }
+    if (modifiedEcDate.present) {
+      map['modified_ec_date'] = Variable<DateTime>(modifiedEcDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (serverVersion.present) {
+      map['server_version'] = Variable<int>(serverVersion.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (lastOperationId.present) {
+      map['last_operation_id'] = Variable<String>(lastOperationId.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecurrenceExceptionsCompanion(')
+          ..write('id: $id, ')
+          ..write('entityType: $entityType, ')
+          ..write('entityId: $entityId, ')
+          ..write('exceptionKey: $exceptionKey, ')
+          ..write('exceptionType: $exceptionType, ')
+          ..write('modifiedGcDate: $modifiedGcDate, ')
+          ..write('modifiedEcDate: $modifiedEcDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('accountId: $accountId, ')
+          ..write('serverVersion: $serverVersion, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('lastOperationId: $lastOperationId, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -5086,6 +5905,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this,
   );
   late final $NoteRevisionsTable noteRevisions = $NoteRevisionsTable(this);
+  late final $RecurrenceExceptionsTable recurrenceExceptions =
+      $RecurrenceExceptionsTable(this);
   late final CalendarEventsDao calendarEventsDao = CalendarEventsDao(
     this as AppDatabase,
   );
@@ -5101,6 +5922,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final NoteRevisionsDao noteRevisionsDao = NoteRevisionsDao(
     this as AppDatabase,
   );
+  late final RecurrenceExceptionsDao recurrenceExceptionsDao =
+      RecurrenceExceptionsDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5113,6 +5936,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     recentlyDeletedItems,
     outboxOperations,
     noteRevisions,
+    recurrenceExceptions,
   ];
 }
 
@@ -7509,6 +8333,390 @@ typedef $$NoteRevisionsTableProcessedTableManager =
       NoteRevision,
       PrefetchHooks Function()
     >;
+typedef $$RecurrenceExceptionsTableCreateCompanionBuilder =
+    RecurrenceExceptionsCompanion Function({
+      required String id,
+      required String entityType,
+      required String entityId,
+      required String exceptionKey,
+      required String exceptionType,
+      Value<DateTime?> modifiedGcDate,
+      Value<DateTime?> modifiedEcDate,
+      required DateTime createdAt,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
+      Value<DateTime?> deletedAt,
+      Value<int> rowid,
+    });
+typedef $$RecurrenceExceptionsTableUpdateCompanionBuilder =
+    RecurrenceExceptionsCompanion Function({
+      Value<String> id,
+      Value<String> entityType,
+      Value<String> entityId,
+      Value<String> exceptionKey,
+      Value<String> exceptionType,
+      Value<DateTime?> modifiedGcDate,
+      Value<DateTime?> modifiedEcDate,
+      Value<DateTime> createdAt,
+      Value<String?> accountId,
+      Value<int> serverVersion,
+      Value<String> syncStatus,
+      Value<String?> lastOperationId,
+      Value<DateTime?> deletedAt,
+      Value<int> rowid,
+    });
+
+class $$RecurrenceExceptionsTableFilterComposer
+    extends Composer<_$AppDatabase, $RecurrenceExceptionsTable> {
+  $$RecurrenceExceptionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get entityId => $composableBuilder(
+    column: $table.entityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exceptionKey => $composableBuilder(
+    column: $table.exceptionKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exceptionType => $composableBuilder(
+    column: $table.exceptionType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get modifiedGcDate => $composableBuilder(
+    column: $table.modifiedGcDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get modifiedEcDate => $composableBuilder(
+    column: $table.modifiedEcDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RecurrenceExceptionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RecurrenceExceptionsTable> {
+  $$RecurrenceExceptionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get entityId => $composableBuilder(
+    column: $table.entityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exceptionKey => $composableBuilder(
+    column: $table.exceptionKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exceptionType => $composableBuilder(
+    column: $table.exceptionType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get modifiedGcDate => $composableBuilder(
+    column: $table.modifiedGcDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get modifiedEcDate => $composableBuilder(
+    column: $table.modifiedEcDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get accountId => $composableBuilder(
+    column: $table.accountId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RecurrenceExceptionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RecurrenceExceptionsTable> {
+  $$RecurrenceExceptionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get entityId =>
+      $composableBuilder(column: $table.entityId, builder: (column) => column);
+
+  GeneratedColumn<String> get exceptionKey => $composableBuilder(
+    column: $table.exceptionKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get exceptionType => $composableBuilder(
+    column: $table.exceptionType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get modifiedGcDate => $composableBuilder(
+    column: $table.modifiedGcDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get modifiedEcDate => $composableBuilder(
+    column: $table.modifiedEcDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get accountId =>
+      $composableBuilder(column: $table.accountId, builder: (column) => column);
+
+  GeneratedColumn<int> get serverVersion => $composableBuilder(
+    column: $table.serverVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastOperationId => $composableBuilder(
+    column: $table.lastOperationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+}
+
+class $$RecurrenceExceptionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RecurrenceExceptionsTable,
+          RecurrenceException,
+          $$RecurrenceExceptionsTableFilterComposer,
+          $$RecurrenceExceptionsTableOrderingComposer,
+          $$RecurrenceExceptionsTableAnnotationComposer,
+          $$RecurrenceExceptionsTableCreateCompanionBuilder,
+          $$RecurrenceExceptionsTableUpdateCompanionBuilder,
+          (
+            RecurrenceException,
+            BaseReferences<
+              _$AppDatabase,
+              $RecurrenceExceptionsTable,
+              RecurrenceException
+            >,
+          ),
+          RecurrenceException,
+          PrefetchHooks Function()
+        > {
+  $$RecurrenceExceptionsTableTableManager(
+    _$AppDatabase db,
+    $RecurrenceExceptionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecurrenceExceptionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecurrenceExceptionsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$RecurrenceExceptionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> entityType = const Value.absent(),
+                Value<String> entityId = const Value.absent(),
+                Value<String> exceptionKey = const Value.absent(),
+                Value<String> exceptionType = const Value.absent(),
+                Value<DateTime?> modifiedGcDate = const Value.absent(),
+                Value<DateTime?> modifiedEcDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RecurrenceExceptionsCompanion(
+                id: id,
+                entityType: entityType,
+                entityId: entityId,
+                exceptionKey: exceptionKey,
+                exceptionType: exceptionType,
+                modifiedGcDate: modifiedGcDate,
+                modifiedEcDate: modifiedEcDate,
+                createdAt: createdAt,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
+                deletedAt: deletedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String entityType,
+                required String entityId,
+                required String exceptionKey,
+                required String exceptionType,
+                Value<DateTime?> modifiedGcDate = const Value.absent(),
+                Value<DateTime?> modifiedEcDate = const Value.absent(),
+                required DateTime createdAt,
+                Value<String?> accountId = const Value.absent(),
+                Value<int> serverVersion = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> lastOperationId = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RecurrenceExceptionsCompanion.insert(
+                id: id,
+                entityType: entityType,
+                entityId: entityId,
+                exceptionKey: exceptionKey,
+                exceptionType: exceptionType,
+                modifiedGcDate: modifiedGcDate,
+                modifiedEcDate: modifiedEcDate,
+                createdAt: createdAt,
+                accountId: accountId,
+                serverVersion: serverVersion,
+                syncStatus: syncStatus,
+                lastOperationId: lastOperationId,
+                deletedAt: deletedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RecurrenceExceptionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RecurrenceExceptionsTable,
+      RecurrenceException,
+      $$RecurrenceExceptionsTableFilterComposer,
+      $$RecurrenceExceptionsTableOrderingComposer,
+      $$RecurrenceExceptionsTableAnnotationComposer,
+      $$RecurrenceExceptionsTableCreateCompanionBuilder,
+      $$RecurrenceExceptionsTableUpdateCompanionBuilder,
+      (
+        RecurrenceException,
+        BaseReferences<
+          _$AppDatabase,
+          $RecurrenceExceptionsTable,
+          RecurrenceException
+        >,
+      ),
+      RecurrenceException,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -7527,4 +8735,6 @@ class $AppDatabaseManager {
       $$OutboxOperationsTableTableManager(_db, _db.outboxOperations);
   $$NoteRevisionsTableTableManager get noteRevisions =>
       $$NoteRevisionsTableTableManager(_db, _db.noteRevisions);
+  $$RecurrenceExceptionsTableTableManager get recurrenceExceptions =>
+      $$RecurrenceExceptionsTableTableManager(_db, _db.recurrenceExceptions);
 }

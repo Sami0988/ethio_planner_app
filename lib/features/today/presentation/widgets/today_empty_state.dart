@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/reduced_motion.dart';
 import '../../../../shared/widgets/primary_button.dart';
 
 /// Calm, non-judgemental empty state for a day with nothing scheduled
@@ -28,11 +29,21 @@ class _TodayEmptyStateState extends State<TodayEmptyState>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
-    )..repeat(reverse: true);
+    );
     _floatAnimation = Tween<double>(
       begin: -4,
       end: 4,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ReducedMotion.isEnabled(context)) {
+      _controller.stop();
+    } else {
+      _controller.repeat(reverse: true);
+    }
   }
 
   @override

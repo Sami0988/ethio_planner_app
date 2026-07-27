@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/reduced_motion.dart';
 import '../../../../shared/widgets/shared_widgets.dart';
 import '../../domain/entities/calendar_event.dart';
 import '../providers/calendar_providers.dart';
@@ -264,6 +265,9 @@ class _DayEventsListState extends ConsumerState<DayEventsList> {
               separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
               itemBuilder: (context, index) {
                 final event = events[index];
+                if (ReducedMotion.isEnabled(context)) {
+                  return _EventTile(event: event);
+                }
                 return TweenAnimationBuilder<double>(
                   key: ValueKey(event.id),
                   tween: Tween(begin: 0, end: 1),

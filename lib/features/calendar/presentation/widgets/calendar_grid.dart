@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/providers/calendar_settings_provider.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/reduced_motion.dart';
 import '../providers/calendar_providers.dart';
 import 'month_year_picker_sheet.dart';
 
@@ -88,6 +89,8 @@ class _MonthHeader extends StatelessWidget {
               children: [
                 Text(
                   monthName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -234,7 +237,7 @@ class _MonthGrid extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             onTap: () => onDateSelected(date),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
+              duration: ReducedMotion.fastDuration(context),
               margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: isSelected

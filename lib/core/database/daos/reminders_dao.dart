@@ -111,4 +111,14 @@ class RemindersDao extends DatabaseAccessor<AppDatabase>
     query.orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
     return query.watch();
   }
+
+  /// Get all reminders that have a recurrence rule (for expansion).
+  Future<List<Reminder>> getRecurringReminders({String? accountId}) {
+    final query = select(reminders)..where((t) => t.recurrenceRule.isNotNull());
+    if (accountId != null) {
+      query.where((t) => t.accountId.equals(accountId));
+    }
+    query.orderBy([(t) => OrderingTerm.asc(t.gcDate)]);
+    return query.get();
+  }
 }

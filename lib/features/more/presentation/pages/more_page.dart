@@ -25,7 +25,7 @@ class MorePage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.note_alt_outlined),
-            title: const Text('Notes'),
+            title: Text(l10n.notesTitle),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => context.push(RouteNames.notes),
           ),
@@ -34,6 +34,12 @@ class MorePage extends StatelessWidget {
             title: Text(l10n.searchLabel),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => context.push(RouteNames.search),
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_view_day_outlined),
+            title: Text(l10n.moreDateConverter),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => context.push(RouteNames.dateConverter),
           ),
           ListTile(
             leading: const Icon(Icons.settings_outlined),
@@ -48,7 +54,7 @@ class MorePage extends StatelessWidget {
               color: Theme.of(context).colorScheme.error,
             ),
             title: Text(
-              'Recently Deleted',
+              l10n.recentlyDeletedTab,
               style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
             trailing: const Icon(Icons.chevron_right_rounded),

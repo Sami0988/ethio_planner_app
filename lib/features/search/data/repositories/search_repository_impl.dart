@@ -17,13 +17,14 @@ class SearchRepositoryImpl implements SearchRepository {
     final dateRange = filters?.dateRange;
     final category = filters?.category;
 
-    // Search calendar events
+    // Search calendar events (exclude soft-deleted)
     if (types == null || types.contains(SearchResultType.event)) {
       final events =
           await (_database.select(_database.calendarEvents)
                 ..where(
                   (t) =>
-                      t.title.like(lowerQuery) | t.description.like(lowerQuery),
+                      (t.title.like(lowerQuery) | t.description.like(lowerQuery)) &
+                      t.deletedAt.isNull(),
                 )
                 ..limit(20))
               .get();
@@ -49,13 +50,14 @@ class SearchRepositoryImpl implements SearchRepository {
       }
     }
 
-    // Search reminders
+    // Search reminders (exclude soft-deleted)
     if (types == null || types.contains(SearchResultType.reminder)) {
       final reminders =
           await (_database.select(_database.reminders)
                 ..where(
                   (t) =>
-                      t.title.like(lowerQuery) | t.description.like(lowerQuery),
+                      (t.title.like(lowerQuery) | t.description.like(lowerQuery)) &
+                      t.deletedAt.isNull(),
                 )
                 ..limit(20))
               .get();
@@ -77,13 +79,14 @@ class SearchRepositoryImpl implements SearchRepository {
       }
     }
 
-    // Search planner items
+    // Search planner items (exclude soft-deleted)
     if (types == null || types.contains(SearchResultType.plannerItem)) {
       final plannerItems =
           await (_database.select(_database.plannerItems)
                 ..where(
                   (t) =>
-                      t.title.like(lowerQuery) | t.description.like(lowerQuery),
+                      (t.title.like(lowerQuery) | t.description.like(lowerQuery)) &
+                      t.deletedAt.isNull(),
                 )
                 ..limit(20))
               .get();
@@ -105,12 +108,15 @@ class SearchRepositoryImpl implements SearchRepository {
       }
     }
 
-    // Search notes
+    // Search notes (exclude soft-deleted and archived)
     if (types == null || types.contains(SearchResultType.note)) {
       final notes =
           await (_database.select(_database.notes)
                 ..where(
-                  (t) => t.title.like(lowerQuery) | t.content.like(lowerQuery),
+                  (t) =>
+                      (t.title.like(lowerQuery) | t.content.like(lowerQuery)) &
+                      t.deletedAt.isNull() &
+                      t.isArchived.equals(false),
                 )
                 ..limit(20))
               .get();

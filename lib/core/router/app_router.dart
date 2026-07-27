@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/pages/auth_page.dart';
 import '../../features/calendar/presentation/pages/calendar_page.dart';
 import '../../features/conflict_center/presentation/pages/conflict_center_page.dart';
+import '../../features/date_converter/presentation/pages/date_converter_page.dart';
 import '../../features/more/presentation/pages/more_page.dart';
 import '../../features/notes/presentation/pages/notes_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
@@ -89,6 +90,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RouteNames.recentlyDeleted,
         builder: (context, state) => const RecentlyDeletedPage(),
+      ),
+      GoRoute(
+        path: RouteNames.dateConverter,
+        builder: (context, state) => const DateConverterPage(),
       ),
       GoRoute(
         path: RouteNames.conflictCenter,

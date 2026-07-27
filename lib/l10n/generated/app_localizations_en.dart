@@ -229,7 +229,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recentlyDeletedDelete => 'Delete';
 
   @override
-  String recentlyDeletedDaysLeft(Object count) {
+  String recentlyDeletedDaysLeft(int count) {
     return '$count days until permanent deletion';
   }
 
@@ -273,7 +273,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchEmpty => 'No results found';
 
   @override
-  String get searchHint => 'Try a different search term';
+  String get searchHint => 'Find events, reminders, planner items, and notes';
 
   @override
   String get searchPlaceholder => 'Search events, reminders, notes...';
@@ -385,13 +385,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categoryNone => 'None';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryMeeting => 'Meeting';
 
   @override
   String get categoryPersonal => 'Personal';
 
   @override
-  String get categoryHoliday => 'Holiday';
+  String get categoryDeadline => 'Deadline';
+
+  @override
+  String get categoryHealth => 'Health';
 
   @override
   String get categoryOther => 'Other';
@@ -490,6 +493,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsTimezoneGMT => 'GMT';
+
+  @override
+  String get onboardingLanguageTitle => 'Choose your language';
+
+  @override
+  String get onboardingLanguageBody =>
+      'Select your preferred language. You can change this later in Settings.';
 
   @override
   String get onboardingIntroBody =>
@@ -616,4 +626,443 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsDisabled => 'Disabled';
+
+  @override
+  String get editOccurrenceTitle => 'Edit Recurring Event';
+
+  @override
+  String get editOccurrenceMessage =>
+      'Do you want to edit only this occurrence, or all occurrences in the series?';
+
+  @override
+  String get editThisOccurrence => 'This Occurrence';
+
+  @override
+  String get editAllOccurrences => 'All Occurrences';
+
+  @override
+  String get deleteOccurrenceTitle => 'Delete Recurring Event';
+
+  @override
+  String get deleteOccurrenceMessage =>
+      'Do you want to delete only this occurrence, or all occurrences in the series?';
+
+  @override
+  String get deleteThisOccurrence => 'This Occurrence';
+
+  @override
+  String get deleteAllOccurrences => 'All Occurrences';
+
+  @override
+  String get snoozeReminder => 'Snooze Reminder';
+
+  @override
+  String get snooze15Minutes => '15 minutes';
+
+  @override
+  String get snooze30Minutes => '30 minutes';
+
+  @override
+  String get snooze1Hour => '1 hour';
+
+  @override
+  String get snooze2Hours => '2 hours';
+
+  @override
+  String get snoozeTomorrow => 'Snooze until tomorrow (9 AM)';
+
+  @override
+  String get skipOccurrence => 'Skip';
+
+  @override
+  String get skipConfirmation =>
+      'This occurrence will be skipped. Other occurrences in the series are not affected.';
+
+  @override
+  String get linkToEvent => 'Link Event';
+
+  @override
+  String get linkToReminder => 'Link Reminder';
+
+  @override
+  String get linkToPlanner => 'Link Planner';
+
+  @override
+  String get noItemsToLink => 'No items available to link. Create some first.';
+
+  @override
+  String get reminderSnooze => 'Snooze';
+
+  @override
+  String get reminderSkip => 'Skip';
+
+  @override
+  String get reminderCancel => 'Cancel Reminder';
+
+  @override
+  String get plannerDay => 'Day';
+
+  @override
+  String get plannerWeek => 'Week';
+
+  @override
+  String get plannerMonth => 'Month';
+
+  @override
+  String get plannerYear => 'Year';
+
+  @override
+  String get plannerSectionFocus => 'Focus';
+
+  @override
+  String get plannerSectionPriorities => 'Priorities';
+
+  @override
+  String get plannerSectionChecklist => 'Checklist';
+
+  @override
+  String get plannerSectionNotes => 'Notes';
+
+  @override
+  String get plannerSectionReflection => 'Reflection';
+
+  @override
+  String get plannerSectionFocusEmpty => 'What\'s your main focus today?';
+
+  @override
+  String get plannerSectionPrioritiesEmpty => 'Add your top priorities';
+
+  @override
+  String get plannerSectionChecklistEmpty => 'Add tasks to check off';
+
+  @override
+  String get plannerSectionNotesEmpty => 'Add notes for this period';
+
+  @override
+  String get plannerSectionReflectionEmpty => 'Reflect on your progress';
+
+  @override
+  String get copyFromPreviousTitle => 'Copy from Previous';
+
+  @override
+  String copyFromPreviousMessage(Object period) {
+    return 'Copy all items from the previous $period to today? Duplicates will be skipped.';
+  }
+
+  @override
+  String get carryForwardTitle => 'Carry Forward';
+
+  @override
+  String carryForwardMessage(Object period) {
+    return 'Carry forward incomplete items from the previous $period? Duplicates will be skipped.';
+  }
+
+  @override
+  String copiedItems(Object count) {
+    return '$count item(s) copied';
+  }
+
+  @override
+  String carriedItems(Object count) {
+    return '$count item(s) carried forward';
+  }
+
+  @override
+  String get nothingToCopy => 'Nothing to copy from the previous period';
+
+  @override
+  String get nothingToCarry => 'No incomplete items to carry forward';
+
+  @override
+  String get recentlyDeletedConfirmTitle => 'Permanently delete?';
+
+  @override
+  String recentlyDeletedConfirmBody(Object title) {
+    return '\"$title\" will be permanently deleted. This cannot be undone.';
+  }
+
+  @override
+  String get recentlyDeletedFilterAll => 'All';
+
+  @override
+  String get recentlyDeletedFilterEvents => 'Events';
+
+  @override
+  String get recentlyDeletedFilterReminders => 'Reminders';
+
+  @override
+  String get recentlyDeletedFilterPlanner => 'Planner';
+
+  @override
+  String get recentlyDeletedFilterNotes => 'Notes';
+
+  @override
+  String recentlyDeletedDeletedOn(Object date) {
+    return 'Deleted $date';
+  }
+
+  @override
+  String get revisionHistory => 'Revision History';
+
+  @override
+  String get restoreRevisionTitle => 'Restore this version?';
+
+  @override
+  String get restoreRevisionBody =>
+      'This will replace the current note content with this version.';
+
+  @override
+  String get revisionRestored => 'Revision restored';
+
+  @override
+  String get notificationPermissionTitle => 'Notification Permission';
+
+  @override
+  String get notificationPermissionBody =>
+      'Allow notifications to receive reminders on time.';
+
+  @override
+  String get notificationPermissionOK => 'OK';
+
+  @override
+  String get plannerManageSections => 'Manage sections';
+
+  @override
+  String get searchCategoryHint => 'Category';
+
+  @override
+  String get syncTitle => 'Sync Data';
+
+  @override
+  String get syncClose => 'Close';
+
+  @override
+  String get syncImportGuest => 'Import Guest Data';
+
+  @override
+  String get syncNow => 'Sync Now';
+
+  @override
+  String get syncReady => 'Ready to sync';
+
+  @override
+  String get syncComplete => 'Sync complete';
+
+  @override
+  String get syncConflicts => 'Conflicts detected';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get deleteNoteConfirmTitle => 'Delete note?';
+
+  @override
+  String deleteNoteConfirmBody(Object title) {
+    return '\"$title\" will be permanently deleted.';
+  }
+
+  @override
+  String get deleteNoteConfirmDelete => 'Delete';
+
+  @override
+  String get searchAcrossData => 'Search across your data';
+
+  @override
+  String get searchNoResults => 'No results found';
+
+  @override
+  String get searchTryDifferent => 'Try a different search term';
+
+  @override
+  String searchResultsCount(Object count) {
+    return '$count results';
+  }
+
+  @override
+  String get searchFilterTypes => 'Filter by type';
+
+  @override
+  String get searchFilterDateRange => 'Date range';
+
+  @override
+  String get searchFilterCategory => 'Category';
+
+  @override
+  String get searchClearFilters => 'Clear filters';
+
+  @override
+  String get searchAll => 'All';
+
+  @override
+  String get searchCategoryWork => 'Work';
+
+  @override
+  String get searchCategoryPersonal => 'Personal';
+
+  @override
+  String get searchCategoryOther => 'Other';
+
+  @override
+  String get searchTypeEvents => 'Events';
+
+  @override
+  String get searchTypeReminders => 'Reminders';
+
+  @override
+  String get searchTypePlanner => 'Planner';
+
+  @override
+  String get searchTypeNotes => 'Notes';
+
+  @override
+  String get recentlyDeletedTab => 'Recently Deleted';
+
+  @override
+  String get pin => 'Pin';
+
+  @override
+  String get unpin => 'Unpin';
+
+  @override
+  String get archive => 'Archive';
+
+  @override
+  String get unarchive => 'Unarchive';
+
+  @override
+  String get viewHistory => 'View History';
+
+  @override
+  String get plannerItem => 'Planner Item';
+
+  @override
+  String get plannerGoToToday => 'Go to today';
+
+  @override
+  String get healthCategory => 'Health';
+
+  @override
+  String get onboardingSystemLanguage => 'System';
+
+  @override
+  String get navigationPrevious => 'Previous';
+
+  @override
+  String get navigationNext => 'Next';
+
+  @override
+  String get currentPeriod => 'Current';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get clearSearch => 'Clear search';
+
+  @override
+  String get expandFilters => 'Expand filters';
+
+  @override
+  String get collapseFilters => 'Collapse filters';
+
+  @override
+  String get dateConverterTitle => 'Date Converter';
+
+  @override
+  String get dateConverterSwap => 'Swap direction';
+
+  @override
+  String get dateConverterEthiopianDate => 'Ethiopian Date';
+
+  @override
+  String get dateConverterGregorianDate => 'Gregorian Date';
+
+  @override
+  String get dateConverterYear => 'Year';
+
+  @override
+  String get dateConverterMonth => 'Month';
+
+  @override
+  String get dateConverterDay => 'Day';
+
+  @override
+  String get dateConverterConvert => 'Convert';
+
+  @override
+  String get dateConverterResult => 'Result';
+
+  @override
+  String get moreDateConverter => 'Date Converter';
+
+  @override
+  String get dailyQuoteTitle => 'Daily Inspiration';
+
+  @override
+  String get sectionNotes => 'Notes';
+
+  @override
+  String notesMoreCount(int count) {
+    return '+$count more notes';
+  }
+
+  @override
+  String get complete => 'Complete';
+
+  @override
+  String get snoozeOneHour => 'Snooze for 1 hour';
+
+  @override
+  String get tapToView => 'Tap to view details';
+
+  @override
+  String planningStreakTooltip(int count) {
+    return '$count-day planning streak';
+  }
+
+  @override
+  String quickAddLastUsed(String type) {
+    return 'Last used: $type';
+  }
+
+  @override
+  String get eventTypeMeeting => 'Meeting';
+
+  @override
+  String get eventTypePersonal => 'Personal';
+
+  @override
+  String get eventTypeDeadline => 'Deadline';
+
+  @override
+  String get eventTypeHealth => 'Health';
+
+  @override
+  String get eventTypeOther => 'Other';
+
+  @override
+  String get settingsNotificationSound => 'Notification Sound';
+
+  @override
+  String get notificationSoundSystem => 'System Default';
+
+  @override
+  String get notificationSoundSystemDesc =>
+      'Use your device\'s default notification sound';
+
+  @override
+  String get notificationSoundEthiopianBell => 'Ethiopian Bell';
+
+  @override
+  String get notificationSoundGentleChime => 'Gentle Chime';
+
+  @override
+  String get notificationSoundSoftPing => 'Soft Ping';
+
+  @override
+  String get notificationSoundWarmTone => 'Warm Tone';
+
+  @override
+  String get notificationSoundCustomDesc => 'Custom notification sound';
 }

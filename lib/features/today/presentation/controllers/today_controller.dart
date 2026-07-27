@@ -1,11 +1,14 @@
 import 'package:clock/clock.dart';
+import 'package:drift/drift.dart';
 import 'package:ethiopian_calendar_core/ethiopian_calendar_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/content/bundled_content.dart';
 import '../../../../core/content/bundled_content_service.dart';
 import '../../../../core/database/app_database.dart';
 import '../../../../core/providers/database_provider.dart';
+import '../../../../core/recurrence/recurrence_expander.dart';
 import '../../../settings/presentation/providers/content_providers.dart';
 import '../providers/today_view_state.dart';
 
@@ -26,18 +29,74 @@ final class TodayController extends Notifier<TodayViewState> {
 
     // Watch Drift streams — UI updates automatically on writes.
     final eventsAsync = ref.watch(_watchEventsProvider((start, end)));
+    final recurringEventsAsync = ref.watch(_watchRecurringEventsProvider);
+    final exceptionsAsync = ref.watch(_watchAllExceptionsProvider);
     final remindersAsync = ref.watch(_watchUpcomingRemindersProvider);
+    final recurringRemindersAsync = ref.watch(_watchRecurringRemindersProvider);
     final contentAsync = ref.watch(bundledContentProvider);
 
     final dbEvents = eventsAsync.value ?? [];
+    final recurringEvents = recurringEventsAsync.value ?? [];
+    final exceptions = exceptionsAsync.value ?? [];
     final dbReminders = remindersAsync.value ?? [];
+    final recurringReminders = recurringRemindersAsync.value ?? [];
     final allContent = contentAsync.value ?? [];
+
+    // Build exception lookup sets for events.
+    final eventSkippedKeys = <String>{};
+    final eventModifiedDates = <String, DateTime>{};
+    for (final ex in exceptions.where((e) => e.entityType == 'event')) {
+      if (ex.exceptionType == 'skipped') {
+        eventSkippedKeys.add(ex.exceptionKey);
+      } else if (ex.exceptionType == 'modified' && ex.modifiedGcDate != null) {
+        eventModifiedDates[ex.exceptionKey] = ex.modifiedGcDate!;
+      }
+    }
+
+    // Build exception lookup sets for reminders.
+    final reminderSkippedKeys = <String>{};
+    final reminderModifiedDates = <String, DateTime>{};
+    for (final ex in exceptions.where((e) => e.entityType == 'reminder')) {
+      if (ex.exceptionType == 'skipped') {
+        reminderSkippedKeys.add(ex.exceptionKey);
+      } else if (ex.exceptionType == 'modified' && ex.modifiedGcDate != null) {
+        reminderModifiedDates[ex.exceptionKey] = ex.modifiedGcDate!;
+      }
+    }
+
+    // Expand recurring events into occurrences for today.
+    final expandedEventOccurrences = RecurrenceExpander.expandEvents(
+      events: recurringEvents,
+      rangeStart: start,
+      rangeEnd: end,
+      skippedOccurrences: eventSkippedKeys,
+      modifiedOccurrences: eventModifiedDates,
+    );
+    final expandedEvents = expandedEventOccurrences
+        .map((o) => o.entity)
+        .toList();
+
+    // Expand recurring reminders into occurrences for today.
+    final expandedReminderOccurrences = RecurrenceExpander.expandReminders(
+      reminders: recurringReminders,
+      rangeStart: start,
+      rangeEnd: end,
+      skippedOccurrences: reminderSkippedKeys,
+      modifiedOccurrences: reminderModifiedDates,
+    );
+    final expandedReminders = expandedReminderOccurrences
+        .map((o) => o.entity)
+        .toList();
+
+    // Combine non-recurring + expanded occurrences.
+    final allEvents = [...dbEvents, ...expandedEvents];
+    final allReminders = [...dbReminders, ...expandedReminders];
 
     return _buildState(
       ec: ethiopian,
       gc: today,
-      dbEvents: dbEvents,
-      dbReminders: dbReminders,
+      dbEvents: allEvents,
+      dbReminders: allReminders,
       allContent: allContent,
     );
   }
@@ -73,21 +132,66 @@ final class TodayController extends Notifier<TodayViewState> {
           )
         : null;
 
+    // Assign color indices for event types based on category.
+    const categoryColorMap = <String, int>{
+      'meeting': 0,
+      'personal': 1,
+      'deadline': 2,
+      'health': 3,
+      'other': 4,
+    };
     final events = dbEvents
         .where((e) => !e.isAllDay)
         .take(5)
+        .toList()
         .map(
           (e) => EventPresentation(
+            id: e.id,
             title: e.title,
             time:
                 '${e.gcDate.hour.toString().padLeft(2, '0')}:${e.gcDate.minute.toString().padLeft(2, '0')}',
             location: e.location,
+            colorIndex: categoryColorMap[e.category] ?? 4,
             isAllDay: e.isAllDay,
           ),
         )
         .toList();
 
     final allDayEvents = dbEvents.where((e) => e.isAllDay).toList();
+
+    // Find the next upcoming event: prefer all-day, then next timed event after now.
+    UpNextPresentation? upNext;
+    if (allDayEvents.isNotEmpty) {
+      upNext = UpNextPresentation(
+        id: allDayEvents.first.id,
+        type: 'event',
+        title: allDayEvents.first.title,
+        isAllDay: true,
+      );
+    } else {
+      // Find the next timed event that hasn't started yet, or the earliest one today.
+      final timedEvents = dbEvents.where((e) => !e.isAllDay).toList()
+        ..sort((a, b) => a.gcDate.compareTo(b.gcDate));
+      CalendarEvent? nextEvent;
+      if (timedEvents.isNotEmpty) {
+        nextEvent = timedEvents.firstWhere(
+          (e) => e.gcDate.isAfter(now),
+          orElse: () => timedEvents.first,
+        );
+      }
+      if (nextEvent != null) {
+        final timeStr =
+            '${nextEvent.gcDate.hour.toString().padLeft(2, '0')}:${nextEvent.gcDate.minute.toString().padLeft(2, '0')}';
+        upNext = UpNextPresentation(
+          id: nextEvent.id,
+          type: 'event',
+          title: nextEvent.title,
+          time: timeStr,
+          location: nextEvent.location,
+          isAllDay: false,
+        );
+      }
+    }
 
     final upcomingReminders = dbReminders
         .where((r) => !r.isCompleted)
@@ -123,9 +227,7 @@ final class TodayController extends Notifier<TodayViewState> {
       ethiopianDate: ec,
       gregorianDate: gc,
       holiday: holiday,
-      upNext: allDayEvents.isNotEmpty
-          ? UpNextPresentation(title: allDayEvents.first.title, isAllDay: true)
-          : null,
+      upNext: upNext,
       events: events,
       reminders: upcomingReminders,
       schedule: schedule,
@@ -133,8 +235,58 @@ final class TodayController extends Notifier<TodayViewState> {
   }
 
   void toggleReminder(String id) {
-    // ignore: todo
-    // TODO: Wire to DAO toggleCompleted when the reminder list is streamed.
+    final db = ref.read(databaseProvider);
+    final currentReminders = ref.read(_watchUpcomingRemindersProvider).value ?? [];
+    final reminder = currentReminders.where((r) => r.id == id).firstOrNull;
+    if (reminder != null) {
+      db.remindersDao.toggleCompleted(id, !reminder.isCompleted);
+    }
+  }
+
+  void deleteReminder(String id) {
+    final db = ref.read(databaseProvider);
+    db.remindersDao.deleteReminder(id);
+  }
+
+  void snoozeReminder(String id, Duration duration) {
+    final db = ref.read(databaseProvider);
+    final currentReminders = ref.read(_watchUpcomingRemindersProvider).value ?? [];
+    final reminder = currentReminders.where((r) => r.id == id).firstOrNull;
+    if (reminder != null) {
+      final newDate = clock.now().add(duration);
+      db.remindersDao.updateReminder(
+        RemindersCompanion(
+          id: Value(id),
+          gcDate: Value(newDate),
+        ),
+      );
+    }
+  }
+
+  Future<int> computePlanningStreak() async {
+    final prefs = await SharedPreferences.getInstance();
+    final streakKey = 'planning_streak';
+    final lastVisitKey = 'last_visit_date';
+
+    final now = clock.now();
+    final todayStr = '${now.year}-${now.month}-${now.day}';
+    final lastVisit = prefs.getString(lastVisitKey);
+
+    if (lastVisit == todayStr) return prefs.getInt(streakKey) ?? 0;
+
+    final yesterday = now.subtract(const Duration(days: 1));
+    final yesterdayStr = '${yesterday.year}-${yesterday.month}-${yesterday.day}';
+
+    if (lastVisit == yesterdayStr) {
+      final currentStreak = (prefs.getInt(streakKey) ?? 0) + 1;
+      await prefs.setInt(streakKey, currentStreak);
+      await prefs.setString(lastVisitKey, todayStr);
+      return currentStreak;
+    } else {
+      await prefs.setInt(streakKey, 1);
+      await prefs.setString(lastVisitKey, todayStr);
+      return 1;
+    }
   }
 
   Future<void> refresh() async {
@@ -152,10 +304,36 @@ final _watchEventsProvider = StreamProvider.autoDispose
       return db.calendarEventsDao.watchEventsByDateRange(dates.$1, dates.$2);
     });
 
+/// Watches all recurring events (for expansion at the presentation layer).
+final _watchRecurringEventsProvider =
+    StreamProvider.autoDispose<List<CalendarEvent>>((ref) {
+      final db = ref.watch(databaseProvider);
+      return db.calendarEventsDao.watchAllEvents().map(
+        (events) => events.where((e) => e.recurrenceRule != null).toList(),
+      );
+    });
+
+/// Watches all recurrence exceptions.
+final _watchAllExceptionsProvider =
+    StreamProvider.autoDispose<List<RecurrenceException>>((ref) {
+      final db = ref.watch(databaseProvider);
+      return db.recurrenceExceptionsDao.watchAllExceptions();
+    });
+
 final _watchUpcomingRemindersProvider =
     StreamProvider.autoDispose<List<Reminder>>((ref) {
       final db = ref.watch(databaseProvider);
       return db.remindersDao.watchUpcomingReminders();
+    });
+
+/// Watches all recurring reminders (for expansion at the presentation layer).
+final _watchRecurringRemindersProvider =
+    StreamProvider.autoDispose<List<Reminder>>((ref) {
+      final db = ref.watch(databaseProvider);
+      return db.remindersDao.watchAllReminders().map(
+        (reminders) =>
+            reminders.where((r) => r.recurrenceRule != null).toList(),
+      );
     });
 
 final todayControllerProvider =

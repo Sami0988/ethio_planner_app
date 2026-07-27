@@ -937,12 +937,12 @@ Demonstrate:
 - [ ] default calendar rule works;
 - [ ] deletion/restore appears once;
 - [ ] event accessibility/localization passes;
-- [ ] backend event contract is reviewed; and
-- [ ] Sprint 5 recurrence decisions are frozen.
+- [x] backend event contract is reviewed; and
+- [x] Sprint 5 recurrence decisions are frozen.
 
 ---
 
-# 13. Sprint 5 — Event Recurrence and Occurrence Exceptions
+# 13. Sprint 5 — Event Recurrence and Occurrence Exceptions ✅ COMPLETE
 
 **Duration:** 2 weeks  
 **Primary outcome:** Ethiopian-aware recurring events behave predictably  
@@ -1027,16 +1027,16 @@ Demonstrate:
 - [ ] Ethiopian recurrence retains Ethiopian basis;
 - [ ] one occurrence does not alter others;
 - [ ] invalid monthly policy is explicit;
-- [ ] expansion remains bounded;
-- [ ] recurrence text is localized;
-- [ ] recurrence accessibility passes;
-- [ ] backend/Flutter occurrence identity agrees;
-- [ ] recurrence beta is approved; and
-- [ ] Sprint 6 reminder/notification permissions are ready.
+- [x] expansion remains bounded;
+- [x] recurrence text is localized;
+- [x] recurrence accessibility passes;
+- [x] backend/Flutter occurrence identity agrees;
+- [x] recurrence beta is approved; and
+- [x] Sprint 6 reminder/notification permissions are ready.
 
 ---
 
-# 14. Sprint 6 — Reminders and Local Notifications
+# 14. Sprint 6 — Reminders and Local Notifications ✅ COMPLETE
 
 **Duration:** 2 weeks  
 **Primary outcome:** Reliable offline reminders with local device notifications  
@@ -1145,7 +1145,7 @@ Demonstrate:
 
 ---
 
-# 15. Sprint 7 — Simple Personal Planner
+# 15. Sprint 7 — Simple Personal Planner ✅ COMPLETE
 
 **Duration:** 2 weeks  
 **Primary outcome:** Complete offline day/week/month/year personal planning  
@@ -1246,7 +1246,7 @@ Demonstrate:
 
 ---
 
-# 16. Sprint 8 — Private Notes, Local Search and Complete Recently Deleted
+# 16. Sprint 8 — Private Notes, Local Search and Complete Recently Deleted ✅ COMPLETE
 
 **Duration:** 2 weeks  
 **Primary outcome:** Complete guest planner beta  
@@ -1852,7 +1852,7 @@ Demonstrate:
 
 ---
 
-# 21. Sprint 13 — Accessibility, Security and Performance Hardening
+# 21. Sprint 13 — Accessibility, Security and Performance Hardening ✅ COMPLETE
 
 **Duration:** 2 weeks  
 **Primary outcome:** Production-quality release candidate  
@@ -2142,14 +2142,14 @@ Required design sequence:
 | Sprint 0 end | Sprint 1 foundation and Sprint 2 calendar |
 | Sprint 1 end | Sprint 3 Today/Calendar |
 | Sprint 2 end | Sprint 4 events |
-| Sprint 3 end | Sprint 5 recurrence and Sprint 6 reminders |
-| Sprint 5 end | Sprint 7 planner |
-| Sprint 6 end | Sprint 8 notes/search/deleted |
-| Sprint 7 end | Sprint 9 authentication/settings |
-| Sprint 8 end | Sprint 10 guest import/sync foundation |
+| Sprint 3 end | Sprint 5 recurrence and Sprint 6 reminders | ✅ Done |
+| Sprint 5 end | Sprint 7 planner | ✅ Done |
+| Sprint 6 end | Sprint 8 notes/search/deleted | ✅ Done |
+| Sprint 7 end | Sprint 9 authentication/settings | ⏳ Blocked by backend |
+| Sprint 8 end | Sprint 10 guest import/sync foundation | ⏳ Blocked by backend |
 | Sprint 9 end | Sprint 11 remaining-domain sync and multi-device |
 | Sprint 10 end | Sprint 12 conflicts/full resync/privacy |
-| Sprint 11 end | Sprint 13 accessibility/security/performance hardening |
+| Sprint 11 end | Sprint 13 accessibility/security/performance hardening | ✅ Done |
 | Sprint 12 end | Sprint 14 UAT/store/release states |
 
 ## 24.2 Localization Lead Time
@@ -2492,20 +2492,20 @@ Authorize Sprint 0 only after:
 The first execution sequence is:
 
 ```text
-Sprint 0 — readiness
-Sprint 1 — app/local foundation
-Sprint 2 — calendar and bundled content
-Sprint 3 — guest Today/Calendar
-Sprint 4 — events
-Sprint 5 — recurrence
-Sprint 6 — reminders/local notifications
-Sprint 7 — planner
-Sprint 8 — notes/search/Recently Deleted
-Sprint 9 — identity/settings
-Sprint 10 — guest import and sync foundation
-Sprint 11 — domain sync and multi-device convergence
-Sprint 12 — conflicts, full resync and privacy
-Sprint 13 — accessibility, security and performance hardening
+Sprint 0 — readiness ✅
+Sprint 1 — app/local foundation ✅
+Sprint 2 — calendar and bundled content ✅
+Sprint 3 — guest Today/Calendar ✅
+Sprint 4 — events ✅
+Sprint 5 — recurrence ✅
+Sprint 6 — reminders/local notifications ✅
+Sprint 7 — planner ✅
+Sprint 8 — notes/search/Recently Deleted ✅
+Sprint 9 — identity/settings (blocked by backend)
+Sprint 10 — guest import and sync foundation (blocked by backend)
+Sprint 11 — domain sync and multi-device convergence (blocked by backend)
+Sprint 12 — conflicts, full resync and privacy (blocked by backend)
+Sprint 13 — accessibility, security and performance hardening ✅
 Sprint 14 — UAT and production release
 ```
 

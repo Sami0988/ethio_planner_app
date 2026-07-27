@@ -195,23 +195,26 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          DropdownButtonFormField<String>(
-            initialValue: _selectedCategory,
-            decoration: InputDecoration(
-              labelText: l10n.fieldCategoryOptional,
-            ),
-            items: [
-              DropdownMenuItem(child: Text(l10n.categoryNone)),
-              DropdownMenuItem(value: 'work', child: Text(l10n.categoryWork)),
-              DropdownMenuItem(
-                value: 'personal',
-                child: Text(l10n.categoryPersonal),
+          Material(
+            color: Colors.transparent,
+            child: DropdownButtonFormField<String>(
+              initialValue: _selectedCategory,
+              decoration: InputDecoration(
+                labelText: l10n.fieldCategoryOptional,
               ),
-              // 'Health' has no ARB key yet; localized once one is added.
-              const DropdownMenuItem(value: 'health', child: Text('Health')),
-              DropdownMenuItem(value: 'other', child: Text(l10n.categoryOther)),
-            ],
-            onChanged: (value) => setState(() => _selectedCategory = value),
+              items: [
+                DropdownMenuItem(child: Text(l10n.categoryNone)),
+                DropdownMenuItem(value: 'meeting', child: Text(l10n.categoryMeeting)),
+                DropdownMenuItem(
+                  value: 'personal',
+                  child: Text(l10n.categoryPersonal),
+                ),
+                DropdownMenuItem(value: 'deadline', child: Text(l10n.categoryDeadline)),
+                DropdownMenuItem(value: 'health', child: Text(l10n.categoryHealth)),
+                DropdownMenuItem(value: 'other', child: Text(l10n.categoryOther)),
+              ],
+              onChanged: (value) => setState(() => _selectedCategory = value),
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           // Recurrence picker
@@ -244,11 +247,15 @@ class _ReminderFormSheetState extends ConsumerState<ReminderFormSheet> {
                       color: theme.colorScheme.primary,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      _recurrenceRule != null
-                          ? RecurrenceEngine.describe(_recurrenceRule!)
-                          : 'No repeat',
-                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    Flexible(
+                      child: Text(
+                        _recurrenceRule != null
+                            ? RecurrenceEngine.describe(_recurrenceRule!)
+                            : 'No repeat',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),

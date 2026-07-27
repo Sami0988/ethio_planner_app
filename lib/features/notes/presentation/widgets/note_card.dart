@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/widgets/shared_widgets.dart';
 import '../../domain/entities/note.dart';
 import '../pages/note_revisions_page.dart';
@@ -16,6 +17,7 @@ class NoteCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return Dismissible(
       key: Key(note.id),
@@ -30,16 +32,16 @@ class NoteCard extends ConsumerWidget {
         return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Delete note?'),
-            content: Text('"${note.title}" will be permanently deleted.'),
+            title: Text(l10n.deleteNoteConfirmTitle),
+            content: Text(l10n.deleteNoteConfirmBody(note.title)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('Cancel'),
+                child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
               ),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Delete'),
+                child: Text(l10n.deleteNoteConfirmDelete),
               ),
             ],
           ),
@@ -73,21 +75,24 @@ class NoteCard extends ConsumerWidget {
                   ),
                 ),
                 PopupMenuButton<String>(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'pin',
-                      child: Text(note.isPinned ? 'Unpin' : 'Pin'),
-                    ),
-                    PopupMenuItem(
-                      value: 'archive',
-                      child: Text(note.isArchived ? 'Unarchive' : 'Archive'),
-                    ),
-                    const PopupMenuItem(
-                      value: 'history',
-                      child: Text('View History'),
-                    ),
-                    const PopupMenuItem(value: 'delete', child: Text('Delete')),
-                  ],
+                  itemBuilder: (context) {
+                    final l10n = AppLocalizations.of(context);
+                    return [
+                      PopupMenuItem(
+                        value: 'pin',
+                        child: Text(note.isPinned ? l10n.unpin : l10n.pin),
+                      ),
+                      PopupMenuItem(
+                        value: 'archive',
+                        child: Text(note.isArchived ? l10n.unarchive : l10n.archive),
+                      ),
+                      PopupMenuItem(
+                        value: 'history',
+                        child: Text(l10n.viewHistory),
+                      ),
+                      PopupMenuItem(value: 'delete', child: Text(l10n.delete)),
+                    ];
+                  },
                   onSelected: (value) async {
                     final controller = ref.read(
                       notesControllerProvider.notifier,

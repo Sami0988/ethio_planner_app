@@ -2,6 +2,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'notification_sound_provider.dart';
+
 typedef NotificationTapCallback = void Function(String? payload);
 
 class NotificationService {
@@ -107,6 +109,7 @@ class NotificationService {
     required DateTime scheduledTime,
     String? payload,
     bool respectQuietHours = true,
+    NotificationSound sound = NotificationSound.systemDefault,
   }) async {
     var finalTime = scheduledTime;
     if (respectQuietHours) {
@@ -115,23 +118,43 @@ class NotificationService {
 
     final tzDateTime = tz.TZDateTime.from(finalTime, tz.local);
 
+    // Build Android notification details with selected sound
+    final androidDetails = _buildAndroidDetails(sound);
+
     await _plugin.zonedSchedule(
       id: id,
       title: title,
       body: body,
       payload: payload,
       scheduledDate: tzDateTime,
-      notificationDetails: const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'reminders',
-          'Reminders',
-          channelDescription: 'Reminder notifications',
-          importance: Importance.high,
-          priority: Priority.high,
-        ),
-        iOS: DarwinNotificationDetails(),
+      notificationDetails: NotificationDetails(
+        android: androidDetails,
+        iOS: const DarwinNotificationDetails(),
       ),
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    );
+  }
+
+  AndroidNotificationDetails _buildAndroidDetails(NotificationSound sound) {
+    if (sound.androidResource != null) {
+      // Custom sound from res/raw/ folder
+      return AndroidNotificationDetails(
+        'reminders',
+        'Reminders',
+        channelDescription: 'Reminder notifications',
+        importance: Importance.high,
+        priority: Priority.high,
+        sound: RawResourceAndroidNotificationSound(sound.androidResource!),
+      );
+    }
+
+    // System default sound
+    return const AndroidNotificationDetails(
+      'reminders',
+      'Reminders',
+      channelDescription: 'Reminder notifications',
+      importance: Importance.high,
+      priority: Priority.high,
     );
   }
 

@@ -1,6 +1,11 @@
 import 'package:clock/clock.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../core/database/app_database.dart'
+    show RecurrenceExceptionsCompanion;
+import '../../../../core/providers/database_provider.dart';
+import '../../../../core/recently_deleted/soft_delete_service.dart';
 import '../../domain/entities/calendar_event.dart';
 import '../../domain/usecases/get_calendar_events.dart';
 import '../providers/calendar_view_state.dart';
@@ -13,6 +18,7 @@ class CalendarController extends Notifier<CalendarViewState> {
   CreateCalendarEvent? _createEvent;
   UpdateCalendarEvent? _updateEvent;
   DeleteCalendarEvent? _deleteEvent;
+  SoftDeleteService? _softDeleteService;
 
   bool get _isReady =>
       _getEvents != null &&
@@ -36,12 +42,14 @@ class CalendarController extends Notifier<CalendarViewState> {
     required CreateCalendarEvent createEvent,
     required UpdateCalendarEvent updateEvent,
     required DeleteCalendarEvent deleteEvent,
+    SoftDeleteService? softDeleteService,
   }) {
     _getEvents = getEvents;
     _getEventsByDate = getEventsByDate;
     _createEvent = createEvent;
     _updateEvent = updateEvent;
     _deleteEvent = deleteEvent;
+    _softDeleteService = softDeleteService;
   }
 
   Future<void> loadEvents() async {
@@ -49,9 +57,20 @@ class CalendarController extends Notifier<CalendarViewState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final events = await _getEvents!(state.currentMonth);
-      state = state.copyWith(events: events, isLoading: false);
+      // Pre-compute event dates set for O(1) lookup in hasEventsOnDate
+      final eventDates = <String>{};
+      for (final event in events) {
+        final key = '${event.gcDate.year}-${event.gcDate.month}-${event.gcDate.day}';
+        eventDates.add(key);
+      }
+      state = state.copyWith(
+        events: events,
+        eventDates: eventDates,
+        isLoading: false,
+      );
       if (state.selectedDate != null) {
-        await selectDate(state.selectedDate!);
+        final dayEvents = await _getEventsByDate!(state.selectedDate!);
+        state = state.copyWith(selectedDayEvents: dayEvents);
       }
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoading: false);
@@ -126,7 +145,11 @@ class CalendarController extends Notifier<CalendarViewState> {
 
   Future<void> deleteEvent(String id) async {
     if (!_isReady) return;
-    await _deleteEvent!(id);
+    if (_softDeleteService != null) {
+      await _softDeleteService!.softDeleteEvent(id);
+    } else {
+      await _deleteEvent!(id);
+    }
     await loadEvents();
   }
 
@@ -139,6 +162,30 @@ class CalendarController extends Notifier<CalendarViewState> {
   }
 
   bool hasEventsOnDate(DateTime day) {
-    return getEventsForDay(day).isNotEmpty;
+    final key = '${day.year}-${day.month}-${day.day}';
+    return state.eventDates.contains(key);
+  }
+
+  /// Creates a recurrence exception for a single occurrence modification.
+  Future<void> createOccurrenceException({
+    required String eventId,
+    required DateTime originalGcDate,
+    required DateTime modifiedGcDate,
+    required DateTime modifiedEcDate,
+  }) async {
+    final db = ref.read(databaseProvider);
+    final exceptionKey = '${eventId}_${originalGcDate.millisecondsSinceEpoch}';
+    await db.recurrenceExceptionsDao.upsertException(
+      RecurrenceExceptionsCompanion.insert(
+        id: const Uuid().v4(),
+        entityType: 'event',
+        entityId: eventId,
+        exceptionKey: exceptionKey,
+        exceptionType: 'modified',
+        modifiedGcDate: Value(modifiedGcDate),
+        modifiedEcDate: Value(modifiedEcDate),
+        createdAt: DateTime.now(),
+      ),
+    );
   }
 }
