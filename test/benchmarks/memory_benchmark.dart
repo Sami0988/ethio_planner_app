@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 /// Memory and startup performance benchmarks.
 /// Measures data processing performance for common operations.
 void main() {

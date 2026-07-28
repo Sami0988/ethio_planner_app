@@ -188,7 +188,6 @@ final class TodayController extends Notifier<TodayViewState> {
           title: nextEvent.title,
           time: timeStr,
           location: nextEvent.location,
-          isAllDay: false,
         );
       }
     }

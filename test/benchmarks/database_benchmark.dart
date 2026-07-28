@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 /// Database query performance benchmarks.
 /// Measures Drift query patterns and data processing performance.
 void main() {

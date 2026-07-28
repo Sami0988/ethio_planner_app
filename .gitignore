@@ -45,3 +45,11 @@ app.*.map.json
 /android/app/release
 /android/.kotlin/
 /android/build/
+
+# Secrets - never commit
+*.jks
+*.keystore
+key.properties
+
+# Unneeded assets
+WhatsApp*

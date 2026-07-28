@@ -95,6 +95,9 @@ dev_dependencies:
   # Performance benchmarks
   benchmark_harness: ^2.3.0
 
+  # App Icon Generation
+  flutter_launcher_icons: ^0.14.3
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -123,3 +126,12 @@ flutter:
         - asset: assets/fonts/NotoSansEthiopic-Regular.ttf
         - asset: assets/fonts/NotoSansEthiopic-Bold.ttf
           weight: 700
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/images.jpeg"
+  adaptive_icon_background: "#7C3AED"
+  adaptive_icon_foreground: "assets/images/images.jpeg"
+  remove_alpha_ios: true
+  min_sdk_android: 21
